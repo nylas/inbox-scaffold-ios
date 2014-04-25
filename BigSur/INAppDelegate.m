@@ -10,7 +10,9 @@
 #import "INViewController.h"
 #import "INDatabaseManager.h"
 #import "INContact.h"
+#import "INModelView.h"
 #import "INModelObject+DatabaseCache.h"
+#import <AFNetworking/AFNetworking.h>
 
 @implementation INAppDelegate
 
@@ -31,15 +33,28 @@
     
     NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"ID < 10"];
     NSSortDescriptor * nameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    
+
     [INContact persistedInstancesMatching:predicate sortedBy:@[nameSortDescriptor] limit:10 offset:0 withCallback:^(NSArray *objects) {
         INContact * b = [objects firstObject];
         NSLog(@"%p = %p ? ", a, b);
     }];
+
+
+    INModelView * view = [INModelView viewForClass: [INContact class]];
+    [view setPredicate: predicate];
+    [view setSortDescriptors: @[nameSortDescriptor]];
+    [view setDelegate: self];
+    [view repopulate: NO];
     
     return YES;
 }
-							
+
+- (void)viewChanged:(NSArray*)changes
+{
+    
+}
+
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

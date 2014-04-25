@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Inbox. All rights reserved.
 //
 
-#import "INAPICall.h"
+#import "INAPIAction.h"
 #import "INModelObject.h"
 
 
-@implementation INAPICall
+@implementation INAPIAction
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
-@interface INAPICall : NSObject <NSCoding>
+@interface INAPIAction : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSArray * detatchedObjects;
 

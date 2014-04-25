@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#define API_TIMESTAMP_FORMAT @"yyyy-MM-dd HH:mm:ss"
+
 typedef void (^ResultsBlock)(NSArray * objects);
 
-#define NOTIF_MODEL_CHANGED @"model_changed"
-
-#define API_TIMESTAMP_FORMAT @"yyyy-MM-dd HH:mm:ss"
+static NSString * INModelObjectChangedNotification = @"model_changed";
 
 /**
  INModelObject is the base class for model objects in the Inbox framework. It provides

@@ -19,6 +19,12 @@
     return NSStringFromClass(self);
 }
 
++ (NSString*)databaseTableCreateStatement
+{
+    // should this be a feature?
+    return nil;
+}
+
 + (NSString*)databaseReplaceStatement
 {
     NSArray * cols = [[self resourceMapping] allValues];

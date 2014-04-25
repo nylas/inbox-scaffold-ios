@@ -37,6 +37,7 @@ static NSMapTable * modelInstanceTable;
     if (object)
         return object;
     
+    
     Class klass = self;
     object = [[klass alloc] initWithResourceDictionary: dict];
     [klass attachInstance: object];
@@ -110,7 +111,7 @@ static NSMapTable * modelInstanceTable;
         BOOL encodable = [value respondsToSelector: @selector(encodeWithCoder:)];
         if (encodable) {
             [aCoder encodeObject:value forKey:key];
-        } else {
+        } else if (value) {
             NSLog(@"Value of %@ (%@) does not comply to NSCoding.", key, [value description]);
         }
     }];
@@ -201,7 +202,7 @@ static NSMapTable * modelInstanceTable;
         return YES;
     }];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIF_MODEL_CHANGED object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:INModelObjectChangedNotification object:self];
 }
 
 #pragma Override Points & Subclassing Support
