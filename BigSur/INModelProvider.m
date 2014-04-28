@@ -54,8 +54,13 @@
 
     // make an API request to refresh our data
     if (_cachePolicy == INModelProviderCacheThenNetwork) {
-        // api call here
+        [self fetchItems];
     }
+}
+
+- (void)fetchItems
+{
+    // overridden in subclasses
 }
 
 #pragma mark Receiving Updates from the Database

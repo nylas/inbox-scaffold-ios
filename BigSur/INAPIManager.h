@@ -9,10 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
-@interface INAPIManager : NSObject
-{
-    AFHTTPRequestOperationManager * _requestManager;
-}
+@class INAPIOperation;
+
+@interface INAPIManager : AFHTTPRequestOperationManager
+
 + (INAPIManager *)shared;
+
+- (void)queueAPIOperation:(INAPIOperation*)operation;
+
 
 @end

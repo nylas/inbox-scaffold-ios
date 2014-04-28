@@ -8,6 +8,7 @@
 
 #import "INPredicateConverter.h"
 #import "INModelObject.h"
+#import "INModelObject+DatabaseCache.h"
 
 static NSString * SQLNullValueString = @"NULL";
 
@@ -95,12 +96,18 @@ static NSString * SQLNullValueString = @"NULL";
 	return nil;
 }
 
-- (NSString *)DatabaseKeyfor:(NSString*)str
+- (NSString *)SQLColumnForPropertyName:(NSString*)propertyName
 {
-    if (_targetModelClass)
-        return [[_targetModelClass resourceMapping] objectForKey: str];
-    else
-        return str;
+    if (_targetModelClass) {
+        // check to make sure this column is allowed. You can only query against columns
+        // listed in the databaseIndexProperties.
+        NSString * key = [[_targetModelClass resourceMapping] objectForKey: propertyName];
+        NSArray * allowedPropertyNames = [@[@"ID"] arrayByAddingObjectsFromArray: [_targetModelClass databaseIndexProperties]];
+        NSAssert([allowedPropertyNames containsObject: propertyName], @"Sorry, this class can only be queried by %@. There is no index on %@!", allowedPropertyNames, propertyName);
+        return key;
+    } else {
+        return propertyName;
+    }
 }
 
 - (NSString *)SQLExpressionForLeftKeyPath:(NSString *)keyPath
@@ -115,9 +122,9 @@ static NSString * SQLNullValueString = @"NULL";
 		}
 	}
     
-	if (retStr != nil) return [self DatabaseKeyfor:retStr];
+	if (retStr != nil) return [self SQLColumnForPropertyName:retStr];
     
-	return [self DatabaseKeyfor:keyPath];
+	return [self SQLColumnForPropertyName:keyPath];
 }
 
 - (NSString *)SQLConstantForLeftValue:(id)val
@@ -127,10 +134,10 @@ static NSString * SQLNullValueString = @"NULL";
 	if ([val isEqual:[NSNull null]]) return SQLNullValueString;
     
 	if ([val isKindOfClass:[NSString class]]) {
-    	return [self DatabaseKeyfor:val];
+    	return [self SQLColumnForPropertyName:val];
 	} else {
         if ([val respondsToSelector:@selector(intValue)])
-            return [self DatabaseKeyfor:[val stringValue]];
+            return [self SQLColumnForPropertyName:[val stringValue]];
         else
             return [self SQLConstantForLeftValue:[val description]];
     }
@@ -351,7 +358,7 @@ static NSString * SQLNullValueString = @"NULL";
 
 - (NSString *)SQLSortForSortDescriptor:(NSSortDescriptor*)descriptor
 {
-    NSString * databaseKey = [self DatabaseKeyfor: [descriptor key]];
+    NSString * databaseKey = [self SQLColumnForPropertyName: [descriptor key]];
     NSString * databaseOrder = [descriptor ascending] ? @"ASC" : @"DESC";
     return [NSString stringWithFormat: @"%@ %@", databaseKey, databaseOrder];
 }

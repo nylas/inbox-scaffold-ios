@@ -7,82 +7,13 @@
 //
 
 #import "INModelObject.h"
+#import "INAPIManager.h"
+#import "INAPIOperation.h"
 #import "NSObject+Properties.h"
 #import "NSString+FormatConversion.h"
 
-static NSMapTable * modelInstanceTable;
 
 @implementation INModelObject
-
-
-#pragma Globally Unique Instances
-
-+ (id)attachedInstanceMatching:(INModelObject*)obj
-{
-    return [[obj class] attachedInstanceWithID:[obj ID]];
-}
-
-+ (id)attachedInstanceWithID:(id)ID
-{
-    if (!modelInstanceTable) {
-        modelInstanceTable = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsWeakMemory valueOptions:NSPointerFunctionsWeakMemory capacity:1000];
-    }
-    
-    return [modelInstanceTable objectForKey: [INModelObject attachedInstanceKeyForClass: self ID: ID]];
-}
-
-+ (id)attachedInstanceForResourceDictionary:(NSDictionary*)dict
-{
-    INModelObject * object = [self attachedInstanceWithID:dict[@"id"]];
-    if (object)
-        return object;
-    
-    Class klass = self;
-    object = [[klass alloc] initWithResourceDictionary: dict];
-    [klass attachInstance: object];
-    return object;
-}
-
-+ (void)attachInstance:(INModelObject*)obj
-{
-    if (!obj)
-        return;
-
-    if (![obj isKindOfClass: [INModelObject class]])
-        @throw @"Attempting to attach an object that is not an INModelObject";
-    
-    id existing = [INModelObject attachedInstanceMatching: obj];
-    if (!existing) {
-        [modelInstanceTable setObject: obj forKey: [INModelObject attachedInstanceKeyForClass: [obj class] ID: [obj ID]]];
-    } else if (existing == obj) {
-        return;
-    } else {
-        @throw @"Attempting to attach an instance when another instance is already in the data model for this class+ID combination.";
-    }
-}
-
-+ (NSString*)attachedInstanceKeyForClass:(Class)klass ID:(id)ID
-{
-    if ([ID isKindOfClass: [NSNumber class]])
-        ID = [ID stringValue];
-        
-    char cString[255];
-    sprintf (cString, "%p-%s", (__bridge void*)klass, [ID cStringUsingEncoding: NSUTF8StringEncoding]);
-    return [NSString stringWithCString:cString encoding:NSUTF8StringEncoding];
-}
-
-
-- (id)detatchedCopy
-{
-    Class klass = [self class];
-    id copy = [[klass alloc] initWithResourceDictionary: [self resourceDictionary]];
-    return copy;
-}
-
-- (BOOL)isDetatched
-{
-    return ([INModelObject attachedInstanceMatching: self] != self);
-}
 
 - (NSString*)description
 {
@@ -122,16 +53,6 @@ static NSMapTable * modelInstanceTable;
 }
 
 #pragma mark Resource Representation
-
-- (id)initWithResourceDictionary:(NSDictionary*)dict
-{
-    self = [super init];
-    if (self) {
-        [self updateWithResourceDictionary: dict];
-        [self setup];
-    }
-    return self;
-}
 
 - (NSMutableDictionary*)resourceDictionary
 {
@@ -209,11 +130,40 @@ static NSMapTable * modelInstanceTable;
     [[NSNotificationCenter defaultCenter] postNotificationName:INModelObjectChangedNotification object:self];
 }
 
+#pragma Loading and Saving
+
+- (NSString*)APIPath
+{
+    NSAssert(false, @"This class does not provide an APIPath. Subclasses should provide /collection/:id to enable -reload: and -save:");
+    return nil;
+}
+
+- (void)reload:(ErrorBlock)callback
+{
+    [[INAPIManager shared] GET:[self APIPath] parameters:[self resourceDictionary] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self updateWithResourceDictionary: responseObject];
+        if (callback)
+            callback(nil);
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (callback)
+            callback(error);
+    }];
+}
+
+- (INAPIOperation*)save
+{
+    INAPIOperation * operation = [INAPIOperation operationForSaving: self];
+    [[INAPIManager shared] queueAPIOperation: operation];
+    return operation;
+}
+
+
 #pragma Override Points & Subclassing Support
 
 + (NSMutableDictionary *)resourceMapping
 {
-    return [@{ @"ID": @"id", @"createdAt": @"created_at", @"updatedAt": @"updated_at" } mutableCopy];
+    return [@{ @"ID": @"id", @"namespaceID": @"namespace_id", @"createdAt": @"created_at", @"updatedAt": @"updated_at" } mutableCopy];
 }
 
 - (void)setup

@@ -7,6 +7,7 @@
 //
 
 #import "FMResultSet+INModelQueries.h"
+#import "INModelObject+Uniquing.h"
 
 @implementation FMResultSet (INModelQueries)
 
@@ -20,9 +21,12 @@
     if (![self hasAnotherRow])
         return nil;
     
-    NSDictionary * row = [self resultDictionary];
-    if (row)
-        return [klass attachedInstanceForResourceDictionary: row];
+    NSError * err = nil;
+    NSData * jsonData = [self dataNoCopyForColumn: @"data"];
+    NSDictionary * json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&err];
+
+    if (json && !err)
+        return [klass instanceWithResourceDictionary: json];
     else
         return nil;
 }

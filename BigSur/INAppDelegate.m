@@ -12,7 +12,7 @@
 #import "INContact.h"
 #import "INModelProvider.h"
 #import "INModelObject+DatabaseCache.h"
-#import <AFNetworking/AFNetworking.h>
+#import "INModelObject+Uniquing.h"
 
 @implementation INAppDelegate
 
@@ -22,16 +22,13 @@
     self.window.rootViewController = [[INViewController alloc] init];
     [self.window makeKeyAndVisible];
 
-    // Initialize the database cache
-    [[INDatabaseManager shared] prepare];
-
     // Let's say we have an API call that returns two JSON dictionaries that we want
     // to add to the local cache. We may or may not already have these objects.
     // This function either creates them or retrieves them and updates them in memory.
-    INContact * a = [INContact attachedInstanceForResourceDictionary: @{@"name": @"Ben Gotow", @"id": @(2), @"account_id":@(12), @"uid":@(4)}];
+    INContact * a = [INContact instanceWithResourceDictionary: @{@"name": @"Ben Gotow", @"id": @(2), @"email_address":@"bengotow@gmail.com", @"account_id":@(12), @"uid":@(4)}];
     [a persist];
 
-    INContact * b = [INContact attachedInstanceForResourceDictionary: @{@"name": @"John Gotow", @"id": @(3), @"account_id":@(12), @"uid":@(4)}];
+    INContact * b = [INContact instanceWithResourceDictionary: @{@"name": @"John Gotow", @"id": @(3), @"account_id":@(12), @"uid":@(4)}];
     [b persist];
     
     return YES;

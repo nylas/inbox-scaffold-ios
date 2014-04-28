@@ -15,7 +15,7 @@
 {
     [super viewDidLoad];
 
-    NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"ID < 10"];
+    NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"name LIKE 'Ben G'"];
     NSSortDescriptor * nameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     
     _contactsProvider = [INModelProvider providerForClass: [INContact class]];

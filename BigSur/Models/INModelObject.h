@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class INAPIOperation;
+
 #define API_TIMESTAMP_FORMAT @"yyyy-MM-dd HH:mm:ss"
 
 typedef void (^ResultsBlock)(NSArray * objects);
+typedef void (^ErrorBlock)(NSError * error);
 
 static NSString * INModelObjectChangedNotification = @"model_changed";
 
@@ -19,37 +22,13 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
  core functionality related to object serialization and is intended to be subclassed.
 */
 @interface INModelObject : NSObject <NSCoding>
-{
-    BOOL _detatched;
-}
 
 @property (nonatomic, strong) NSString * ID;
+@property (nonatomic, strong) NSString * namespaceID;
 @property (nonatomic, strong) NSDate * createdAt;
 @property (nonatomic, strong) NSDate * updatedAt;
 
-/** @name Globally Unique Instances */
-
-+ (id)attachedInstanceMatching:(INModelObject*)obj;
-+ (id)attachedInstanceWithID:(id)ID;
-+ (id)attachedInstanceForResourceDictionary:(NSDictionary*)dict;
-
-+ (void)attachInstance:(INModelObject*)obj;
-
-- (id)detatchedCopy;
-- (BOOL)isDetatched;
-
 /** @name Resource Representation */
-
-/**
- Initializes a new instance of the object using the mapping function
- resourceMapping to populate Objective-C properties.
- 
- @param json A dictionary with key-value pairs matching the ones
- declared in resourceMapping.
-
- @return A populated object
- */
-- (id)initWithResourceDictionary:(NSDictionary*)json;
 
 /** 
  Uses the resourceMapping mapping and the object's property values
@@ -69,6 +48,35 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
 - (void)updateWithResourceDictionary:(NSDictionary*)dict;
 
 
+/** @name Resource Loading and Saving */
+
+/**
+ @return The path to the object on the API.
+ */
+
+- (NSString*)APIPath;
+
+/**
+ Reload the model by perfoming a GET request to the APIPath.
+ 
+ @param callback An optional callback that allows you to capture errors and present
+ alerts that the user may expect when a reload fails.
+ */
+- (void)reload:(ErrorBlock)callback;
+
+/**
+ Save the model to the server. This method may be overriden in subclasses. The 
+ default implementation does a PUT to the APIPath for objects with IDs, and a POST
+ to the APIPath (without an ID) for new objects.
+ 
+ Note that -save is eventually persistent. The save operation may be held in queue
+ until network connectivity is available.
+ 
+ @return An INAPIAction that you can use to track the progress of the save operation.
+ */
+- (INAPIOperation*)save;
+
+
 /** @name Override Points & Subclassing Support */
 
 /**
@@ -81,11 +89,13 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
  
  + (NSMutableDictionary *)resourceMapping
  {
-   NSMutableDictionary * mapping = [[super resourceMapping] addEntriesFromDictionary: @{
+   NSMutableDictionary * mapping = [super resourceMapping];
+   [mapping addEntriesFromDictionary: @{
      @"firstName": @"first_name",
      @"lastName": @"last_name",
      @"emailAddress": @"email_address"
    }];
+   return mapping;
  }
  
  @return A dictionary mapping iOS property names to JSON fields.

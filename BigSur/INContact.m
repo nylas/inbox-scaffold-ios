@@ -24,6 +24,11 @@
     return mapping;
 }
 
++ (NSArray*)databaseIndexProperties
+{
+    return @[@"name", @"emailAddress", @"accountId"];
+}
+
 - (void)setup
 {
 

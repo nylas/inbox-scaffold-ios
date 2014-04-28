@@ -13,8 +13,6 @@
 #import "INModelObject.h"
 #import "INModelObject+DatabaseCache.h"
 
-static NSString * INModelsPersistedNotification = @"INModelsPersistedNotification";
-
 @protocol INDatabaseObserver <NSObject>
 
 - (void)managerDidPersistModels:(NSArray*)models;
@@ -24,13 +22,13 @@ static NSString * INModelsPersistedNotification = @"INModelsPersistedNotificatio
 
 @interface INDatabaseManager : NSObject
 {
+    NSMutableDictionary * _initializedModelClasses;
+
     FMDatabaseQueue * _queue;
     NSHashTable * _observers;
 }
 
 + (INDatabaseManager *)shared;
-
-- (void)prepare;
 
 - (void)registerCacheObserver:(NSObject<INDatabaseObserver>*)observer;
 
