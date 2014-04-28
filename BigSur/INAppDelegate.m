@@ -10,7 +10,7 @@
 #import "INViewController.h"
 #import "INDatabaseManager.h"
 #import "INContact.h"
-#import "INModelView.h"
+#import "INModelProvider.h"
 #import "INModelObject+DatabaseCache.h"
 #import <AFNetworking/AFNetworking.h>
 
@@ -24,36 +24,18 @@
 
     // Initialize the database cache
     [[INDatabaseManager shared] prepare];
-    
-    INContact * a = [[INContact alloc] initWithResourceDictionary: @{@"name": @"Ben Gotow", @"id": @(2), @"account_id":@(12), @"uid":@(4)}];
+
+    // Let's say we have an API call that returns two JSON dictionaries that we want
+    // to add to the local cache. We may or may not already have these objects.
+    // This function either creates them or retrieves them and updates them in memory.
+    INContact * a = [INContact attachedInstanceForResourceDictionary: @{@"name": @"Ben Gotow", @"id": @(2), @"account_id":@(12), @"uid":@(4)}];
     [a persist];
 
-    INContact * b = [[INContact alloc] initWithResourceDictionary: @{@"name": @"John Gotow", @"id": @(3), @"account_id":@(12), @"uid":@(4)}];
+    INContact * b = [INContact attachedInstanceForResourceDictionary: @{@"name": @"John Gotow", @"id": @(3), @"account_id":@(12), @"uid":@(4)}];
     [b persist];
-    
-    NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"ID < 10"];
-    NSSortDescriptor * nameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-
-    [INContact persistedInstancesMatching:predicate sortedBy:@[nameSortDescriptor] limit:10 offset:0 withCallback:^(NSArray *objects) {
-        INContact * b = [objects firstObject];
-        NSLog(@"%p = %p ? ", a, b);
-    }];
-
-
-    INModelView * view = [INModelView viewForClass: [INContact class]];
-    [view setPredicate: predicate];
-    [view setSortDescriptors: @[nameSortDescriptor]];
-    [view setDelegate: self];
-    [view repopulate: NO];
     
     return YES;
 }
-
-- (void)viewChanged:(NSArray*)changes
-{
-    
-}
-
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

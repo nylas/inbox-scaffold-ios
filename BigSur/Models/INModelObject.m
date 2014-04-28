@@ -37,7 +37,6 @@ static NSMapTable * modelInstanceTable;
     if (object)
         return object;
     
-    
     Class klass = self;
     object = [[klass alloc] initWithResourceDictionary: dict];
     [klass attachInstance: object];
@@ -52,9 +51,14 @@ static NSMapTable * modelInstanceTable;
     if (![obj isKindOfClass: [INModelObject class]])
         @throw @"Attempting to attach an object that is not an INModelObject";
     
-    if ([INModelObject attachedInstanceMatching: obj] != nil)
+    id existing = [INModelObject attachedInstanceMatching: obj];
+    if (!existing) {
+        [modelInstanceTable setObject: obj forKey: [INModelObject attachedInstanceKeyForClass: [obj class] ID: [obj ID]]];
+    } else if (existing == obj) {
+        return;
+    } else {
         @throw @"Attempting to attach an instance when another instance is already in the data model for this class+ID combination.";
-    [modelInstanceTable setObject: obj forKey: [INModelObject attachedInstanceKeyForClass: [obj class] ID: [obj ID]]];
+    }
 }
 
 + (NSString*)attachedInstanceKeyForClass:(Class)klass ID:(id)ID

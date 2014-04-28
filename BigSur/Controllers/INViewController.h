@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "INModelProvider.h"
+#import "INContact.h"
 
-@interface INViewController : UIViewController
+@interface INViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate>
+{
+    INModelProvider * _contactsProvider;
+}
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end

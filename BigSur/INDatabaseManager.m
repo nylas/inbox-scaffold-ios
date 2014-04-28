@@ -32,6 +32,7 @@
         NSLog(@"%@", databasePath);
         
         _queue = [FMDatabaseQueue databaseQueueWithPath: databasePath];
+        _observers = [[NSHashTable alloc] initWithOptions:NSPointerFunctionsWeakMemory capacity:10];
     }
     return self;
 }
@@ -102,6 +103,11 @@
     return succeeded;
 }
 
+- (void)registerCacheObserver:(NSObject<INDatabaseObserver>*)observer
+{
+    [_observers addObject: observer];
+}
+
 #pragma mark Finding Objects
 
 - (void)persistModel:(INModelObject*)model
@@ -109,6 +115,9 @@
     [_queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:[[model class] databaseReplaceStatement] withParameterDictionary: [model resourceDictionary]];
         [INModelObject attachInstance: model];
+
+        // notify providers that this model was updated. This may result in views being updated.
+        [[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidPersistModels:) withObject:@[model]];
     }];
 }
 
@@ -119,6 +128,19 @@
             [db executeUpdate:[[model class] databaseReplaceStatement] withParameterDictionary: [model resourceDictionary]];
             [INModelObject attachInstance: model];
         }
+
+        // notify providers that models were updated. This may result in views being updated.
+        [[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidPersistModels:) withObject:models];
+    }];
+}
+
+- (void)executeTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block
+{
+    [_queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        block(db, rollback);
+
+        // notify providers that models were updated. This may result in views being updated.
+        [[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidPerformTransaction)];
     }];
 }
 

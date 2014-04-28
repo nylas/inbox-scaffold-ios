@@ -19,10 +19,66 @@
     return NSStringFromClass(self);
 }
 
++ (NSArray*)databaseIndexProperties
+{
+    return nil;
+}
 + (NSString*)databaseTableCreateStatement
 {
-    // should this be a feature?
-    return nil;
+    NSArray * cols = [@[@"id INTEGER PRIMARY KEY", @"data BLOB"] mutableCopy];
+    
+    for (NSString * propertyName in databaseIndexProperties) {
+        
+    }
+
+
+    NSString * colsString = [cols componentsJoinedByString: @","];
+    NSString * query = [NSString stringWithFormat: @"CREATE TABLE IF NOT EXISTS %@ (%@);", [self databaseTableName], colsString];
+    
+    CREATE INDEX IF NOT EXISTS \"%@\" ON \"%@\" (\"%@\");
+    NSMutableString *createTable = [NSMutableString stringWithCapacity:100];
+	[createTable appendFormat:@"CREATE TABLE IF NOT EXISTS \"%@\" (\"rowid\" INTEGER PRIMARY KEY", tableName];
+	
+	for (YapDatabaseSecondaryIndexColumn *column in setup)
+	{
+		if (column.type == YapDatabaseSecondaryIndexTypeInteger)
+		{
+			[createTable appendFormat:@", \"%@\" INTEGER", column.name];
+		}
+		else if (column.type == YapDatabaseSecondaryIndexTypeReal)
+		{
+			[createTable appendFormat:@", \"%@\" REAL", column.name];
+		}
+		else if (column.type == YapDatabaseSecondaryIndexTypeText)
+		{
+			[createTable appendFormat:@", \"%@\" TEXT", column.name];
+		}
+	}
+	
+	[createTable appendString:@");"];
+	
+	int status = sqlite3_exec(db, [createTable UTF8String], NULL, NULL, NULL);
+	if (status != SQLITE_OK)
+	{
+		YDBLogError(@"%@ - Failed creating secondary index table (%@): %d %s",
+		            THIS_METHOD, tableName, status, sqlite3_errmsg(db));
+		return NO;
+	}
+	
+	for (YapDatabaseSecondaryIndexColumn *column in setup)
+	{
+		NSString *createIndex =
+        [NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS \"%@\" ON \"%@\" (\"%@\");",
+         column.name, tableName, column.name];
+		
+		status = sqlite3_exec(db, [createIndex UTF8String], NULL, NULL, NULL);
+		if (status != SQLITE_OK)
+		{
+			YDBLogError(@"Failed creating index on '%@': %d %s", column.name, status, sqlite3_errmsg(db));
+			return NO;
+		}
+	}
+	
 }
 
 + (NSString*)databaseReplaceStatement

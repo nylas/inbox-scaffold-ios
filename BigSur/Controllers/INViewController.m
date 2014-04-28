@@ -8,22 +8,56 @@
 
 #import "INViewController.h"
 
-@interface INViewController ()
-
-@end
 
 @implementation INViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"ID < 10"];
+    NSSortDescriptor * nameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    
+    _contactsProvider = [INModelProvider providerForClass: [INContact class]];
+    [_contactsProvider setPredicate: predicate];
+    [_contactsProvider setSortDescriptors: @[nameSortDescriptor]];
+    [_contactsProvider setDelegate: self];
+    [_contactsProvider refresh];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)providerDataRefreshed
+{
+    [_tableView reloadData];
+}
+
+- (void)providerDataAltered:(NSArray*)changes
+{
+    [_tableView reloadData];
+}
+
+#pragma mark Table View Data Source
+
+- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[_contactsProvider items] count];
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier: @"cell"];
+    if (!cell) cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    
+    INContact * contact = [[_contactsProvider items] objectAtIndex: [indexPath row]];
+    NSString * label = [contact name];
+    [[cell textLabel] setText: label];
+    
+    return cell;
 }
 
 @end
