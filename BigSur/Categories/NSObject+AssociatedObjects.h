@@ -9,7 +9,7 @@
 
 @interface NSObject (AMAssociatedObjects)
 
-- (void)associateValue:(id)value withKey:(void *)key; // Strong reference
+- (void)associateValue:(id)value withKey:(void *)key;	// Strong reference
 - (void)weaklyAssociateValue:(id)value withKey:(void *)key;
 - (id)associatedValueForKey:(void *)key;
 - (void)performSelectorOnMainThreadOnce:(SEL)selector;

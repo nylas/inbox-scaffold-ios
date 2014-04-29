@@ -11,6 +11,6 @@
 
 @interface FMResultSet (INModelQueries)
 
-- (INModelObject*)nextModelOfClass:(Class)klass;
+- (INModelObject *)nextModelOfClass:(Class)klass;
 
 @end

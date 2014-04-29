@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
-typedef void (^ResultsBlock)(NSArray * objects);
-typedef void (^ErrorBlock)(NSError * error);
+typedef void (^ ResultsBlock)(NSArray * objects);
+typedef void (^ ErrorBlock)(NSError * error);
 
 @class INAPIOperation;
 
@@ -18,7 +18,6 @@ typedef void (^ErrorBlock)(NSError * error);
 
 + (INAPIManager *)shared;
 
-- (void)queueAPIOperation:(INAPIOperation*)operation;
-
+- (void)queueAPIOperation:(INAPIOperation *)operation;
 
 @end

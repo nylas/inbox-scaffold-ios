@@ -15,26 +15,26 @@
 
 @protocol INDatabaseObserver <NSObject>
 
-- (void)managerDidPersistModels:(NSArray*)models;
-- (void)managerDidRemoveModels:(NSArray*)models;
+- (void)managerDidPersistModels:(NSArray *)models;
+- (void)managerDidRemoveModels:(NSArray *)models;
 
 @end
 
 @interface INDatabaseManager : NSObject
 {
-    NSMutableDictionary * _initializedModelClasses;
+	NSMutableDictionary * _initializedModelClasses;
 
-    FMDatabaseQueue * _queue;
-    NSHashTable * _observers;
+	FMDatabaseQueue * _queue;
+	NSHashTable * _observers;
 }
 
 + (INDatabaseManager *)shared;
 
-- (void)registerCacheObserver:(NSObject<INDatabaseObserver>*)observer;
+- (void)registerCacheObserver:(NSObject <INDatabaseObserver> *)observer;
 
-- (void)persistModel:(INModelObject*)model;
-- (void)persistModels:(NSArray*)models;
+- (void)persistModel:(INModelObject *)model;
+- (void)persistModels:(NSArray *)models;
 
-- (void)selectModelsOfClass:(Class)klass withQuery:(NSString*)query andParameters:(NSDictionary*)arguments andCallback:(ResultsBlock)callback;
+- (void)selectModelsOfClass:(Class)klass withQuery:(NSString *)query andParameters:(NSDictionary *)arguments andCallback:(ResultsBlock)callback;
 
 @end

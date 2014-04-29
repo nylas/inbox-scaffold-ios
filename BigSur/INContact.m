@@ -12,32 +12,32 @@
 
 + (NSMutableDictionary *)resourceMapping
 {
-    NSMutableDictionary * mapping = [super resourceMapping];
-    [mapping addEntriesFromDictionary: @{
-      @"source": @"source",
-      @"name": @"name",
-      @"providerName": @"provider_name",
-      @"emailAddress": @"email_address",
-      @"accountId": @"account_id",
-      @"uid": @"uid"
-    }];
-    return mapping;
+	NSMutableDictionary * mapping = [super resourceMapping];
+
+	[mapping addEntriesFromDictionary:@{
+		@"source": @"source",
+		@"name": @"name",
+		@"providerName": @"provider_name",
+		@"emailAddress": @"email_address",
+		@"accountId": @"account_id",
+		@"uid": @"uid"
+	}];
+	return mapping;
 }
 
-+ (NSArray*)databaseIndexProperties
++ (NSArray *)databaseIndexProperties
 {
-    return @[@"name", @"emailAddress", @"accountId"];
+	return @[@"name", @"emailAddress", @"accountId"];
 }
 
 - (void)setup
-{
+{}
 
-}
-
-- (NSString*)APIPath
+- (NSString *)APIPath
 {
-    NSString * ID = self.ID ? self.ID : @"";
-    return [NSString stringWithFormat: @"/n/%@/contacts/%@", self.namespaceID, ID];
+	NSString * ID = self.ID ? self.ID : @"";
+
+	return [NSString stringWithFormat:@"/n/%@/contacts/%@", self.namespaceID, ID];
 }
 
 @end

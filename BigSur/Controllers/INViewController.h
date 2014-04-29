@@ -12,9 +12,9 @@
 
 @interface INViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate>
 {
-    INModelProvider * _contactsProvider;
+	INModelProvider * _contactsProvider;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView * tableView;
 
 @end

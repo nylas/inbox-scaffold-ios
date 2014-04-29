@@ -6,16 +6,14 @@
 //  Copyright (c) 2014 Inbox. All rights reserved.
 //
 
-
 @interface INModelArrayResponseSerializer : AFJSONResponseSerializer
 
 @property (nonatomic, strong) Class modelClass;
 
 - (id)initWithModelClass:(Class)klass;
 
-- (BOOL)validateResponse:(NSHTTPURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error;
+- (BOOL)validateResponse:(NSHTTPURLResponse *)response data:(NSData *)data error:(NSError * __autoreleasing *)error;
 
-- (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error;
-
+- (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError * __autoreleasing *)error;
 
 @end

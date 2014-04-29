@@ -10,17 +10,16 @@
 
 @interface NSString (FormatConversion)
 
-+ (NSString*)stringWithDate:(NSDate*)date format:(NSString*)f;
-- (NSDate*)dateValueWithFormat:(NSString*)f;
-- (NSString*)md5Value;
++ (NSString *)stringWithDate:(NSDate *)date format:(NSString *)f;
+- (NSDate *)dateValueWithFormat:(NSString *)f;
+- (NSString *)md5Value;
 
-+ (NSString *)generateUUIDWithExtension:(NSString*)ext;
++ (NSString *)generateUUIDWithExtension:(NSString *)ext;
 - (NSString *)urlencode;
 
-+ (NSString*)stringWithCGSize:(CGSize)size;
++ (NSString *)stringWithCGSize:(CGSize)size;
 - (CGSize)CGSizeValue;
 
 - (id)asJSONObjectOfClass:(Class)klass;
-
 
 @end

@@ -13,39 +13,41 @@
 
 @implementation INThreadProvider
 
-- (id)initWithNamespace:(INNamespace*)namespace
+- (id)initWithNamespace:(INNamespace *)namespace
 {
-    self = [super init];
-    if (self) {
-        [self setModelClass: [INThread class]];
-        [self setNamespace: namespace];
-    }
-    return self;
+	self = [super init];
+
+	if (self) {
+		[self setModelClass:[INThread class]];
+		[self setNamespace:namespace];
+	}
+	return self;
 }
 
-- (NSDictionary*)fetchQueryParamsForPredicate
+- (NSDictionary *)fetchQueryParamsForPredicate
 {
-    // TODO
-    return @{};
+	// TODO
+	return @{};
 }
 
 - (void)fetchFromAPI
 {
-    NSString * path = [[_namespace APIPath] stringByAppendingPathComponent: @"threads"];
-    NSDictionary * params = [self fetchQueryParamsForPredicate];
+	NSString * path = [[_namespace APIPath] stringByAppendingPathComponent:@"threads"];
+	NSDictionary * params = [self fetchQueryParamsForPredicate];
 
-    AFHTTPRequestOperation * operation = [[INAPIManager shared] GET:path parameters:params success:^(AFHTTPRequestOperation *operation, NSArray * threads) {
-        self.items = [threads sortedArrayUsingDescriptors: self.sortDescriptors];
-        if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)])
-            [self.delegate providerDataRefreshed];
+	AFHTTPRequestOperation * operation = [[INAPIManager shared] GET:path parameters:params success:^(AFHTTPRequestOperation * operation, NSArray * threads) {
+		self.items = [threads sortedArrayUsingDescriptors:self.sortDescriptors];
 
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if ([self.delegate respondsToSelector: @selector(providerDataFetchFailed:)])
-            [self.delegate providerDataFetchFailed: error];
-    }];
-    
-    INModelArrayResponseSerializer * serializer = [[INModelArrayResponseSerializer alloc] initWithModelClass: self.modelClass];
-    [operation setResponseSerializer: serializer];
+		if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)])
+			[self.delegate providerDataRefreshed];
+	} failure:^(AFHTTPRequestOperation * operation, NSError * error) {
+		if ([self.delegate respondsToSelector:@selector(providerDataFetchFailed:)])
+			[self.delegate providerDataFetchFailed:error];
+	}];
+
+	INModelArrayResponseSerializer * serializer = [[INModelArrayResponseSerializer alloc] initWithModelClass:self.modelClass];
+
+	[operation setResponseSerializer:serializer];
 }
 
 @end

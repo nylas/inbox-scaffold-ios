@@ -11,14 +11,13 @@
 
 static NSString * INAPIOperationCompleteNotification = @"INAPIOperationCompleteNotification";
 
-
 @interface INAPIOperation : AFHTTPRequestOperation <NSCoding>
 
-+ (INAPIOperation*)operationWithMethod:(NSString*)method forModel:(INModelObject*)model;
++ (INAPIOperation *)operationWithMethod:(NSString *)method forModel:(INModelObject *)model;
 
 - (id)initWithCoder:(NSCoder *)aDecoder;
 - (void)encodeWithCoder:(NSCoder *)aCoder;
 
-- (BOOL)invalidatesPreviousQueuedOperation:(AFHTTPRequestOperation*)other;
+- (BOOL)invalidatesPreviousQueuedOperation:(AFHTTPRequestOperation *)other;
 
 @end

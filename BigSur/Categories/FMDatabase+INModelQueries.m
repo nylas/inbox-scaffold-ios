@@ -10,5 +10,4 @@
 
 @implementation FMDatabase (INModelQueries)
 
-
 @end

@@ -12,11 +12,11 @@
 
 #pragma Database Representation
 
-+ (NSString*)databaseTableName;
-+ (NSArray*)databaseIndexProperties;
++ (NSString *)databaseTableName;
++ (NSArray *)databaseIndexProperties;
 
-+ (void)persistedInstancesMatching:(NSPredicate*)wherePredicate sortedBy:(NSArray*)sortDescriptors limit:(int)limit offset:(int)offset withCallback:(ResultsBlock)callback;
-+ (void)persistedInstancesForQuery:(NSString*)query withParameters:(NSDictionary*)arguments andCallback:(ResultsBlock)callback;
++ (void)persistedInstancesMatching:(NSPredicate *)wherePredicate sortedBy:(NSArray *)sortDescriptors limit:(int)limit offset:(int)offset withCallback:(ResultsBlock)callback;
++ (void)persistedInstancesForQuery:(NSString *)query withParameters:(NSDictionary *)arguments andCallback:(ResultsBlock)callback;
 
 - (void)persist;
 

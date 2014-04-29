@@ -13,6 +13,6 @@
 @property (nonatomic, strong) Class targetModelClass;
 
 - (NSString *)SQLFilterForPredicate:(NSPredicate *)predicate;
-- (NSString *)SQLSortForSortDescriptor:(NSSortDescriptor*)descriptor;
+- (NSString *)SQLSortForSortDescriptor:(NSSortDescriptor *)descriptor;
 
 @end

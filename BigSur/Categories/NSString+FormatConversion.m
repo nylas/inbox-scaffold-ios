@@ -11,99 +11,108 @@
 
 static NSMutableDictionary * formatters;
 
-
 @implementation NSString (FormatConversion)
 
-+ (NSDateFormatter*)formatterForFormat:(NSString*) f
++ (NSDateFormatter *)formatterForFormat:(NSString *)f
 {
-    if (formatters == nil)
-        formatters = [[NSMutableDictionary alloc] init];
-    
-    NSDateFormatter * formatter = [formatters objectForKey: f];
-    if (!formatter) {
-        formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat: f];
-        [formatters setObject: formatter forKey: f];
-    }
-    return formatter;
+	if (formatters == nil)
+		formatters = [[NSMutableDictionary alloc] init];
+
+	NSDateFormatter * formatter = [formatters objectForKey:f];
+
+	if (!formatter) {
+		formatter = [[NSDateFormatter alloc] init];
+		[formatter setDateFormat:f];
+		[formatters setObject:formatter forKey:f];
+	}
+	return formatter;
 }
 
-+ (NSString*)stringWithDate:(NSDate*)date format:(NSString*)f
++ (NSString *)stringWithDate:(NSDate *)date format:(NSString *)f
 {
-    return [[NSString formatterForFormat: f] stringFromDate: date];
+	return [[NSString formatterForFormat:f] stringFromDate:date];
 }
 
-- (NSDate*)dateValueWithFormat:(NSString*)f
+- (NSDate *)dateValueWithFormat:(NSString *)f
 {
-    return [[NSString formatterForFormat: f] dateFromString: self];
+	return [[NSString formatterForFormat:f] dateFromString:self];
 }
 
-- (NSString*)md5Value
+- (NSString *)md5Value
 {
-    const char *cStr = [self UTF8String];
-    unsigned char digest[16];
-    CC_MD5( cStr, strlen(cStr), digest ); // This is the md5 call
-    
-    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
-        [output appendFormat:@"%02x", digest[i]];
-    return  output;
+	const char * cStr = [self UTF8String];
+	unsigned char digest[16];
+
+	CC_MD5(cStr, strlen(cStr), digest);		// This is the md5 call
+
+	NSMutableString * output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+
+	for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+		[output appendFormat:@"%02x", digest[i]];
+
+	return output;
 }
 
-+ (NSString *)generateUUIDWithExtension:(NSString*)ext
++ (NSString *)generateUUIDWithExtension:(NSString *)ext
 {
-    CFUUIDRef theUUID = CFUUIDCreate(NULL);
-    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-    CFRelease(theUUID);
-    NSString * s = (NSString *)CFBridgingRelease(string);
-    if (ext)
-        s = [s stringByAppendingFormat:@".%@", ext];
-    return s;
+	CFUUIDRef theUUID = CFUUIDCreate(NULL);
+	CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+
+	CFRelease(theUUID);
+	NSString * s = (NSString *)CFBridgingRelease(string);
+
+	if (ext)
+		s = [s stringByAppendingFormat:@".%@", ext];
+	return s;
 }
 
 - (NSString *)urlencode
 {
-    NSMutableString *output = [NSMutableString string];
-    const unsigned char *source = (const unsigned char *)[self UTF8String];
-    int sourceLen = strlen((const char *)source);
-    for (int i = 0; i < sourceLen; ++i) {
-        const unsigned char thisChar = source[i];
-        if (thisChar == ' '){
-            [output appendString:@"+"];
-        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
-                   (thisChar >= 'a' && thisChar <= 'z') ||
-                   (thisChar >= 'A' && thisChar <= 'Z') ||
-                   (thisChar >= '0' && thisChar <= '9')) {
-            [output appendFormat:@"%c", thisChar];
-        } else {
-            [output appendFormat:@"%%%02X", thisChar];
-        }
-    }
-    return output;
+	NSMutableString * output = [NSMutableString string];
+	const unsigned char * source = (const unsigned char *)[self UTF8String];
+	int sourceLen = strlen((const char *)source);
+
+	for (int i = 0; i < sourceLen; ++i) {
+		const unsigned char thisChar = source[i];
+
+		if (thisChar == ' ')
+			[output appendString:@"+"];
+		else if ((thisChar == '.') || (thisChar == '-') || (thisChar == '_') || (thisChar == '~') ||
+			((thisChar >= 'a') && (thisChar <= 'z')) ||
+			((thisChar >= 'A') && (thisChar <= 'Z')) ||
+			((thisChar >= '0') && (thisChar <= '9')))
+			[output appendFormat:@"%c", thisChar];
+		else
+			[output appendFormat:@"%%%02X", thisChar];
+	}
+
+	return output;
 }
 
-+ (NSString*)stringWithCGSize:(CGSize)size
++ (NSString *)stringWithCGSize:(CGSize)size
 {
-    return [NSString stringWithFormat:@"%f,%f", size.width, size.height];
+	return [NSString stringWithFormat:@"%f,%f", size.width, size.height];
 }
 
 - (CGSize)CGSizeValue
 {
-    NSArray * components = [self componentsSeparatedByString: @","];
-    return CGSizeMake([[components objectAtIndex: 0] doubleValue], [[components objectAtIndex: 1] doubleValue]);
+	NSArray * components = [self componentsSeparatedByString:@","];
+
+	return CGSizeMake([[components objectAtIndex:0] doubleValue], [[components objectAtIndex:1] doubleValue]);
 }
 
 - (id)asJSONObjectOfClass:(Class)klass
 {
-    if ([self length] == 0)
-        return nil;
-    
-    NSData * data = [self dataUsingEncoding: NSUTF8StringEncoding];
-    id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:NULL];
-    if ([obj isKindOfClass: klass])
-        return obj;
-    else
-        return nil;
+	if ([self length] == 0)
+		return nil;
+
+	NSData * data = [self dataUsingEncoding:NSUTF8StringEncoding];
+	id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:NULL];
+
+	if ([obj isKindOfClass:klass])
+		return obj;
+	else
+		return nil;
 }
 
 @end

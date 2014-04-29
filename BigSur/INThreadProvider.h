@@ -13,7 +13,7 @@
 
 @property (nonatomic, strong) INNamespace * namespace;
 
-- (id)initWithNamespace:(INNamespace*)namespace;
+- (id)initWithNamespace:(INNamespace *)namespace;
 
 - (void)fetchFromAPI:(ErrorBlock)callback;
 

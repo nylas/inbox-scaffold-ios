@@ -11,24 +11,24 @@
 
 @implementation FMResultSet (INModelQueries)
 
-- (INModelObject*)nextModelOfClass:(Class)klass
+- (INModelObject *)nextModelOfClass:(Class)klass
 {
-    if ([klass isSubclassOfClass: [INModelObject class]] == NO)
-        @throw @"Can only be used with subclasses of INModelObject";
-    
-    [self next];
-    
-    if (![self hasAnotherRow])
-        return nil;
-    
-    NSError * err = nil;
-    NSData * jsonData = [self dataNoCopyForColumn: @"data"];
-    NSDictionary * json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&err];
+	if ([klass isSubclassOfClass:[INModelObject class]] == NO)
+		@throw @"Can only be used with subclasses of INModelObject";
 
-    if (json && !err)
-        return [klass instanceWithResourceDictionary: json];
-    else
-        return nil;
+	[self next];
+
+	if (![self hasAnotherRow])
+		return nil;
+
+	NSError * err = nil;
+	NSData * jsonData = [self dataNoCopyForColumn:@"data"];
+	NSDictionary * json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&err];
+
+	if (json && !err)
+		return [klass instanceWithResourceDictionary:json];
+	else
+		return nil;
 }
 
 @end
