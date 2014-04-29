@@ -14,11 +14,21 @@ typedef enum : NSUInteger {
     INModelProviderCacheThenNetwork
 } INModelProviderCachePolicy;
 
+typedef enum : NSUInteger {
+    INModelProviderChangeAdd,
+    INModelProviderChangeRemove,
+    INModelProviderChangeUpdate
+} INModelProviderChangeType;
 
 @protocol INModelProviderDelegate <NSObject>
 @optional
 - (void)providerDataRefreshed;
 - (void)providerDataAltered:(NSArray*)changes;
+- (void)providerDataFetchFailed:(NSError*)error;
+@end
+
+@interface INModelProviderChange : NSObject
+- (INModelProviderChange*)changeOfType:(INModelProviderChangeType)type forItem:(INModelObject*)item atIndex:(NSInteger)index;
 @end
 
 @interface INModelProvider : NSObject <INDatabaseObserver>
@@ -34,6 +44,9 @@ typedef enum : NSUInteger {
 + (id)providerForClass:(Class)modelClass;
 
 - (void)refresh;
+
+- (void)fetchFromCache;
+- (void)fetchFromAPI;
 
 
 @end

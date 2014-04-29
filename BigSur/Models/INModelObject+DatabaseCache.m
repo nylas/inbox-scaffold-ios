@@ -21,7 +21,7 @@
 
 + (NSArray*)databaseIndexProperties
 {
-    return nil;
+    return @[@"namespaceID"];
 }
 
 #pragma Database Retrieval

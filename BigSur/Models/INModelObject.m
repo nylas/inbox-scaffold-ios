@@ -153,7 +153,15 @@
 
 - (INAPIOperation*)save
 {
-    INAPIOperation * operation = [INAPIOperation operationForSaving: self];
+    NSString * method = [self ID] ? @"PUT" : @"POST";
+    INAPIOperation * operation = [INAPIOperation operationWithMethod:method forModel:self];
+    [[INAPIManager shared] queueAPIOperation: operation];
+    return operation;
+}
+
+- (INAPIOperation*)delete
+{
+    INAPIOperation * operation = [INAPIOperation operationWithMethod:@"DELETE" forModel:self];
     [[INAPIManager shared] queueAPIOperation: operation];
     return operation;
 }

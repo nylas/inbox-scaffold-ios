@@ -13,11 +13,9 @@
 
 @implementation INAPIOperation
 
-+ (INAPIOperation*)operationForSaving:(INModelObject*)model
++ (INAPIOperation*)operationWithMethod:(NSString*)method forModel:(INModelObject*)model
 {
     NSString * url = [[NSURL URLWithString:[model APIPath] relativeToURL:[INAPIManager shared].baseURL] absoluteString];
-    NSString * method = [model ID] ? @"PUT" : @"POST";
-    
     NSError * error = nil;
     NSURLRequest * request = [[[INAPIManager shared] requestSerializer] requestWithMethod:method URLString:url parameters:[model resourceDictionary] error:&error];
     

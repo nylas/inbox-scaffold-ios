@@ -31,6 +31,10 @@
     INContact * b = [INContact instanceWithResourceDictionary: @{@"name": @"John Gotow", @"id": @(3), @"account_id":@(12), @"uid":@(4)}];
     [b persist];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        INContact * a = [INContact instanceWithResourceDictionary: @{@"name": @"Ben Gotow Again!", @"id": @(4), @"email_address":@"bengotow+test@gmail.com", @"account_id":@(12), @"uid":@(4)}];
+        [a persist];
+    });
     return YES;
 }
 

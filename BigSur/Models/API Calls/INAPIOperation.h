@@ -14,7 +14,7 @@ static NSString * INAPIOperationCompleteNotification = @"INAPIOperationCompleteN
 
 @interface INAPIOperation : AFHTTPRequestOperation <NSCoding>
 
-+ (INAPIOperation*)operationForSaving:(INModelObject*)model;
++ (INAPIOperation*)operationWithMethod:(NSString*)method forModel:(INModelObject*)model;
 
 - (id)initWithCoder:(NSCoder *)aDecoder;
 - (void)encodeWithCoder:(NSCoder *)aCoder;

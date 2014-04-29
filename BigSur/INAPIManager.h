@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
+typedef void (^ResultsBlock)(NSArray * objects);
+typedef void (^ErrorBlock)(NSError * error);
+
 @class INAPIOperation;
 
 @interface INAPIManager : AFHTTPRequestOperationManager

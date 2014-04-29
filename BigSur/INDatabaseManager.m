@@ -98,7 +98,7 @@
 
     if (!_initializedModelClasses[NSStringFromClass(klass)]) {
         [_initializedModelClasses setObject:@(YES) forKey:NSStringFromClass(klass)];
-        [self initializeModelTable:(Class)klass];
+        [self initializeModelTable:klass];
     }
 }
 

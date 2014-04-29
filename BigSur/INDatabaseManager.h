@@ -16,7 +16,7 @@
 @protocol INDatabaseObserver <NSObject>
 
 - (void)managerDidPersistModels:(NSArray*)models;
-- (void)managerDidPerformTransaction;
+- (void)managerDidRemoveModels:(NSArray*)models;
 
 @end
 

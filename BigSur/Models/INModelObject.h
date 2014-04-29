@@ -7,13 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "INAPIManager.h"
 
 @class INAPIOperation;
 
 #define API_TIMESTAMP_FORMAT @"yyyy-MM-dd HH:mm:ss"
-
-typedef void (^ResultsBlock)(NSArray * objects);
-typedef void (^ErrorBlock)(NSError * error);
 
 static NSString * INModelObjectChangedNotification = @"model_changed";
 

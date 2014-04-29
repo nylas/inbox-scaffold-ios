@@ -26,5 +26,10 @@
     return @[@"lastMessageDate"];
 }
 
+- (NSString*)APIPath
+{
+    NSString * ID = self.ID ? self.ID : @"";
+    return [NSString stringWithFormat: @"/n/%@/threads/%@", self.namespaceID, ID];
+}
 
 @end

@@ -34,5 +34,10 @@
 
 }
 
+- (NSString*)APIPath
+{
+    NSString * ID = self.ID ? self.ID : @"";
+    return [NSString stringWithFormat: @"/n/%@/contacts/%@", self.namespaceID, ID];
+}
 
 @end
