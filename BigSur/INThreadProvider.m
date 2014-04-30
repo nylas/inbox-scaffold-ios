@@ -40,13 +40,13 @@
 
 		if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)])
 			[self.delegate providerDataRefreshed];
+
 	} failure:^(AFHTTPRequestOperation * operation, NSError * error) {
 		if ([self.delegate respondsToSelector:@selector(providerDataFetchFailed:)])
 			[self.delegate providerDataFetchFailed:error];
 	}];
 
 	INModelArrayResponseSerializer * serializer = [[INModelArrayResponseSerializer alloc] initWithModelClass:self.modelClass];
-
 	[operation setResponseSerializer:serializer];
 }
 

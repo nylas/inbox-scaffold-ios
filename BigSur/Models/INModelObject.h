@@ -20,11 +20,28 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
  core functionality related to object serialization and is intended to be subclassed.
 */
 @interface INModelObject : NSObject <NSCoding>
+{
+	NSDictionary * _precommitResourceDictionary;
+}
 
 @property (nonatomic, strong) NSString * ID;
 @property (nonatomic, strong) NSString * namespaceID;
 @property (nonatomic, strong) NSDate * createdAt;
 @property (nonatomic, strong) NSDate * updatedAt;
+
+
+#pragma Getting Instances
+
+/** @name Retrieving Instances */
+
+/**
+ @return An instance of the requested class. If a copy of this model is already in memory, this
+ method returns the same instance. If it has been stored in the Inbox local cache, it will be
+ retrieved from cache. If no copy of the object is available, an empty instance is returned.
+ Subscribe to this instance to be notified when it's data becomes available and update your
+ UI accordingly. */
++ (id)instanceWithID:(NSString*)ID;
+
 
 /** @name Resource Representation */
 
@@ -45,12 +62,12 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
 */
 - (void)updateWithResourceDictionary:(NSDictionary *)dict;
 
+
 /** @name Resource Loading and Saving */
 
 /**
  @return The path to the object on the API.
  */
-
 - (NSString *)APIPath;
 
 /**
@@ -62,6 +79,19 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
 - (void)reload:(ErrorBlock)callback;
 
 /**
+ Open an update block for saving changes to the object. Changes made to models should
+ always be done within an update block so that changes rejected upstream can be properly
+ restored.
+ */
+- (void)beginUpdates;
+
+/**
+ Commit a set of changes to the object's properties and initiates an API call to
+ save the changes.
+ */
+- (INAPIOperation *)commitUpdates;
+
+/**
  Save the model to the server. This method may be overriden in subclasses. The
  default implementation does a PUT to the APIPath for objects with IDs, and a POST
  to the APIPath (without an ID) for new objects.
@@ -69,7 +99,9 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
  Note that -save is eventually persistent. The save operation may be held in queue
  until network connectivity is available.
 
- @return An INAPIAction that you can use to track the progress of the save operation.
+ @return An INAPIOperation that you can use to track the progress of the save operation.
+ INAPIOperation's are a subclass of AFHTTPRequestOperation, so you can add completion 
+ blocks, etc.
  */
 - (INAPIOperation *)save;
 
@@ -97,6 +129,18 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
  @return A dictionary mapping iOS property names to JSON fields.
  */
 + (NSMutableDictionary *)resourceMapping;
+
+/**
+ @return The table that should be used to cache this model in local storage.
+ */
++ (NSString *)databaseTableName;
+
+/**
+ @return An array of property names other than ID and namespaceID that should be
+ queryable. It's important to return all of the properties you may want to use in
+ predicates and sort descriptors.
+ */
++ (NSArray *)databaseIndexProperties;
 
 /**
  Setup should be overridden in subclasses to perform additional initialization

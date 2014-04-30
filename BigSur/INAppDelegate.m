@@ -11,7 +11,6 @@
 #import "INDatabaseManager.h"
 #import "INContact.h"
 #import "INModelProvider.h"
-#import "INModelObject+DatabaseCache.h"
 #import "INModelObject+Uniquing.h"
 
 @implementation INAppDelegate
@@ -25,15 +24,15 @@
 	// Let's say we have an API call that returns two JSON dictionaries that we want
 	// to add to the local cache. We may or may not already have these objects.
 	// This function either creates them or retrieves them and updates them in memory.
-	INContact * a = [INContact instanceWithResourceDictionary:@{@"name": @"Ben Gotow", @"id": @(2), @"email_address":@"bengotow@gmail.com", @"account_id":@(12), @"uid":@(4)}];
-	[a persist];
+	INContact * a = [INContact attachedInstanceWithResourceDictionary:@{@"name": @"Ben Gotow", @"id": @(2), @"namespace_id":@(1), @"email_address":@"bengotow@gmail.com", @"account_id":@(12), @"uid":@(4)}];
+	[[INDatabaseManager shared] persistModel: a];
 
-	INContact * b = [INContact instanceWithResourceDictionary:@{@"name": @"John Gotow", @"id": @(3), @"account_id":@(12), @"uid":@(4)}];
-	[b persist];
+	INContact * b = [INContact attachedInstanceWithResourceDictionary:@{@"name": @"John Gotow", @"id": @(3), @"namespace_id":@(1), @"account_id":@(12), @"uid":@(4)}];
+	[[INDatabaseManager shared] persistModel: b];
 
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		INContact * a = [INContact instanceWithResourceDictionary:@{@"name": @"Ben Gotow Again!", @"id": @(4), @"email_address":@"bengotow+test@gmail.com", @"account_id":@(12), @"uid":@(4)}];
-		[a persist];
+		INContact * a = [INContact attachedInstanceWithResourceDictionary:@{@"name": @"Ben Gotow Again!", @"id": @(4), @"namespace_id": @(1), @"email_address":@"bengotow+test@gmail.com", @"account_id":@(12), @"uid":@(4)}];
+		[[INDatabaseManager shared] persistModel: a];
 	});
 	return YES;
 }

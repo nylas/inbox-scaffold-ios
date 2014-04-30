@@ -7,28 +7,29 @@
 //
 
 #import "INModelObject+Uniquing.h"
+#import "INDatabaseManager.h"
 
 static NSMapTable * modelInstanceTable;
 
 @implementation INModelObject (Uniquing)
 
-+ (id)instanceMatching:(INModelObject *)obj
++ (id)attachedInstanceMatching:(INModelObject *)obj
 {
-	return [[obj class] instanceMatchingID:[obj ID]];
+	return [[obj class] attachedInstanceMatchingID:[obj ID]];
 }
 
-+ (id)instanceMatchingID:(id)ID
++ (id)attachedInstanceMatchingID:(id)ID
 {
 	if (!modelInstanceTable)
-		modelInstanceTable = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsWeakMemory valueOptions:NSPointerFunctionsWeakMemory capacity:1000];
-
+		modelInstanceTable = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory capacity:1000];
+	
 	return [modelInstanceTable objectForKey:[INModelObject attachmentKeyForClass:self ID:ID]];
 }
 
-+ (id)instanceWithResourceDictionary:(NSDictionary *)dict
++ (id)attachedInstanceWithResourceDictionary:(NSDictionary *)dict
 {
-	INModelObject * object = [self instanceMatchingID:dict[@"id"]];
-
+	INModelObject * object = [self attachedInstanceMatchingID:dict[@"id"]];
+	
 	if (object) {
 		[object updateWithResourceDictionary:dict];
 		return object;
@@ -50,7 +51,7 @@ static NSMapTable * modelInstanceTable;
 
 	NSAssert([obj isKindOfClass:[INModelObject class]], @"Only subclasses of INModelObject can be attached.");
 
-	id existing = [INModelObject instanceMatching:obj];
+	id existing = [INModelObject attachedInstanceMatching:obj];
 
 	if (!existing)
 		[modelInstanceTable setObject:obj forKey:[INModelObject attachmentKeyForClass:[obj class] ID:[obj ID]]];
@@ -81,7 +82,7 @@ static NSMapTable * modelInstanceTable;
 
 - (BOOL)isDetatched
 {
-	return [INModelObject instanceMatching:self] != self;
+	return [INModelObject attachedInstanceMatching:self] != self;
 }
 
 @end

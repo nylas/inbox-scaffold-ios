@@ -13,11 +13,16 @@ static NSString * INAPIOperationCompleteNotification = @"INAPIOperationCompleteN
 
 @interface INAPIOperation : AFHTTPRequestOperation <NSCoding>
 
+@property (nonatomic, strong) Class modelClass;
+@property (nonatomic, strong) NSDictionary * modelRollbackDictionary;
+
 + (INAPIOperation *)operationWithMethod:(NSString *)method forModel:(INModelObject *)model;
 
 - (id)initWithCoder:(NSCoder *)aDecoder;
 - (void)encodeWithCoder:(NSCoder *)aCoder;
 
 - (BOOL)invalidatesPreviousQueuedOperation:(AFHTTPRequestOperation *)other;
+
+- (void)rollback;
 
 @end

@@ -11,12 +11,17 @@
 #import "NSObject+AssociatedObjects.h"
 
 #if DEBUG
-  #define API_URL		[NSURL URLWithString:@"http://localhost/"]
+  #define API_URL		[NSURL URLWithString:@"http://inboxapp.com/"]
 #else
-  #define API_URL		[NSURL URLWithString:@"http://localhost/"]
+  #define API_URL		[NSURL URLWithString:@"http://inboxapp.com/"]
 #endif
 
-#define OPERATIONS_FILE [@"~/cache/operations.plist" stringByExpandingTildeInPath]
+#define OPERATIONS_FILE [@"~/Documents/operations.plist" stringByExpandingTildeInPath]
+
+__attribute__((constructor))
+static void initialize_INAPIManager() {
+    [INAPIManager shared];
+}
 
 @implementation INAPIManager
 
@@ -26,12 +31,38 @@
 	static dispatch_once_t onceToken;
 
 	dispatch_once(&onceToken, ^{
-		sharedManager = [[INAPIManager alloc] initWithBaseURL:API_URL];
-		[sharedManager setResponseSerializer:[AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments]];
-		[sharedManager setRequestSerializer:[AFJSONRequestSerializer serializerWithWritingOptions:NSJSONWritingPrettyPrinted]];
-		[sharedManager loadOperations];
+		sharedManager = [[INAPIManager alloc] init];
 	});
 	return sharedManager;
+}
+
+- (id)init
+{
+	self = [super initWithBaseURL: API_URL];
+	if (self) {
+		[[self operationQueue] setMaxConcurrentOperationCount: 1]; // for testing
+		[self setResponseSerializer:[AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments]];
+		[self setRequestSerializer:[AFJSONRequestSerializer serializerWithWritingOptions:NSJSONWritingPrettyPrinted]];
+		[self.requestSerializer setCachePolicy: NSURLRequestReloadRevalidatingCacheData];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveOperations) name:UIApplicationWillTerminateNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationFinished:) name:AFNetworkingOperationDidFinishNotification object:nil];
+		[self loadOperations];
+		
+		typeof(self) __weak __self = self;
+		self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain: [API_URL host]];
+		[self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+			BOOL hasConnection = (status == AFNetworkReachabilityStatusReachableViaWiFi) || (status == AFNetworkReachabilityStatusReachableViaWWAN);
+			BOOL hasSuspended = [__self.operationQueue isSuspended];
+
+			if (hasConnection && hasSuspended)
+				[__self setOperationsSuspended: NO];
+			else if (!hasConnection && !hasSuspended)
+				[__self setOperationsSuspended: YES];
+		}];
+		[self.reachabilityManager startMonitoring];
+	}
+	return self;
 }
 
 - (void)loadOperations
@@ -39,17 +70,29 @@
 	NSArray * operations = [NSKeyedUnarchiver unarchiveObjectWithFile:OPERATIONS_FILE];
 
 	// restore only INAPIOperations
-	for (AFHTTPRequestOperation * operation in operations)
+	for (INAPIOperation * operation in operations)
 		if ([operation isKindOfClass:[INAPIOperation class]])
-			[self.operationQueue addOperation:operation];
+			[self queueAPIOperation:operation];
+	
+	NSLog(@"Restored (%d) pending operations from disk.", self.operationQueue.operationCount);
 }
 
 - (void)saveOperations
 {
 	NSArray * operations = self.operationQueue.operations;
-
 	if (![NSKeyedArchiver archiveRootObject:operations toFile:OPERATIONS_FILE])
-		NSLog(@"Writing operations to disk failed?");
+		NSLog(@"Writing operations to disk failed? Path may be invalid.");
+	else
+		NSLog(@"Wrote (%d) operations to disk.", self.operationQueue.operationCount);
+}
+
+- (void)setOperationsSuspended:(BOOL)suspended
+{
+	[self.operationQueue setSuspended: suspended];
+	if (suspended)
+		NSLog(@"Suspended operation queue.");
+	else
+		NSLog(@"Resumed operation queue.");
 }
 
 - (void)queueAPIOperation:(INAPIOperation *)operation
@@ -59,17 +102,55 @@
 	operation.credential = self.credential;
 	operation.securityPolicy = self.securityPolicy;
 
+	// does this operation "squash" any other operations? For example, a previous
+	// "save" on the same message that hasn't been performed yet? If so, replace those.
+	// This avoids the scenario where two PUTs to the same URL run concurrently and
+	// produce an undefined end state.
 	NSOperationQueue * queue = self.operationQueue;
-
 	for (int ii = [queue operationCount] - 1; ii >= 0; ii--) {
-		AFHTTPRequestOperation * existing = [[queue operations] objectAtIndex:ii];
-
-		if ([operation invalidatesPreviousQueuedOperation:existing])
+		INAPIOperation * existing = [[queue operations] objectAtIndex:ii];
+		if ([existing isCancelled] || [existing isExecuting] || [existing isFinished])
+			continue;
+		if (![existing isKindOfClass: [INAPIOperation class]])
+			continue;
+			
+		if ([operation invalidatesPreviousQueuedOperation:existing]) {
+			[operation setModelRollbackDictionary: [existing modelRollbackDictionary]];
 			[existing cancel];
+		}
 	}
 
 	[self.operationQueue addOperation:operation];
-	[self performSelectorOnMainThreadOnce:@selector(saveOperations)];
+}
+
+- (void)operationFinished:(NSNotification*)notif
+{
+	INAPIOperation * operation = [notif object];
+	int code = [[operation response] statusCode];
+	
+	if (![operation isKindOfClass: [INAPIOperation class]])
+		return;
+		
+	// success
+	if ((code >= 200) && (code <= 204)) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:INAPIOperationCompleteNotification object:operation userInfo:@{@"success": @(YES)}];
+	
+	// no connection, server error / unavailable, use proxy, proxy auth required, request timeout
+	} else if ((code == 0) || (code >= 500) || (code == 305) || (code == 407) || (code == 408)) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:INAPIOperationCompleteNotification object:operation userInfo:@{@"success": @(NO)}];
+
+		// We received an error that indicates future API calls will fail too.
+		// Pause the operations queue and add this operation to it again.
+		[self setOperationsSuspended: YES];
+		[self.operationQueue addOperation: [operation copy]];
+		
+	// unknown error
+	} else {
+		// For some reason, we reached inbox and it rejected this operation. To maintain the consistency
+		// of our cache, roll back the operation.
+		NSLog(@"The server rejected %@ %@. Response code %d. To maintain the cache consistency, the local data store is being rolled back.", [[operation request] HTTPMethod], [[operation request] URL], code);
+		[(INAPIOperation*)operation rollback];
+	}
 }
 
 @end

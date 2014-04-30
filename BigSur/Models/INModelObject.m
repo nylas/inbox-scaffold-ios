@@ -7,16 +7,40 @@
 //
 
 #import "INModelObject.h"
+#import "INModelObject+Uniquing.h"
 #import "INAPIManager.h"
 #import "INAPIOperation.h"
 #import "NSObject+Properties.h"
 #import "NSString+FormatConversion.h"
+#import "INPredicateConverter.h"
+#import "INDatabaseManager.h"
+
 
 @implementation INModelObject
 
-- (NSString *)description
+#pragma Getting Instances
+
++ (id)instanceWithID:(NSString*)ID
 {
-	return [NSString stringWithFormat:@"%@ <%p> %@", NSStringFromClass([self class]), self, [self resourceDictionary]];
+	// do we have an instance in memory that matches this ID?
+	INModelObject __block * match = [self attachedInstanceMatchingID: ID];
+
+	// do we have an instance in the local cache?
+	if (!match) {
+		[[INDatabaseManager shared] selectModelsOfClass:self matching:[NSPredicate predicateWithFormat:@"ID = %@", ID] sortedBy:nil limit:1 offset:0 withCallback:^(NSArray *objects) {
+			match = [objects firstObject];
+		}];
+	}
+	
+	// this object is not available. Return a stub and start loading it. The consumer should
+	// subscribe to notifications on this object to update their UI when data is available.
+	if (!match) {
+		match = [[self alloc] init];
+		[match setID: ID];
+		[match reload: NULL];
+	}
+	
+	return match;
 }
 
 #pragma NSCoding Support
@@ -136,6 +160,12 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:INModelObjectChangedNotification object:self];
 }
 
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"%@ <%p> %@", NSStringFromClass([self class]), self, [self resourceDictionary]];
+}
+
+
 #pragma Loading and Saving
 
 - (NSString *)APIPath
@@ -148,7 +178,7 @@
 {
 	[[INAPIManager shared] GET:[self APIPath] parameters:[self resourceDictionary] success:^(AFHTTPRequestOperation * operation, id responseObject) {
 		[self updateWithResourceDictionary:responseObject];
-
+		[[INDatabaseManager shared] persistModel:self];
 		if (callback)
 			callback(nil);
 	} failure:^(AFHTTPRequestOperation * operation, NSError * error) {
@@ -157,20 +187,39 @@
 	}];
 }
 
+- (void)beginUpdates
+{
+	_precommitResourceDictionary = [self resourceDictionary];
+}
+
+- (INAPIOperation *)commitUpdates
+{
+	NSAssert(_precommitResourceDictionary, @"You need to call -beginUpdates before calling -commitUpdates to save a model.");
+	INAPIOperation * operation = [INAPIOperation operationWithMethod:@"PUT" forModel:self];
+	[operation setModelRollbackDictionary: _precommitResourceDictionary];
+	[[INAPIManager shared] queueAPIOperation:operation];
+	[[INDatabaseManager shared] persistModel:self];
+	_precommitResourceDictionary = nil;
+	return operation;
+}
+
 - (INAPIOperation *)save
 {
-	NSString * method = [self ID] ? @"PUT" : @"POST";
-	INAPIOperation * operation = [INAPIOperation operationWithMethod:method forModel:self];
-
+	if ([self ID])
+		return [self commitUpdates];
+		
+	INAPIOperation * operation = [INAPIOperation operationWithMethod:@"POST" forModel:self];
 	[[INAPIManager shared] queueAPIOperation:operation];
+	[[INDatabaseManager shared] persistModel:self];
 	return operation;
 }
 
 - (INAPIOperation *)delete
 {
 	INAPIOperation * operation = [INAPIOperation operationWithMethod:@"DELETE" forModel:self];
-
 	[[INAPIManager shared] queueAPIOperation:operation];
+	[[INDatabaseManager shared] unpersistModel:self];
+	
 	return operation;
 }
 
@@ -179,6 +228,16 @@
 + (NSMutableDictionary *)resourceMapping
 {
 	return [@{@"ID": @"id", @"namespaceID": @"namespace_id", @"createdAt": @"created_at", @"updatedAt": @"updated_at"} mutableCopy];
+}
+
++ (NSString *)databaseTableName
+{
+	return NSStringFromClass(self);
+}
+
++ (NSArray *)databaseIndexProperties
+{
+	return @[@"namespaceID"];
 }
 
 - (void)setup

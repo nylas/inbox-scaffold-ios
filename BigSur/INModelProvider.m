@@ -7,17 +7,14 @@
 //
 
 #import "INModelProvider.h"
-#import "INModelProviderChange.h"
 #import "INModelObject.h"
-#import "INModelObject+DatabaseCache.h"
 #import "NSObject+AssociatedObjects.h"
 
 @implementation INModelProviderChange : NSObject
 
-- (INModelProviderChange *)changeOfType:(INModelProviderChangeType)type forItem:(INModelObject *)item atIndex:(NSInteger)index
++ (INModelProviderChange *)changeOfType:(INModelProviderChangeType)type forItem:(INModelObject *)item atIndex:(NSInteger)index
 {
 	INModelProviderChange * change = [[INModelProviderChange alloc] init];
-
 	[change setType:type];
 	[change setItem:item];
 	[change setIndex:index];
@@ -71,7 +68,7 @@
 - (void)fetchFromCache
 {
 	// immediately refresh our data from what is now available in the cache
-	[_modelClass persistedInstancesMatching:_predicate sortedBy:_sortDescriptors limit:10 offset:0 withCallback:^(NSArray * matchingItems) {
+	[[INDatabaseManager shared] selectModelsOfClass:_modelClass matching:_predicate sortedBy:_sortDescriptors limit:1000 offset:0 withCallback:^(NSArray * matchingItems) {
 		self.items = matchingItems;
 
 		if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)])
@@ -87,54 +84,83 @@
 
 #pragma mark Receiving Updates from the Database
 
-- (void)managerDidPersistModels:(NSArray *)savedModels
+- (void)managerDidPersistModels:(NSArray *)savedArray
 {
-	NSMutableArray * filteredSavedModels = [savedModels filteredArrayUsingPredicate:self.predicate];
+	NSSet * savedModels = [NSSet setWithArray: savedArray];
+	NSSet * savedMatchingModels = [savedModels filteredSetUsingPredicate: self.predicate];
+	NSSet * existingModels = [NSSet setWithArray: self.items];
+	
+	// compute the models that were added   (saved & matching - currently in our set)
+	NSMutableSet * addedModels = [savedMatchingModels mutableCopy];
+	[addedModels minusSet: existingModels];
 
-	// compute the models that were added   (saved - currently in our set)
-	NSMutableArray * addedModels = [NSMutableArray arrayWithArray:filteredSavedModels];
+	// compute the models that were changed (saved & matching - added)
+	NSMutableSet * changedModels = [savedMatchingModels mutableCopy];
+	[changedModels minusSet: addedModels];
 
-	[addedModels removeObjectsInArray:self.items];
+	// compute the models that were changed and no longer match our predicate (in existing and not in matching)
+	NSMutableSet * removedModels = [savedModels mutableCopy];
+	[removedModels minusSet: savedMatchingModels];
+	[removedModels intersectSet: existingModels];
 
-	// compute the models that were changed (saved - added)
-	NSMutableArray * changedModels = [NSMutableArray arrayWithArray:filteredSavedModels];
-	[changedModels removeObjectsInArray:addedModels];
+	// Add the addedModels to our cached set and then resort
+	NSMutableArray * allItems = [self.items mutableCopy];
 
-	// compute the models that were changed and no longer match our predicate (saved - filtered)
-	NSMutableArray * removedModels = [NSMutableArray arrayWithArray:savedModels];
-	[savedModels removeObjectsInArray:filteredSavedModels];
+	// If our delegate wants to be notified of item-level changes, compute those. Please
+	// note that this code was designed for readability over efficiency. If it's too slow
+	// we'll come back to it :-)
+	if ([self.delegate respondsToSelector:@selector(providerDataAltered:)]) {
+		NSMutableArray * changes = [NSMutableArray array];
+		
+		for (INModelObject * item in removedModels) {
+			NSInteger index = [allItems indexOfObjectIdenticalTo:item];
+			[changes addObject:[INModelProviderChange changeOfType:INModelProviderChangeRemove forItem:item atIndex:index]];
+		}
 
-	// resort our array and
-	NSMutableArray * allItems = [self.items arrayByAddingObjectsFromArray:addedModels];
-	[allItems sortUsingDescriptors:self.sortDescriptors];
-	self.items = allItems;
+		[allItems removeObjectsInArray: [removedModels allObjects]];
+		[allItems addObjectsFromArray: [addedModels allObjects]];
+		[allItems sortUsingDescriptors:self.sortDescriptors];
+		self.items = allItems;
 
-	if ([self.delegate respondsToSelector:@selector(providerDataAltered:)]) {}
-	else if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)]) {
+		for (INModelObject * item in addedModels) {
+			NSInteger index = [allItems indexOfObjectIdenticalTo:item];
+			[changes addObject:[INModelProviderChange changeOfType:INModelProviderChangeAdd forItem:item atIndex:index]];
+		}
+		for (INModelObject * item in changedModels) {
+			NSInteger index = [allItems indexOfObjectIdenticalTo:item];
+			[changes addObject:[INModelProviderChange changeOfType:INModelProviderChangeUpdate forItem:item atIndex:index]];
+		}
+		
+		[self.delegate providerDataAltered:changes];
+
+	} else if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)]) {
+		[allItems addObjectsFromArray: [addedModels allObjects]];
+		[allItems removeObjectsInArray: [removedModels allObjects]];
+		[allItems sortUsingDescriptors:self.sortDescriptors];
+		self.items = allItems;
 		[self.delegate providerDataRefreshed];
 	}
-	[filteredModels se
+}
 
-	NSMutableArray * changes = [NSMutableArray array];
+- (void)managerDidUnpersistModels:(NSArray*)models
+{
+	NSMutableArray * newItems = [NSMutableArray arrayWithArray: self.items];
+	[newItems removeObjectsInArray: models];
+	
+	if ([self.delegate respondsToSelector:@selector(providerDataAltered:)]) {
+		NSMutableArray * changes = [NSMutableArray array];
+		for (INModelObject * item in models) {
+			NSInteger index = [self.items indexOfObjectIdenticalTo:item];
+			[changes addObject:[INModelProviderChange changeOfType:INModelProviderChangeRemove forItem:item atIndex:index]];
+		}
 
-	for (INModelObject * item in newItems) {
-		NSInteger index = [allItems indexOfObjectIdenticalTo:item];
-		[changes addObject:[INModelProviderChange changeOfType:INModelProviderChangeAdd forItem:item atIndex:index]];
-	}
+		self.items = newItems;
+		[self.delegate providerDataAltered:changes];
 
-	[self.delegate providerDataAltered:changes];
-	}
-	else if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)])
+	} else if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)]) {
+		self.items = newItems;
 		[self.delegate providerDataRefreshed];
 	}
-	}
-	}
+}
 
-	- (void)managerDidRemoveModels:(NSArray *)models
-	{
-		// potentially do smart things here.
-		if ([[models firstObject] class] == _modelClass)
-			[self performSelectorOnMainThreadOnce:@selector(refresh)];
-	}
-
-	@end
+@end

@@ -10,6 +10,7 @@
 #import "INAPIManager.h"
 #import "INModelObject.h"
 #import "INModelObject+Uniquing.h"
+#import "INDatabaseManager.h"
 
 @implementation INAPIOperation
 
@@ -20,7 +21,9 @@
 	NSURLRequest * request = [[[INAPIManager shared] requestSerializer] requestWithMethod:method URLString:url parameters:[model resourceDictionary] error:&error];
 
 	if (!error) {
-		return [[INAPIOperation alloc] initWithRequest:request];
+		INAPIOperation * operation = [[INAPIOperation alloc] initWithRequest:request];
+		[operation setModelClass: [model class]];
+		return operation;
 	}
 	else {
 		NSLog(@"Unable to create INAPIOperation for saving %@. %@", [model description], [error localizedDescription]);
@@ -28,38 +31,21 @@
 	}
 }
 
-- (id)initWithRequest:(NSURLRequest *)urlRequest
-{
-	self = [super initWithRequest:urlRequest];
-
-	if (self)
-		[self setupCallbacks];
-	return self;
-}
-
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super initWithCoder:aDecoder];
-
-	if (self)
-		[self setupCallbacks];
+	if (self) {
+		self.modelClass = NSClassFromString([aDecoder decodeObjectForKey: @"modelClass"]);
+		self.modelRollbackDictionary = [aDecoder decodeObjectForKey: @"modelRollbackDictionary"];
+	}
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
 	[super encodeWithCoder:aCoder];
-}
-
-- (void)setupCallbacks
-{
-	INAPIOperation * __weak __weakSelf = self;
-
-	[self setCompletionBlockWithSuccess:^(AFHTTPRequestOperation * operation, id responseObject) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:INAPIOperationCompleteNotification object:__weakSelf userInfo:@{@"success": @(YES)}];
-	} failure:^(AFHTTPRequestOperation * operation, NSError * error) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:INAPIOperationCompleteNotification object:__weakSelf userInfo:@{@"success": @(NO), @"error": error}];
-	}];
+	[aCoder encodeObject:NSStringFromClass(_modelClass) forKey:@"modelClass"];
+	[aCoder encodeObject:_modelRollbackDictionary forKey:@"modelRollbackDictionary"];
 }
 
 - (BOOL)invalidatesPreviousQueuedOperation:(AFHTTPRequestOperation *)other
@@ -71,6 +57,13 @@
 		return YES;
 
 	return NO;
+}
+
+- (void)rollback
+{
+	INModelObject * model = [_modelClass instanceWithID: _modelRollbackDictionary[@"id"]];
+	[model updateWithResourceDictionary: _modelRollbackDictionary];
+	[[INDatabaseManager shared] persistModel: model];
 }
 
 @end

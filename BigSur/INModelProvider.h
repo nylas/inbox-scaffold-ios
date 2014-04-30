@@ -28,7 +28,11 @@ typedef enum : NSUInteger {
 @end
 
 @interface INModelProviderChange : NSObject
-- (INModelProviderChange *)changeOfType:(INModelProviderChangeType)type forItem:(INModelObject *)item atIndex:(NSInteger)index;
+@property (nonatomic, assign) INModelProviderChangeType type;
+@property (nonatomic, strong) INModelObject * item;
+@property (nonatomic, assign) NSInteger index;
+
++ (INModelProviderChange *)changeOfType:(INModelProviderChangeType)type forItem:(INModelObject *)item atIndex:(NSInteger)index;
 @end
 
 @interface INModelProvider : NSObject <INDatabaseObserver>

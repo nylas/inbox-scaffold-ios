@@ -11,12 +11,11 @@
 #import <FMDB/FMDatabaseQueue.h>
 #import <FMDB/FMResultSet.h>
 #import "INModelObject.h"
-#import "INModelObject+DatabaseCache.h"
 
 @protocol INDatabaseObserver <NSObject>
 
 - (void)managerDidPersistModels:(NSArray *)models;
-- (void)managerDidRemoveModels:(NSArray *)models;
+- (void)managerDidUnpersistModels:(NSArray*)models;
 
 @end
 
@@ -34,7 +33,10 @@
 
 - (void)persistModel:(INModelObject *)model;
 - (void)persistModels:(NSArray *)models;
+- (void)unpersistModel:(INModelObject *)model;
 
+
+- (void)selectModelsOfClass:(Class)klass matching:(NSPredicate *)wherePredicate sortedBy:(NSArray *)sortDescriptors limit:(int)limit offset:(int)offset withCallback:(ResultsBlock)callback;
 - (void)selectModelsOfClass:(Class)klass withQuery:(NSString *)query andParameters:(NSDictionary *)arguments andCallback:(ResultsBlock)callback;
 
 @end

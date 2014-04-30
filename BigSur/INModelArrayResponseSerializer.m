@@ -8,7 +8,6 @@
 
 #import "INModelArrayResponseSerializer.h"
 #import "INModelObject.h"
-#import "INModelObject+DatabaseCache.h"
 #import "INModelObject+Uniquing.h"
 #import "NSObject+AssociatedObjects.h"
 #import "INDatabaseManager.h"
@@ -34,14 +33,12 @@
 		return NO;
 
 	id responseObject = [super responseObjectForResponse:response data:data error:error];
-
 	if (!responseObject)
 		return NO;
 
 	[response associateValue:responseObject withKey:ALREADY_PARSED_RESPONSE];
 
 	BOOL wrongJSONClass = ([responseObject isKindOfClass:[NSArray class]] == NO);
-
 	if (wrongJSONClass) {
 		*error = [NSError errorWithDomain:@"IN" code:100 userInfo:@{NSLocalizedDescriptionKey: @"The JSON object returned was not an NSArray"}];
 		return NO;
@@ -53,14 +50,12 @@
 - (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError * __autoreleasing *)error
 {
 	NSArray * responseObject = [response associatedValueForKey:ALREADY_PARSED_RESPONSE];
-
 	if (!responseObject) responseObject = [super responseObjectForResponse:response data:data error:error];
 
 	NSMutableArray * models = [NSMutableArray array];
 
 	for (NSDictionary * modelDictionary in responseObject) {
-		INModelObject * object = [_modelClass instanceWithResourceDictionary:modelDictionary];
-
+		INModelObject * object = [_modelClass attachedInstanceWithResourceDictionary:modelDictionary];
 		if (object)
 			[models addObject:object];
 	}

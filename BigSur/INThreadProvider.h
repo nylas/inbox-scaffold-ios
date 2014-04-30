@@ -15,6 +15,6 @@
 
 - (id)initWithNamespace:(INNamespace *)namespace;
 
-- (void)fetchFromAPI:(ErrorBlock)callback;
+- (void)fetchFromAPI;
 
 @end

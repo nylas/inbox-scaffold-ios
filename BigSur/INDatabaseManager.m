@@ -13,6 +13,12 @@
 
 #define SCHEMA_VERSION 2
 
+__attribute__((constructor))
+static void initialize_INDatabaseManager() {
+    [INDatabaseManager shared];
+}
+
+
 @implementation INDatabaseManager
 
 + (INDatabaseManager *)shared
@@ -147,7 +153,7 @@
 	}];
 }
 
-#pragma mark Finding Objects
+#pragma mark Persisting Objects
 
 - (void)persistModel:(INModelObject *)model
 {
@@ -170,6 +176,20 @@
 
 		// notify providers that models were updated. This may result in views being updated.
 		[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidPersistModels:) withObject:models];
+	}];
+}
+
+- (void)unpersistModel:(INModelObject *)model
+{
+	[self checkModelTable:[model class]];
+	
+	[_queue inDatabase:^(FMDatabase * db) {
+		NSString * tableName = [[model class] databaseTableName];
+		NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE id = ?", tableName];
+		[db executeUpdate: query withArgumentsInArray:@[[model ID]]];
+		
+		// notify providers that models were updated. This may result in views being updated.
+		[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidUnpersistModels:) withObject:@[model]];
 	}];
 }
 
@@ -210,6 +230,36 @@
 	[db executeUpdate:query withArgumentsInArray:values];
 }
 
+#pragma mark Finding Objects
+
+- (void)selectModelsOfClass:(Class)klass matching:(NSPredicate *)wherePredicate sortedBy:(NSArray *)sortDescriptors limit:(int)limit offset:(int)offset withCallback:(ResultsBlock)callback
+{
+	NSMutableString * query = [[NSMutableString alloc] initWithFormat:@"SELECT * FROM %@", [klass databaseTableName]];
+	INPredicateConverter * converter = [[INPredicateConverter alloc] init];
+	
+	[converter setTargetModelClass: klass];
+	
+	if (wherePredicate) {
+		NSString * whereClause = [converter SQLFilterForPredicate:wherePredicate];
+		[query appendFormat:@" WHERE %@", whereClause];
+	}
+	
+	if ([sortDescriptors count] > 0) {
+		NSMutableArray * sortClauses = [NSMutableArray array];
+		
+		for (NSSortDescriptor * descriptor in sortDescriptors) {
+			NSString * sql = [converter SQLSortForSortDescriptor:descriptor];
+			
+			if (sql) [sortClauses addObject:sql];
+		}
+		
+		[query appendFormat:@" ORDER BY %@", [sortClauses componentsJoinedByString:@", "]];
+	}
+	
+	[self selectModelsOfClass:klass withQuery:query andParameters:nil andCallback:callback];
+}
+
+
 - (void)selectModelsOfClass:(Class)klass withQuery:(NSString *)query andParameters:(NSDictionary *)arguments andCallback:(ResultsBlock)callback
 {
 	[self checkModelTable:klass];
@@ -231,5 +281,7 @@
 			callback(objects);
 	}];
 }
+
+
 
 @end

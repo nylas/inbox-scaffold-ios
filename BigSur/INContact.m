@@ -31,7 +31,8 @@
 }
 
 - (void)setup
-{}
+{
+}
 
 - (NSString *)APIPath
 {

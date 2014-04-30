@@ -8,7 +8,6 @@
 
 #import "INPredicateConverter.h"
 #import "INModelObject.h"
-#import "INModelObject+DatabaseCache.h"
 
 static NSString * SQLNullValueString = @"NULL";
 

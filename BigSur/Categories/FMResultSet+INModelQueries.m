@@ -25,10 +25,21 @@
 	NSData * jsonData = [self dataNoCopyForColumn:@"data"];
 	NSDictionary * json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&err];
 
-	if (json && !err)
-		return [klass instanceWithResourceDictionary:json];
-	else
+	if (json && !err) {
+		INModelObject * model = [klass attachedInstanceMatchingID: json[@"id"]];
+		if (!model) {
+			model = [[klass alloc] init];
+			[model updateWithResourceDictionary: json];
+			[model setup];
+			[klass attachInstance: model];
+			return model;
+		} else {
+			[model updateWithResourceDictionary: json];
+			return model;
+		}
+	} else {
 		return nil;
+	}
 }
 
 @end
