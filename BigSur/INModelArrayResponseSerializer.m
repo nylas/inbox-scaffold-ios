@@ -53,14 +53,14 @@
 			INModelObject * object = [_modelClass attachedInstanceMatchingID: modelDictionary[@"id"] createIfNecessary: YES didCreate: &created];
 			
 			if (created) {
-				// if we don't have a copy of the object in memory, inflate one and write it
+				// If we don't have a copy of the object in memory, inflate one and write it
 				// to the database. Note that these will probably be freed shortly.
 				[object updateWithResourceDictionary:modelDictionary];
 				[object setup];
 				[modifiedOrUnloadedModels addObject: object];
 
 			} else {
-				// if we have a copy of the object in memory already, let's be smart. Only apply
+				// If we have a copy of the object in memory already, let's be smart. Only apply
 				// changes to the model if necessary. This prevents unnecessary notifications from
 				// being fired, animations in the interface, etc.
 				if ([object differentFromResourceDictionary: modelDictionary]) {
@@ -73,6 +73,9 @@
 		}
 	});
 
+	// Save models to our local database. The database will notify it's
+	// observers that these models have been saved, and INModelProviders
+	// will automatically compute alterations, triggering UI updates.
 	[[INDatabaseManager shared] persistModels: modifiedOrUnloadedModels];
 	return models;
 }

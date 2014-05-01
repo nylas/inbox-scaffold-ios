@@ -129,9 +129,13 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
 + (NSMutableDictionary *)resourceMapping;
 
 /**
- @return The path to the object on the API.
+ @return The name of this class (i.e. "namespaces") for use in API URLs.
  */
 + (NSString *)resourceAPIName;
+
+/**
+@return The URL path to this object.
+*/
 - (NSString *)resourceAPIPath;
 
 /**

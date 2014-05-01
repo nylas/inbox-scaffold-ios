@@ -21,8 +21,21 @@ static NSString * INAPIOperationCompleteNotification = @"INAPIOperationCompleteN
 - (id)initWithCoder:(NSCoder *)aDecoder;
 - (void)encodeWithCoder:(NSCoder *)aCoder;
 
+/**
+ Checks to see if this operation would overwrite the data PUT by another opration.
+ For example, a previous "save" on the same model object that hasn't been performed yet.
+ Cancelling those operations helps avoid the scenario where two PUTs to the same URL run
+ concurrently and produce an undefined end state.
+ 
+ @param other Another AFHTTPRequestOperation that has not yet been started.
+ @return YES, if 'other' would be overwritten by this change and can be safely cancelled.
+*/
 - (BOOL)invalidatesPreviousQueuedOperation:(AFHTTPRequestOperation *)other;
 
+/**
+ Revert the impacted model to it's previous state using the rollback dictionary
+ that was stored when the operation was created.
+*/
 - (void)rollback;
 
 @end

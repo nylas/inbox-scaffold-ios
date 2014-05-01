@@ -14,11 +14,37 @@
 
 @protocol INDatabaseObserver <NSObject>
 @required
+/**
+ The INDatabaseManager has committed one or more objects to the local datastore.
+*/
 - (void)managerDidPersistModels:(NSArray *)models;
+/**
+ The INDatabaseManager has removed one or more objects to the local datastore.
+ */
 - (void)managerDidUnpersistModels:(NSArray*)models;
+/**
+ The INDatabaseManager has reset completely. Database observers should completely
+ release and re-fetch any items drawn from the local cache.
+ */
 - (void)managerDidReset;
 @end
 
+/**
+ The INDatabaseManager is responsible for maintaining a local cache of INModelObjects.
+ It is built on top of FMDB (which is itself a wrapper on SQLite.) Objects are stored
+ in the database in tables that are auto-generated for each class based on the class
+ configuration.
+ 
+ In each table, full JSON representations of objects are stored in a BLOB column called 'data'.
+ Individual table columns and indexes are created for the properties returned from
+ INModelObject -databaseIndexProperties. This means that queries for a particular class
+ can only use the properties returned from -databaseIndexProperties, but also ensures
+ that objects are stored in their entirety, queries only use indexed columns,
+ and objects do not need to be separately transformed into an SQLite-friendly representatation
+ for local storage.
+
+ The INDatabaseManager is inspired by CoreData, and also by YapDatabase.
+*/
 @interface INDatabaseManager : NSObject
 {
 	NSMutableDictionary * _initializedModelClasses;
@@ -70,10 +96,20 @@
 */
 - (void)unpersistModel:(INModelObject *)model;
 
+/**
+ Select a single instance from the local database cache and return it synchronously.
+ 
+ @param ID an optional instance ID. If an instance ID is not provided, the first
+ available instance of the class in the database will be returned.
+ 
+ @return An instance of 'klass', or nil if a matching item was not found in the database.
+*/
 - (INModelObject*)selectModelOfClass:(Class)klass withID:(NSString*)ID;
 
 /**
  Find models matching the provided predicate and return them, sorted by the sort descriptors.
+ 
+ This method is asynchronous, and the callback will be invoked on the main thread when objects are ready.
  
  Note that predicates and sort descriptors should reference class properties, not the underlying
  database columns. ("namespaceID", not "namespace_id"). The predicates and sort descriptors you
@@ -92,6 +128,8 @@
 /**
 Find models using the provided query and query parameters (substitutions for ? in the query).
 This is a more direct version of -selectModelsOfClass:matching:sortedBy:limit:offset:withCallback;
+
+ This method is asynchronous, and the callback will be invoked on the main thread when objects are ready.
 */
 - (void)selectModelsOfClass:(Class)klass withQuery:(NSString *)query andParameters:(NSDictionary *)arguments andCallback:(ResultsBlock)callback;
 

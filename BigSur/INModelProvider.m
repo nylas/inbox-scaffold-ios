@@ -54,8 +54,9 @@
 
 - (id)initWithClass:(Class)modelClass andNamespaceID:(NSString*)namespaceID andUnderlyingPredicate:(NSPredicate*)predicate
 {
-	self = [super init];
+	NSAssert([modelClass isSubclassOfClass: [INModelObject class]], @"Only subclasses of INModelObject can be provided through INModelProviders.");
 
+	self = [super init];
 	if (self) {
 		_modelClass = modelClass;
 		_namespaceID = namespaceID;

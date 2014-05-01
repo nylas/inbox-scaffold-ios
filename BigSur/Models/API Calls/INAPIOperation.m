@@ -61,6 +61,9 @@
 
 - (void)rollback
 {
+	if (!_modelRollbackDictionary)
+		return;
+		
 	INModelObject * model = [_modelClass instanceWithID: _modelRollbackDictionary[@"id"]];
 	[model updateWithResourceDictionary: _modelRollbackDictionary];
 	[[INDatabaseManager shared] persistModel: model];
