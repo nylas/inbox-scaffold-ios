@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "INAccount.h"
 
 @interface INAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow * window;
-
+@property (strong, nonatomic) INAccount * account;
 @end

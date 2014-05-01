@@ -64,7 +64,7 @@
 	if (property == NULL)
 		return NO;
 
-	const char * value = property_getTypeString(property);
+	const char * value = [property_getTypeString(property) cStringUsingEncoding: NSUTF8StringEncoding];
 
 	if (strcmp(type, value) == 0)
 		return YES;
@@ -72,7 +72,7 @@
 	return NO;
 }
 
-+ (const char *)typeOfPropertyNamed:(NSString *)name
++ (NSString *)typeOfPropertyNamed:(NSString *)name
 {
 	objc_property_t property = class_getProperty(self, [name UTF8String]);
 
@@ -200,7 +200,7 @@
 	return [[self class] hasPropertyForKVCKey:key];
 }
 
-- (const char *)typeOfPropertyNamed:(NSString *)name
+- (NSString *)typeOfPropertyNamed:(NSString *)name
 {
 	return [[self class] typeOfPropertyNamed:name];
 }
@@ -229,14 +229,14 @@
 
 #pragma mark -
 
-const char *property_getTypeString(objc_property_t property)
+NSString * property_getTypeString(objc_property_t property)
 {
 	const char * attrs = property_getAttributes(property);
 
 	if (attrs == NULL)
 		return NULL;
 
-	static char buffer[256];
+	char buffer[256];
 	const char * e = strchr(attrs, ',');
 
 	if (e == NULL)
@@ -246,7 +246,7 @@ const char *property_getTypeString(objc_property_t property)
 	memcpy(buffer, attrs, len);
 	buffer[len] = '\0';
 
-	return buffer;
+	return [NSString stringWithCString:buffer encoding:NSUTF8StringEncoding];
 }
 
 SEL property_getGetter(objc_property_t property)

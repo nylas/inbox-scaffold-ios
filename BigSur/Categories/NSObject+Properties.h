@@ -54,7 +54,7 @@
 + (BOOL)hasProperties;
 + (BOOL)hasPropertyNamed:(NSString *)name;
 + (BOOL)hasPropertyNamed:(NSString *)name ofType:(const char *)type;	// an @encode() or statictype() type string
-+ (const char *)typeOfPropertyNamed:(NSString *)name;					// returns an @encode() or statictype() string. Copy to keep
++ (NSString *)typeOfPropertyNamed:(NSString *)name;					// returns an @encode() or statictype() string. Copy to keep
 + (SEL)getterForPropertyNamed:(NSString *)name;
 + (SEL)setterForPropertyNamed:(NSString *)name;
 + (NSString *)retentionMethodOfPropertyNamed:(NSString *)name;			// returns one of: copy, retain, assign
@@ -66,7 +66,7 @@
 - (BOOL)hasPropertyNamed:(NSString *)name;
 - (BOOL)hasPropertyNamed:(NSString *)name ofType:(const char *)type;
 - (BOOL)hasPropertyForKVCKey:(NSString *)key;
-- (const char *)typeOfPropertyNamed:(NSString *)name;
+- (NSString *)typeOfPropertyNamed:(NSString *)name;
 - (SEL)getterForPropertyNamed:(NSString *)name;
 - (SEL)setterForPropertyNamed:(NSString *)name;
 - (NSString *)retentionMethodOfPropertyNamed:(NSString *)name;
@@ -79,7 +79,7 @@
 
 // returns a static buffer - copy the string to retain it, as it will
 // be overwritten on the next call to this function
-const char *property_getTypeString(objc_property_t property);
+NSString *property_getTypeString(objc_property_t property);
 
 // getter/setter functions: unlike those above, these will return NULL unless a getter/setter is EXPLICITLY defined
 SEL property_getGetter(objc_property_t property);

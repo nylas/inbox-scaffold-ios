@@ -13,52 +13,36 @@ static NSMapTable * modelInstanceTable;
 
 @implementation INModelObject (Uniquing)
 
-+ (id)attachedInstanceMatching:(INModelObject *)obj
-{
-	return [[obj class] attachedInstanceMatchingID:[obj ID]];
-}
-
-+ (id)attachedInstanceMatchingID:(id)ID
++ (id)attachedInstanceMatchingID:(id)ID createIfNecessary:(BOOL)shouldCreate didCreate:(BOOL*)didCreate
 {
 	if (!modelInstanceTable)
 		modelInstanceTable = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory capacity:1000];
-	
-	return [modelInstanceTable objectForKey:[INModelObject attachmentKeyForClass:self ID:ID]];
-}
 
-+ (id)attachedInstanceWithResourceDictionary:(NSDictionary *)dict
-{
-	INModelObject * object = [self attachedInstanceMatchingID:dict[@"id"]];
-	
-	if (object) {
-		[object updateWithResourceDictionary:dict];
-		return object;
+	id obj = nil;
+	@synchronized(modelInstanceTable) {
+		obj = [modelInstanceTable objectForKey:[INModelObject attachmentKeyForClass:self ID:ID]];
+		if (shouldCreate && !obj) {
+			obj = [[self alloc] init];
+			[obj setID: ID];
+			[modelInstanceTable setObject:obj forKey:[INModelObject attachmentKeyForClass:[obj class] ID:[obj ID]]];
+			if (didCreate) *didCreate = YES;
+		}
 	}
-	else {
-		Class klass = self;
-		object = [[klass alloc] init];
-		[object updateWithResourceDictionary:dict];
-		[object setup];
-		[klass attachInstance:object];
-		return object;
-	}
+	return obj;
 }
 
 + (void)attachInstance:(INModelObject *)obj
 {
-	if (!obj)
-		return;
-
+	NSAssert(obj, @"-attachInstance called with a null object.");
 	NSAssert([obj isKindOfClass:[INModelObject class]], @"Only subclasses of INModelObject can be attached.");
 
-	id existing = [INModelObject attachedInstanceMatching:obj];
-
-	if (!existing)
-		[modelInstanceTable setObject:obj forKey:[INModelObject attachmentKeyForClass:[obj class] ID:[obj ID]]];
-	else if (existing == obj)
-		return;
-	else
-		NSAssert(false, @"Attaching an instance when another instance is already in memory for this class+ID combination. Where did this object come from?");
+	@synchronized(modelInstanceTable) {
+		id existing = [INModelObject attachedInstanceMatchingID:[obj ID] createIfNecessary: NO didCreate: NULL];
+		if (!existing)
+			[modelInstanceTable setObject:obj forKey:[INModelObject attachmentKeyForClass:[obj class] ID:[obj ID]]];
+		else if (existing != obj)
+			NSAssert(false, @"Attaching an instance when another instance is already in memory for this class+ID combination. Where did this object come from?");
+	}
 }
 
 + (NSString *)attachmentKeyForClass:(Class)klass ID:(id)ID
@@ -82,7 +66,7 @@ static NSMapTable * modelInstanceTable;
 
 - (BOOL)isDetatched
 {
-	return [INModelObject attachedInstanceMatching:self] != self;
+	return [INModelObject attachedInstanceMatchingID:[self ID] createIfNecessary: NO didCreate: NULL] != self;
 }
 
 @end

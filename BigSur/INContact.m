@@ -19,26 +19,25 @@
 		@"name": @"name",
 		@"providerName": @"provider_name",
 		@"emailAddress": @"email_address",
-		@"accountId": @"account_id",
-		@"uid": @"uid"
+		@"accountID": @"account_id",
+		@"UID": @"uid"
 	}];
 	return mapping;
 }
 
++ (NSString *)resourceAPIName
+{
+	return @"contacts";
+}
+
 + (NSArray *)databaseIndexProperties
 {
-	return @[@"name", @"emailAddress", @"accountId"];
+	return [[super databaseIndexProperties] arrayByAddingObjectsFromArray: @[@"name", @"emailAddress", @"accountID"]];
 }
 
 - (void)setup
 {
 }
 
-- (NSString *)APIPath
-{
-	NSString * ID = self.ID ? self.ID : @"";
-
-	return [NSString stringWithFormat:@"/n/%@/contacts/%@", self.namespaceID, ID];
-}
 
 @end

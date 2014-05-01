@@ -18,22 +18,16 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = [[INViewController alloc] init];
+	self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController: [[INViewController alloc] init]];
 	[self.window makeKeyAndVisible];
 
-	// Let's say we have an API call that returns two JSON dictionaries that we want
-	// to add to the local cache. We may or may not already have these objects.
-	// This function either creates them or retrieves them and updates them in memory.
-	INContact * a = [INContact attachedInstanceWithResourceDictionary:@{@"name": @"Ben Gotow", @"id": @(2), @"namespace_id":@(1), @"email_address":@"bengotow@gmail.com", @"account_id":@(12), @"uid":@(4)}];
-	[[INDatabaseManager shared] persistModel: a];
+	if (![[INAPIManager shared] account]) {
+		[[INAPIManager shared] authenticate:^(INAccount * account, NSError *error) {
+			if (error)
+				[[[UIAlertView alloc] initWithTitle:@"Auth Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+		}];
+	}
 
-	INContact * b = [INContact attachedInstanceWithResourceDictionary:@{@"name": @"John Gotow", @"id": @(3), @"namespace_id":@(1), @"account_id":@(12), @"uid":@(4)}];
-	[[INDatabaseManager shared] persistModel: b];
-
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		INContact * a = [INContact attachedInstanceWithResourceDictionary:@{@"name": @"Ben Gotow Again!", @"id": @(4), @"namespace_id": @(1), @"email_address":@"bengotow+test@gmail.com", @"account_id":@(12), @"uid":@(4)}];
-		[[INDatabaseManager shared] persistModel: a];
-	});
 	return YES;
 }
 

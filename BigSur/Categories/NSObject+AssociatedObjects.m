@@ -25,20 +25,26 @@
 	return objc_getAssociatedObject(self, key);
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
 - (void)performSelectorOnMainThreadOnce:(SEL)selector
 {
 	[self associateValue:[NSNumber numberWithBool:YES] withKey:(void *)selector];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		if ([self associatedValueForKey:(void *)selector]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 			[self performSelector:selector];
-#pragma clang diagnostic pop
-
 			[self associateValue:nil withKey:(void *)selector];
 		}
 	});
 }
+
+- (void)markPerformedSelector:(SEL)selector
+{
+	[self associateValue:nil withKey:(void *)selector];
+}
+
+#pragma clang diagnostic pop
 
 @end

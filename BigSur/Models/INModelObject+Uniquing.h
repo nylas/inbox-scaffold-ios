@@ -12,8 +12,6 @@
 
 /** @name Globally Unique Instances */
 
-+ (id)attachedInstanceMatching:(INModelObject *)obj;
-
 /**
  Returns the model object with the given ID currently in memory, if one exists.
  The primary purpose of this method is to retrieve an instance of an object so
@@ -24,20 +22,7 @@
 
  @return An instance, or nil.
  */
-+ (id)attachedInstanceMatchingID:(id)ID;
-
-/**
- Returns an instance populated from the dictionary representation provided.
- This function does not always return new instances. If the same object has
- been requested previously and is still in memory it will return it, updating
- it as necessary to match the data in "dict".
- 
- @param dict A dictionary with key-value pairs matching the ones
- declared in resourceMapping.
- 
- @return A populated instance
- */
-+ (id)attachedInstanceWithResourceDictionary:(NSDictionary *)dict;
++ (id)attachedInstanceMatchingID:(id)ID createIfNecessary:(BOOL)shouldCreate didCreate:(BOOL*)didCreate;
 
 
 + (void)attachInstance:(INModelObject *)obj;

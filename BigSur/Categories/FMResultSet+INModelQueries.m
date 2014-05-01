@@ -26,17 +26,14 @@
 	NSDictionary * json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&err];
 
 	if (json && !err) {
-		INModelObject * model = [klass attachedInstanceMatchingID: json[@"id"]];
-		if (!model) {
-			model = [[klass alloc] init];
+		BOOL created = NO;
+		INModelObject * model = [klass attachedInstanceMatchingID: json[@"id"] createIfNecessary:YES didCreate: &created];
+		if (created) {
 			[model updateWithResourceDictionary: json];
 			[model setup];
-			[klass attachInstance: model];
-			return model;
-		} else {
-			[model updateWithResourceDictionary: json];
-			return model;
 		}
+		return model;
+
 	} else {
 		return nil;
 	}

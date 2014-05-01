@@ -7,14 +7,44 @@
 //
 
 #import "INNamespace.h"
+#import "INLabel.h"
+#import "INContact.h"
+#import "INThreadProvider.h"
+#import "INThread.h"
 
 @implementation INNamespace
 
-- (NSString *)APIPath
++ (NSMutableDictionary *)resourceMapping
 {
-	NSString * ID = self.ID ? self.ID : @"";
+	NSMutableDictionary * mapping = [super resourceMapping];
+	[mapping addEntriesFromDictionary:@{
+	 @"emailAddress": @"email_address",
+ 	 @"provider": @"provider",
+	 @"status": @"status",
+	 @"scope": @"scope",
+	 @"lastSync": @"last_sync"
+	}];
+	return mapping;
+}
 
-	return [NSString stringWithFormat:@"/n/%@", ID];
++ (NSString *)resourceAPIName
+{
+	return @"n";
+}
+
+- (NSString *)resourceAPIPath
+{
+	return [NSString stringWithFormat:@"/n/%@", self.ID];
+}
+
+- (INModelProvider *)newContactsProvider
+{
+	return [[INModelProvider alloc] initWithClass:[INContact class] andNamespaceID:[self ID] andUnderlyingPredicate:nil];
+}
+
+- (INModelProvider *)newThreadsProvider
+{
+	return [[INThreadProvider alloc] initWithNamespaceID: [self ID]];
 }
 
 @end

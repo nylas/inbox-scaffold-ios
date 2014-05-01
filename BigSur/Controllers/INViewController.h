@@ -10,11 +10,16 @@
 #import "INModelProvider.h"
 #import "INContact.h"
 
-@interface INViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate>
+@interface INViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate, UISearchBarDelegate>
 {
-	INModelProvider * _contactsProvider;
+	float _scrollViewPrevOffset;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView * tableView;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) IBOutlet UIRefreshControl * refreshControl;
+
+@property (strong, nonatomic) INModelProvider * threadsProvider;
+
 
 @end

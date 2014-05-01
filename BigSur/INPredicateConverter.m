@@ -100,10 +100,12 @@ static NSString * SQLNullValueString = @"NULL";
 		// listed in the databaseIndexProperties.
 		NSString * key = [[_targetModelClass resourceMapping] objectForKey:propertyName];
 		NSArray * allowedPropertyNames = [@[@"ID"] arrayByAddingObjectsFromArray :[_targetModelClass databaseIndexProperties]];
-		NSAssert([allowedPropertyNames containsObject:propertyName], @"Sorry, this class can only be queried by %@. There is no index on %@!", allowedPropertyNames, propertyName);
+		if (![allowedPropertyNames containsObject:propertyName])
+			NSAssert(false, @"Sorry, this class can only be queried by %@. There is no index on %@!", allowedPropertyNames, propertyName);
+
 		return key;
-	}
-	else {
+	
+	} else {
 		return propertyName;
 	}
 }

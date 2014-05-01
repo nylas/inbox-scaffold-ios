@@ -9,11 +9,12 @@
 #import "INAPIManager.h"
 #import "INAPIOperation.h"
 #import "NSObject+AssociatedObjects.h"
+#import "INAccount.h"
 
 #if DEBUG
-  #define API_URL		[NSURL URLWithString:@"http://inboxapp.com/"]
+  #define API_URL		[NSURL URLWithString:@"http://192.168.10.200:5555/"]
 #else
-  #define API_URL		[NSURL URLWithString:@"http://inboxapp.com/"]
+  #define API_URL		[NSURL URLWithString:@"http://192.168.10.200:5555/"]
 #endif
 
 #define OPERATIONS_FILE [@"~/Documents/operations.plist" stringByExpandingTildeInPath]
@@ -45,6 +46,8 @@ static void initialize_INAPIManager() {
 		[self setRequestSerializer:[AFJSONRequestSerializer serializerWithWritingOptions:NSJSONWritingPrettyPrinted]];
 		[self.requestSerializer setCachePolicy: NSURLRequestReloadRevalidatingCacheData];
 		
+		INAccount * account = [self account];
+		[self.requestSerializer setAuthorizationHeaderFieldWithUsername:account.authToken password:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveOperations) name:UIApplicationWillTerminateNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationFinished:) name:AFNetworkingOperationDidFinishNotification object:nil];
 		[self loadOperations];
@@ -74,7 +77,7 @@ static void initialize_INAPIManager() {
 		if ([operation isKindOfClass:[INAPIOperation class]])
 			[self queueAPIOperation:operation];
 	
-	NSLog(@"Restored (%d) pending operations from disk.", self.operationQueue.operationCount);
+	NSLog(@"Restored (%lu) pending operations from disk.", (unsigned long)self.operationQueue.operationCount);
 }
 
 - (void)saveOperations
@@ -83,7 +86,7 @@ static void initialize_INAPIManager() {
 	if (![NSKeyedArchiver archiveRootObject:operations toFile:OPERATIONS_FILE])
 		NSLog(@"Writing operations to disk failed? Path may be invalid.");
 	else
-		NSLog(@"Wrote (%d) operations to disk.", self.operationQueue.operationCount);
+		NSLog(@"Wrote (%lu) operations to disk.", (unsigned long)self.operationQueue.operationCount);
 }
 
 - (void)setOperationsSuspended:(BOOL)suspended
@@ -107,7 +110,7 @@ static void initialize_INAPIManager() {
 	// This avoids the scenario where two PUTs to the same URL run concurrently and
 	// produce an undefined end state.
 	NSOperationQueue * queue = self.operationQueue;
-	for (int ii = [queue operationCount] - 1; ii >= 0; ii--) {
+	for (NSInteger ii = [queue operationCount] - 1; ii >= 0; ii--) {
 		INAPIOperation * existing = [[queue operations] objectAtIndex:ii];
 		if ([existing isCancelled] || [existing isExecuting] || [existing isFinished])
 			continue;
@@ -126,7 +129,7 @@ static void initialize_INAPIManager() {
 - (void)operationFinished:(NSNotification*)notif
 {
 	INAPIOperation * operation = [notif object];
-	int code = [[operation response] statusCode];
+	NSInteger code = [[operation response] statusCode];
 	
 	if (![operation isKindOfClass: [INAPIOperation class]])
 		return;
@@ -148,9 +151,57 @@ static void initialize_INAPIManager() {
 	} else {
 		// For some reason, we reached inbox and it rejected this operation. To maintain the consistency
 		// of our cache, roll back the operation.
-		NSLog(@"The server rejected %@ %@. Response code %d. To maintain the cache consistency, the local data store is being rolled back.", [[operation request] HTTPMethod], [[operation request] URL], code);
+		NSLog(@"The server rejected %@ %@. Response code %d. To maintain the cache consistency, the update is being rolled back.", [[operation request] HTTPMethod], [[operation request] URL], code);
 		[(INAPIOperation*)operation rollback];
 	}
+}
+
+#pragma Authentication
+
+- (void)authenticate:(AuthenticationBlock)completionBlock
+{
+	// TODO: Insert auth to get user ID here
+	NSString * userID = @"6zq90uveyf24fqxxadlrafnxy";
+	NSString * authToken = @"whatevs";
+	
+	NSString * userPath = [NSString stringWithFormat: @"/u/%@", userID];
+	
+	[[self requestSerializer] setAuthorizationHeaderFieldWithUsername:authToken password:@""];
+	[self GET:userPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		INAccount * account = [[INAccount alloc] init];
+		[account updateWithResourceDictionary: responseObject];
+		[account setAuthToken: authToken];
+		
+		[self setAccount: account];
+
+		if (completionBlock)
+			completionBlock(account, nil);
+
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		if (completionBlock)
+			completionBlock(nil, error);
+	}];
+}
+
+- (INAccount*)account
+{
+	if (_account)
+		return _account;
+	
+	_account = (INAccount*)[[INDatabaseManager shared] selectModelOfClass: [INAccount class] withID: nil];
+	return _account;
+}
+
+- (void)setAccount:(INAccount *)account
+{
+	_account = account;
+
+	// destroy our local cache
+	[[INDatabaseManager shared] resetDatabase];
+	[[INDatabaseManager shared] persistModel: _account];
+
+	// broadcast a notification about this change
+    [[NSNotificationCenter defaultCenter] postNotificationName:INAccountChangedNotification object:nil];
 }
 
 @end

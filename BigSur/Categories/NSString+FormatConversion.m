@@ -43,7 +43,7 @@ static NSMutableDictionary * formatters;
 	const char * cStr = [self UTF8String];
 	unsigned char digest[16];
 
-	CC_MD5(cStr, strlen(cStr), digest);		// This is the md5 call
+	CC_MD5(cStr, (CC_LONG)strlen(cStr), digest);		// This is the md5 call
 
 	NSMutableString * output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
 
@@ -70,7 +70,7 @@ static NSMutableDictionary * formatters;
 {
 	NSMutableString * output = [NSMutableString string];
 	const unsigned char * source = (const unsigned char *)[self UTF8String];
-	int sourceLen = strlen((const char *)source);
+	unsigned long sourceLen = strlen((const char *)source);
 
 	for (int i = 0; i < sourceLen; ++i) {
 		const unsigned char thisChar = source[i];

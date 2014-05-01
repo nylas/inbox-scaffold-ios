@@ -7,6 +7,7 @@
 //
 
 #import "INThread.h"
+#import "INMessageProvider.h"
 
 @implementation INThread
 
@@ -17,21 +18,24 @@
 	[mapping addEntriesFromDictionary:@{
 		@"subject": @"subject",
 		@"participants": @"participants",
-		@"lastMessageDate": @"last_message_timestamp"
+		@"lastMessageDate": @"recent_date"
 	}];
 	return mapping;
 }
 
-+ (NSArray *)databaseIndexProperties
++ (NSString *)resourceAPIName
 {
-	return @[@"lastMessageDate"];
+	return @"threads";
 }
 
-- (NSString *)APIPath
++ (NSArray *)databaseIndexProperties
 {
-	NSString * ID = self.ID ? self.ID : @"";
+	return [[super databaseIndexProperties] arrayByAddingObjectsFromArray: @[@"lastMessageDate", @"subject"]];
+}
 
-	return [NSString stringWithFormat:@"/n/%@/threads/%@", self.namespaceID, ID];
+- (INModelProvider*)newMessageProvider
+{
+	return [[INMessageProvider alloc] initWithThreadID: [self ID] andNamespaceID:[self namespaceID]];
 }
 
 @end

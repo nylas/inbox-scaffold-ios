@@ -13,41 +13,17 @@
 
 @implementation INThreadProvider
 
-- (id)initWithNamespace:(INNamespace *)namespace
+- (id)initWithNamespaceID:(NSString *)namespaceID
 {
-	self = [super init];
-
+	self = [super initWithClass:[INThread class] andNamespaceID:namespaceID andUnderlyingPredicate:nil];
 	if (self) {
-		[self setModelClass:[INThread class]];
-		[self setNamespace:namespace];
 	}
 	return self;
 }
 
-- (NSDictionary *)fetchQueryParamsForPredicate
+- (NSDictionary *)queryParamsForPredicate:(NSPredicate*)predicate
 {
-	// TODO
-	return @{};
-}
-
-- (void)fetchFromAPI
-{
-	NSString * path = [[_namespace APIPath] stringByAppendingPathComponent:@"threads"];
-	NSDictionary * params = [self fetchQueryParamsForPredicate];
-
-	AFHTTPRequestOperation * operation = [[INAPIManager shared] GET:path parameters:params success:^(AFHTTPRequestOperation * operation, NSArray * threads) {
-		self.items = [threads sortedArrayUsingDescriptors:self.sortDescriptors];
-
-		if ([self.delegate respondsToSelector:@selector(providerDataRefreshed)])
-			[self.delegate providerDataRefreshed];
-
-	} failure:^(AFHTTPRequestOperation * operation, NSError * error) {
-		if ([self.delegate respondsToSelector:@selector(providerDataFetchFailed:)])
-			[self.delegate providerDataFetchFailed:error];
-	}];
-
-	INModelArrayResponseSerializer * serializer = [[INModelArrayResponseSerializer alloc] initWithModelClass:self.modelClass];
-	[operation setResponseSerializer:serializer];
+	return @{@"limit": @(20)};
 }
 
 @end

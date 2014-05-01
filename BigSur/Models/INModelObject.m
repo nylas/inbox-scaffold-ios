@@ -12,6 +12,7 @@
 #import "INAPIOperation.h"
 #import "NSObject+Properties.h"
 #import "NSString+FormatConversion.h"
+#import "NSDictionary+FormatConversion.h"
 #import "INPredicateConverter.h"
 #import "INDatabaseManager.h"
 
@@ -23,21 +24,16 @@
 + (id)instanceWithID:(NSString*)ID
 {
 	// do we have an instance in memory that matches this ID?
-	INModelObject __block * match = [self attachedInstanceMatchingID: ID];
+	INModelObject __block * match = [self attachedInstanceMatchingID: ID createIfNecessary:NO didCreate:NULL];
 
 	// do we have an instance in the local cache?
-	if (!match) {
-		[[INDatabaseManager shared] selectModelsOfClass:self matching:[NSPredicate predicateWithFormat:@"ID = %@", ID] sortedBy:nil limit:1 offset:0 withCallback:^(NSArray *objects) {
-			match = [objects firstObject];
-		}];
-	}
-	
-	// this object is not available. Return a stub and start loading it. The consumer should
-	// subscribe to notifications on this object to update their UI when data is available.
+	if (!match)
+		match = [[INDatabaseManager shared] selectModelOfClass: self withID: ID];
+			
+	// this object is not available. Return a stub that they can -reload if they want to.
 	if (!match) {
 		match = [[self alloc] init];
 		[match setID: ID];
-		[match reload: NULL];
 	}
 	
 	return match;
@@ -90,11 +86,8 @@
 			return;
 
 		if ([value isKindOfClass:[NSDate class]])
-			value = [NSString stringWithDate:(NSDate *)value format:API_TIMESTAMP_FORMAT];
-
-		if ([value isKindOfClass:[NSArray class]])
-			value = [value componentsJoinedByString:@","];
-
+			value = [NSNumber numberWithDouble: [(NSDate*)value timeIntervalSince1970]];
+			
 		NSString * jsonKey = [mapping objectForKey:key];
 
 		if (value)
@@ -106,54 +99,49 @@
 	return json;
 }
 
+- (BOOL)differentFromResourceDictionary:(NSDictionary *)json
+{
+	if ([json isKindOfClass:[NSDictionary class]] == NO)
+		NSAssert(false, @"differentFromResourceDictionary called with json that is not a dictionary");
+
+	NSDictionary * mapping = [[self class] resourceMapping];
+	BOOL __block different = NO;
+	
+	[self getEachPropertyInSet:[mapping allKeys] andInvoke:^(id key, NSString * type, id value) {
+		NSString * jsonKey = [mapping objectForKey:key];
+		if ([json objectForKey:jsonKey]) {
+			id valueInJSON = [json objectForKey:jsonKey asType:type];
+			
+			BOOL bothNil = ((valueInJSON == nil) && (value == nil));
+			BOOL bothEqual = [valueInJSON isEqual: value];
+			
+			if (!(bothNil || bothEqual))
+				different = YES;
+		}
+	}];
+	
+	return different;
+}
+
 - (void)updateWithResourceDictionary:(NSDictionary *)json
 {
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"INModelObjects should not be mutated from background threads.");
+	
+	if ([json isKindOfClass:[NSDictionary class]] == NO)
+		NSAssert(false, @"updateWithResourceDictionary called with json that is not a dictionary");
+	
+	if ([json objectForKey: @"id"] && [self ID] && ([[self ID] isEqualToString: [json objectForKey: @"id"]] == NO))
+		NSAssert(false, @"Updating with resource dictionary %@ would change the ID of the model!", json);
+		
 	NSDictionary * mapping = [[self class] resourceMapping];
 	NSArray * properties = [mapping allKeys];
-
-	if ([json isKindOfClass:[NSDictionary class]] == NO) {
-		NSLog(@"updateWithResourceDictionary called with json that is not a dictionary");
-		return;
-	}
-
+	
 	[self setEachPropertyInSet:properties withValueProvider:^BOOL (id key, NSObject ** value, NSString * type) {
 		NSString * jsonKey = [mapping objectForKey:key];
-
 		if (![json objectForKey:jsonKey])
 			return NO;
 
-		if ([[json objectForKey:jsonKey] isKindOfClass:[NSNull class]]) {
-			*value = nil;
-			return YES;
-		}
-
-		if ([type isEqualToString:@"float"]) {
-			*value = [NSNumber numberWithFloat:[[json objectForKey:jsonKey] floatValue]];
-		}
-		else if ([type isEqualToString:@"int"]) {
-			*value = [NSNumber numberWithInt:[[json objectForKey:jsonKey] intValue]];
-		}
-		else if ([type isEqualToString:@"T@\"NSString\""]) {
-			id newValue = [json objectForKey:jsonKey];
-
-			if ([newValue isKindOfClass:[NSNumber class]])
-				*value = [newValue stringValue];
-			else if ([newValue isKindOfClass:[NSString class]])
-				*value = newValue;
-			else
-				*value = [newValue stringValue];
-		}
-		else if ([type isEqualToString:@"T@\"NSDate\""]) {
-			NSString * newValue = [json objectForKey:jsonKey];
-
-			if ([newValue hasSuffix:@"Z"])
-				newValue = [[newValue substringToIndex:[newValue length] - 1] stringByAppendingString:@"-0000"];
-
-			*value = [newValue dateValueWithFormat:API_TIMESTAMP_FORMAT];
-		}
-		else {
-			*value = [json objectForKey:jsonKey];
-		}
+		*value = [json objectForKey:jsonKey asType: type];
 		return YES;
 	}];
 
@@ -168,15 +156,10 @@
 
 #pragma Loading and Saving
 
-- (NSString *)APIPath
-{
-	NSAssert(false, @"This class does not provide an APIPath. Subclasses should provide /collection/:id to enable -reload: and -save:");
-	return nil;
-}
-
 - (void)reload:(ErrorBlock)callback
 {
-	[[INAPIManager shared] GET:[self APIPath] parameters:[self resourceDictionary] success:^(AFHTTPRequestOperation * operation, id responseObject) {
+	NSString * path = [[[self class] resourceAPIName] stringByAppendingPathComponent: [self ID]];
+	[[INAPIManager shared] GET:path parameters:@{} success:^(AFHTTPRequestOperation * operation, id responseObject) {
 		[self updateWithResourceDictionary:responseObject];
 		[[INDatabaseManager shared] persistModel:self];
 		if (callback)
@@ -227,7 +210,13 @@
 
 + (NSMutableDictionary *)resourceMapping
 {
-	return [@{@"ID": @"id", @"namespaceID": @"namespace_id", @"createdAt": @"created_at", @"updatedAt": @"updated_at"} mutableCopy];
+	return [@{@"ID": @"id", @"namespaceID": @"ns", @"createdAt": @"created_at", @"updatedAt": @"updated_at"} mutableCopy];
+}
+
++ (NSString *)resourceAPIName
+{
+	NSAssert(false, @"This class does not provide a resourceAPIName. Subclasses should provide one.");
+	return nil;
 }
 
 + (NSString *)databaseTableName
@@ -240,6 +229,11 @@
 	return @[@"namespaceID"];
 }
 
+- (NSString *)resourceAPIPath
+{
+	return [NSString stringWithFormat: @"/n/%@/%@/%@", [self namespaceID], [[self class] resourceAPIName], [self ID]];
+}
+
 - (void)setup
 {
 	// override point for subclasses
@@ -250,12 +244,7 @@
 - (void)getEachPropertyInSet:(NSArray *)properties andInvoke:(void (^)(id key, NSString * type, id value))block
 {
 	for (NSString * key in properties) {
-		if (![self hasPropertyNamed:key]) {
-			NSLog(@"No getter available for property %@", key);
-			return;
-		}
-
-		NSString * type = [NSString stringWithCString:[self typeOfPropertyNamed:key] encoding:NSUTF8StringEncoding];
+		NSString * type = [self typeOfPropertyNamed:key];
 		id val = [self valueForKey:key];
 
 		block(key, type, val);
@@ -265,13 +254,7 @@
 - (void)setEachPropertyInSet:(NSArray *)properties withValueProvider:(BOOL (^)(id key, NSObject ** value, NSString * type))block
 {
 	for (NSString * key in properties) {
-		SEL setter = [self setterForPropertyNamed:key];
-
-		if (setter == NULL) {
-			NSLog(@"No setter available for property %@", key);
-			continue;
-		}
-		NSString * type = [NSString stringWithCString:[self typeOfPropertyNamed:key] encoding:NSUTF8StringEncoding];
+		NSString * type = [self typeOfPropertyNamed:key];
 		NSObject * value = [self valueForKey:key];
 
 		if (block(key, &value, type)) {

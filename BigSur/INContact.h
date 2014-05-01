@@ -14,7 +14,7 @@
 @property (nonatomic, strong) NSString * emailAddress;
 @property (nonatomic, strong) NSString * source;
 @property (nonatomic, strong) NSString * providerName;
-@property (nonatomic, strong) NSString * accountId;
-@property (nonatomic, strong) NSString * uid;
+@property (nonatomic, strong) NSString * accountID;
+@property (nonatomic, strong) NSString * UID;
 
 @end

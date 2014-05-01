@@ -12,6 +12,7 @@
 #import "NSObject+Properties.h"
 
 #define SCHEMA_VERSION 2
+#define DATABASE_PATH [@"~/Documents/cache.db" stringByExpandingTildeInPath]
 
 __attribute__((constructor))
 static void initialize_INDatabaseManager() {
@@ -37,14 +38,31 @@ static void initialize_INDatabaseManager() {
 	self = [super init];
 
 	if (self) {
-		NSString * databasePath = [@"~/Documents/cache.db" stringByExpandingTildeInPath];
-		NSLog(@"%@", databasePath);
-
-		_queue = [FMDatabaseQueue databaseQueueWithPath:databasePath];
+		NSLog(@"%@", DATABASE_PATH);
+		
+		_queue = [FMDatabaseQueue databaseQueueWithPath: DATABASE_PATH];
+		_queryDispatchQueue = dispatch_queue_create("INDatabaseManager Queue", DISPATCH_QUEUE_CONCURRENT);
 		_observers = [[NSHashTable alloc] initWithOptions:NSPointerFunctionsWeakMemory capacity:10];
 		_initializedModelClasses = [NSMutableDictionary dictionary];
 	}
 	return self;
+}
+
+- (void)resetDatabase
+{
+	NSLog(@"Resetting the local datastore.");
+	
+	[_initializedModelClasses removeAllObjects];
+	[_queue close];
+	_queue = nil;
+	
+	[[NSFileManager defaultManager] removeItemAtPath:DATABASE_PATH error:nil];
+	_queue = [FMDatabaseQueue databaseQueueWithPath:DATABASE_PATH];
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		// notify all our observers of a total reset
+		[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidReset)];
+	});
 }
 
 - (int)databaseSchemaVersion
@@ -89,7 +107,7 @@ static void initialize_INDatabaseManager() {
 			*rollback = YES;
 		}
 		else {
-			NSLog(@"Batch SQL %@ complete. Executed %d statements.", sqlFileName, [statements count]);
+			NSLog(@"Batch SQL %@ complete. Executed %lu statements.", sqlFileName, (unsigned long)[statements count]);
 			*rollback = NO;
 			succeeded = YES;
 		}
@@ -103,27 +121,33 @@ static void initialize_INDatabaseManager() {
 	[_observers addObject:observer];
 }
 
-- (void)checkModelTable:(Class)klass
+- (BOOL)checkModelTable:(Class)klass
 {
+	if (klass == NULL)
+		return NO;
+		
 	NSAssert([klass isSubclassOfClass:[INModelObject class]], @"Only subclasses of INModelObject can be cached.");
 
 	if (!_initializedModelClasses[NSStringFromClass(klass)]) {
 		[_initializedModelClasses setObject:@(YES) forKey:NSStringFromClass(klass)];
-		[self initializeModelTable:klass];
+		return [self initializeModelTable:klass];
 	}
+	return YES;
 }
 
-- (void)initializeModelTable:(Class)klass
+- (BOOL)initializeModelTable:(Class)klass
 {
+	BOOL __block succeeded = YES;
+	
 	[_queue inTransaction:^(FMDatabase * db, BOOL * rollback) {
-		NSMutableArray * cols = [@[@"id INTEGER PRIMARY KEY", @"data BLOB"] mutableCopy];
+		NSMutableArray * cols = [@[@"id TEXT PRIMARY KEY", @"data BLOB"] mutableCopy];
 		NSMutableArray * colIndexQueries = [NSMutableArray array];
 		NSString * tableName = [klass databaseTableName];
 
 		for (NSString * propertyName in [klass databaseIndexProperties]) {
 			NSString * colName = [klass resourceMapping][propertyName];
 			NSString * colType = nil;
-			NSString * type = [NSString stringWithCString:[klass typeOfPropertyNamed:propertyName] encoding:NSUTF8StringEncoding];
+			NSString * type = [klass typeOfPropertyNamed: propertyName];
 
 			if ([type isEqualToString:@"int"])
 				colType = @"INTEGER";
@@ -133,11 +157,14 @@ static void initialize_INDatabaseManager() {
 
 			else if ([type isEqualToString:@"T@\"NSString\""])
 				colType = @"TEXT";
+			
+			else if ([type isEqualToString:@"T@\"NSDate\""])
+				colType = @"INTEGER";
 
-			if (colType && colName) {
-				[cols addObject:[NSString stringWithFormat:@"`%@` %@", colName, colType]];
-				[colIndexQueries addObject:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS \"%@\" ON \"%@\" (\"%@\")", colName, tableName, colName]];
-			}
+			NSAssert(colType && colName, @"Cannot create an index on the property %@ of type %@", propertyName, type);
+
+			[cols addObject:[NSString stringWithFormat:@"`%@` %@", colName, colType]];
+			[colIndexQueries addObject:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS \"%@\" ON \"%@\" (\"%@\")", colName, tableName, colName]];
 		}
 
 		NSString * colsString = [cols componentsJoinedByString:@","];
@@ -148,49 +175,68 @@ static void initialize_INDatabaseManager() {
 		for (NSString * indexQuery in colIndexQueries)
 			[db executeUpdate:indexQuery];
 
-		if ([db hadError])
+		if ([db hadError]) {
 			*rollback = YES;
+			succeeded = NO;
+		}
 	}];
+	return succeeded;
 }
 
 #pragma mark Persisting Objects
 
 - (void)persistModel:(INModelObject *)model
 {
-	[self checkModelTable:[model class]];
-
-	[_queue inDatabase:^(FMDatabase * db) {
-		[self writeModel:model toDatabase:db];
-		// notify providers that this model was updated. This may result in views being updated.
-		[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidPersistModels:) withObject:@[model]];
-	}];
+	if (![self checkModelTable:[model class]])
+		return;
+	
+	dispatch_async(_queryDispatchQueue, ^{
+		[_queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+			[self writeModel:model toDatabase:db];
+		}];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			// notify providers that this model was updated. This may result in views being updated.
+			[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidPersistModels:) withObject:@[model]];
+		});
+	});
 }
 
 - (void)persistModels:(NSArray *)models
 {
-	[self checkModelTable:[[models firstObject] class]];
+	if (![self checkModelTable:[[models firstObject] class]])
+		return;
 
-	[_queue inDatabase:^(FMDatabase * db) {
-		for (INModelObject * model in models)
-			[self writeModel:model toDatabase:db];
+	dispatch_async(_queryDispatchQueue, ^{
+		[_queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+			for (INModelObject * model in models)
+				[self writeModel:model toDatabase:db];
+		}];
 
-		// notify providers that models were updated. This may result in views being updated.
-		[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidPersistModels:) withObject:models];
-	}];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			// notify providers that models were updated. This may result in views being updated.
+			[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidPersistModels:) withObject:models];
+		});
+	});
 }
 
 - (void)unpersistModel:(INModelObject *)model
 {
-	[self checkModelTable:[model class]];
+	if (![self checkModelTable:[model class]])
+		return;
 	
-	[_queue inDatabase:^(FMDatabase * db) {
-		NSString * tableName = [[model class] databaseTableName];
-		NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE id = ?", tableName];
-		[db executeUpdate: query withArgumentsInArray:@[[model ID]]];
-		
-		// notify providers that models were updated. This may result in views being updated.
-		[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidUnpersistModels:) withObject:@[model]];
-	}];
+	dispatch_async(_queryDispatchQueue, ^{
+		[_queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+			NSString * tableName = [[model class] databaseTableName];
+			NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE id = ?", tableName];
+			[db executeUpdate: query withArgumentsInArray:@[[model ID]]];
+		}];
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			// notify providers that models were updated. This may result in views being updated.
+			[[_observers setRepresentation] makeObjectsPerformSelector:@selector(managerDidUnpersistModels:) withObject:@[model]];
+		});
+	});
 }
 
 - (void)writeModel:(INModelObject *)model toDatabase:(FMDatabase *)db
@@ -232,6 +278,24 @@ static void initialize_INDatabaseManager() {
 
 #pragma mark Finding Objects
 
+- (INModelObject*)selectModelOfClass:(Class)klass withID:(NSString *)ID
+{
+	INModelObject __block * obj = nil;
+	[_queue inDatabase:^(FMDatabase * db) {
+		FMResultSet * result = nil;
+		if (ID) {
+			NSString * query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE ID = ? LIMIT 1", [klass databaseTableName]];
+			result = [db executeQuery:query withArgumentsInArray:@[ID]];
+		} else {
+			NSString * query = [NSString stringWithFormat:@"SELECT * FROM %@ LIMIT 1", [klass databaseTableName]];
+			result = [db executeQuery:query];
+		}
+		obj = [result nextModelOfClass: klass];
+		[result close];
+	}];
+	return obj;
+}
+
 - (void)selectModelsOfClass:(Class)klass matching:(NSPredicate *)wherePredicate sortedBy:(NSArray *)sortDescriptors limit:(int)limit offset:(int)offset withCallback:(ResultsBlock)callback
 {
 	NSMutableString * query = [[NSMutableString alloc] initWithFormat:@"SELECT * FROM %@", [klass databaseTableName]];
@@ -254,6 +318,7 @@ static void initialize_INDatabaseManager() {
 		}
 		
 		[query appendFormat:@" ORDER BY %@", [sortClauses componentsJoinedByString:@", "]];
+		[query appendFormat:@" LIMIT %d, %d", offset, limit]; // weird ordering, but correct!
 	}
 	
 	[self selectModelsOfClass:klass withQuery:query andParameters:nil andCallback:callback];
@@ -262,24 +327,30 @@ static void initialize_INDatabaseManager() {
 
 - (void)selectModelsOfClass:(Class)klass withQuery:(NSString *)query andParameters:(NSDictionary *)arguments andCallback:(ResultsBlock)callback
 {
-	[self checkModelTable:klass];
+	NSAssert(callback, @"-selectModelsOfClass called without a valid callback.");
+	NSAssert(query, @"-selectModelsOfClass called without a valid query.");
+	
+	if (![self checkModelTable:klass])
+		return;
 
-	[_queue inDatabase:^(FMDatabase * db) {
-		FMResultSet * result = [db executeQuery:query withParameterDictionary:arguments];
+	dispatch_async(_queryDispatchQueue, ^{
+		[_queue inDatabase:^(FMDatabase * db) {
+			FMResultSet * result = [db executeQuery:query withParameterDictionary:arguments];
 
-		NSMutableArray * objects = [@[] mutableCopy];
-		INModelObject * obj = nil;
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				NSMutableArray __block * objects = [@[] mutableCopy];
+				INModelObject * obj = nil;
+				while ((obj = [result nextModelOfClass:klass]))
+					[objects addObject:obj];
+				
+				[result close];
 
-		while ((obj = [result nextModelOfClass:klass]))
-			[objects addObject:obj];
-
-		[result close];
-
-		NSLog(@"%@ RETRIEVED %d %@s", query, [objects count], NSStringFromClass(klass));
-
-		if (callback)
-			callback(objects);
-	}];
+				NSLog(@"%@ RETRIEVED %lu %@s", query, (unsigned long)[objects count], NSStringFromClass(klass));
+				if (callback)
+					callback(objects);
+			});
+		}];
+	});
 }
 
 

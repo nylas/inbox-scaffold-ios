@@ -11,8 +11,6 @@
 
 @class INAPIOperation;
 
-#define API_TIMESTAMP_FORMAT @"yyyy-MM-dd HH:mm:ss"
-
 static NSString * INModelObjectChangedNotification = @"model_changed";
 
 /**
@@ -54,6 +52,11 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
 - (NSMutableDictionary *)resourceDictionary;
 
 /**
+ @return YES if the resource dictionary represents a change to the model.
+ */
+- (BOOL)differentFromResourceDictionary:(NSDictionary *)dict;
+
+/**
  Applies the JSON to the object, overriding existing property values when key-value
  pairs are present in the json.
 
@@ -64,11 +67,6 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
 
 
 /** @name Resource Loading and Saving */
-
-/**
- @return The path to the object on the API.
- */
-- (NSString *)APIPath;
 
 /**
  Reload the model by perfoming a GET request to the APIPath.
@@ -129,6 +127,12 @@ static NSString * INModelObjectChangedNotification = @"model_changed";
  @return A dictionary mapping iOS property names to JSON fields.
  */
 + (NSMutableDictionary *)resourceMapping;
+
+/**
+ @return The path to the object on the API.
+ */
++ (NSString *)resourceAPIName;
+- (NSString *)resourceAPIPath;
 
 /**
  @return The table that should be used to cache this model in local storage.

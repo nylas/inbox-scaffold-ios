@@ -7,56 +7,93 @@
 //
 
 #import "INViewController.h"
+#import "INThreadViewController.h"
+#import "INThreadTableViewCell.h"
 #import "INAPIOperation.h"
+#import "INAccount.h"
+#import "INThread.h"
 
 @implementation INViewController
 
-- (void)viewDidLoad
+- (id)init
 {
-	[super viewDidLoad];
-
-	NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"name CONTAINS 'Ben'"];
-	NSSortDescriptor * nameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-
-	_contactsProvider = [INModelProvider providerForClass:[INContact class]];
-	[_contactsProvider setPredicate:predicate];
-	[_contactsProvider setSortDescriptors:@[nameSortDescriptor]];
-	[_contactsProvider setDelegate:self];
-	[_contactsProvider refresh];
+	self = [super init];
+	if (self) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareForDisplay) name:INAccountChangedNotification object:nil];
+	}
+	return self;
 }
 
-- (void)providerDataRefreshed
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+- (void)viewDidLoad
+{
+	[self setTitle: @"Threads"];
+	[self prepareForDisplay];
+
+	_refreshControl = [[UIRefreshControl alloc] init];
+	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+	[_tableView addSubview: _refreshControl];
+}
+
+- (void)prepareForDisplay
+{
+	INAccount * account = [[INAPIManager shared] account];
+	INNamespace * namespace = [[account namespaces] firstObject];
+	
+	self.threadsProvider = [namespace newThreadsProvider];
+	[_threadsProvider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
+	[_threadsProvider setDelegate:self];
+	[_threadsProvider setItemRange: NSMakeRange(0, 20)];
+	[_threadsProvider refresh];
+}
+
+- (void)refresh
+{
+	[_threadsProvider refresh];
+}
+
+- (void)providerDataChanged
 {
 	[_tableView reloadData];
 }
 
-- (void)providerDataAltered:(NSArray *)changes
+- (void)providerDataAltered:(INModelProviderChangeSet *)changeSet
 {
-	NSMutableArray * removedIndexPaths = [NSMutableArray array];
-	NSMutableArray * insertIndexPaths = [NSMutableArray array];
-	NSMutableArray * reloadIndexPaths = [NSMutableArray array];
-
-	for (INModelProviderChange * change in changes) {
-		switch (change.type) {
-			case INModelProviderChangeRemove:
-				[removedIndexPaths addObject: [NSIndexPath indexPathForItem:change.index inSection:0]];
-				break;
-			case INModelProviderChangeAdd:
-				[insertIndexPaths addObject: [NSIndexPath indexPathForItem:change.index inSection:0]];
-				break;
-			case INModelProviderChangeUpdate:
-				[reloadIndexPaths addObject: [NSIndexPath indexPathForItem:change.index inSection:0]];
-				break;
-			default:
-				break;
-		}
-	}
-
+	NSLog(@"Applying Changes: %@", [changeSet description]);
+	
 	[_tableView beginUpdates];
-	[_tableView deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:UITableViewRowAnimationLeft];
-	[_tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-	[_tableView reloadRowsAtIndexPaths:reloadIndexPaths withRowAnimation:UITableViewRowAnimationLeft];
+	[_tableView deleteRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeRemove] withRowAnimation:UITableViewRowAnimationLeft];
+	[_tableView insertRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeAdd] withRowAnimation:UITableViewRowAnimationTop];
 	[_tableView endUpdates];
+	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeUpdate] withRowAnimation:UITableViewRowAnimationLeft];
+}
+
+- (void)providerDataFetchFailed:(NSError *)error
+{
+	[[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+	[_refreshControl endRefreshing];
+}
+
+- (void)providerDataFetchCompleted
+{
+	[_refreshControl endRefreshing];
+}
+
+#pragma mark Search
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+	return YES;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+	NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"subject CONTAINS[cd] %@", searchText];
+	[_threadsProvider setItemFilterPredicate:predicate];
 }
 
 #pragma mark Table View Data Source
@@ -68,34 +105,36 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [[_contactsProvider items] count];
+	return [[_threadsProvider items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+	INThreadTableViewCell * cell = (INThreadTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];
+	if (!cell) cell = [[INThreadTableViewCell alloc] initWithReuseIdentifier:@"cell"];
 
-	if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-
-	INContact * contact = [[_contactsProvider items] objectAtIndex:[indexPath row]];
-	NSString * label = [contact name];
-	[[cell textLabel] setText:label];
-
+	INThread * thread = [[_threadsProvider items] objectAtIndex:[indexPath row]];
+	[cell setThread: thread];
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	INContact * contact = [[_contactsProvider items] objectAtIndex:[indexPath row]];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	INThread * thread = [[_threadsProvider items] objectAtIndex:[indexPath row]];
+	
+	INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: thread];
+	[self.navigationController pushViewController:threadVC animated:YES];
+}
 
-	[contact beginUpdates];
-	[contact setName: @"Whoa Name Changed!"];
-	INAPIOperation * operation = [contact commitUpdates];
-
-	[operation setCompletionBlockWithSuccess: NULL failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[[[UIAlertView alloc] initWithTitle:@"Failed!" message:@"Oh man, what we did must have been illegial." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-	}];
-
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if (scrollView.contentOffset.y > _scrollViewPrevOffset)
+		if ([_searchBar isFirstResponder])
+			[_searchBar resignFirstResponder];
+			
+	_scrollViewPrevOffset = scrollView.contentOffset.y;
 }
 
 @end

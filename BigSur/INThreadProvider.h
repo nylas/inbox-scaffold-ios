@@ -11,10 +11,7 @@
 
 @interface INThreadProvider : INModelProvider
 
-@property (nonatomic, strong) INNamespace * namespace;
+- (id)initWithNamespaceID:(NSString *)namespaceID;
 
-- (id)initWithNamespace:(INNamespace *)namespace;
-
-- (void)fetchFromAPI;
 
 @end

@@ -27,40 +27,53 @@
 	return self;
 }
 
-- (BOOL)validateResponse:(NSHTTPURLResponse *)response data:(NSData *)data error:(NSError * __autoreleasing *)error
-{
-	if (![super validateResponse:response data:data error:error])
-		return NO;
-
-	id responseObject = [super responseObjectForResponse:response data:data error:error];
-	if (!responseObject)
-		return NO;
-
-	[response associateValue:responseObject withKey:ALREADY_PARSED_RESPONSE];
-
-	BOOL wrongJSONClass = ([responseObject isKindOfClass:[NSArray class]] == NO);
-	if (wrongJSONClass) {
-		*error = [NSError errorWithDomain:@"IN" code:100 userInfo:@{NSLocalizedDescriptionKey: @"The JSON object returned was not an NSArray"}];
-		return NO;
-	}
-
-	return YES;
-}
-
 - (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError * __autoreleasing *)error
 {
-	NSArray * responseObject = [response associatedValueForKey:ALREADY_PARSED_RESPONSE];
-	if (!responseObject) responseObject = [super responseObjectForResponse:response data:data error:error];
+	id responseObject = [super responseObjectForResponse:response data:data error:error];
 
-	NSMutableArray * models = [NSMutableArray array];
-
-	for (NSDictionary * modelDictionary in responseObject) {
-		INModelObject * object = [_modelClass attachedInstanceWithResourceDictionary:modelDictionary];
-		if (object)
-			[models addObject:object];
+	BOOL badJSONClass = ([responseObject isKindOfClass:[NSArray class]] == NO);
+	BOOL badAPIResponse = ([responseObject isKindOfClass: [NSDictionary class]] && [[responseObject objectForKey: @"type"] isEqualToString: @"api_error"]);
+	
+	if (badAPIResponse) {
+		*error = [NSError errorWithDomain:@"IN" code:100 userInfo:@{NSLocalizedDescriptionKey: @"The JSON object returned was an error."}];
+		return nil;
+	}
+	
+	if (badJSONClass) {
+		*error = [NSError errorWithDomain:@"IN" code:100 userInfo:@{NSLocalizedDescriptionKey: @"The JSON object returned was not an NSArray"}];
+		return nil;
 	}
 
-	[[INDatabaseManager shared] persistModels:models];
+	NSMutableArray * models = [NSMutableArray array];
+	NSMutableArray * modifiedOrUnloadedModels = [NSMutableArray array];
+	
+	dispatch_sync(dispatch_get_main_queue(), ^{
+		for (NSDictionary * modelDictionary in responseObject) {
+			BOOL created = NO;
+			INModelObject * object = [_modelClass attachedInstanceMatchingID: modelDictionary[@"id"] createIfNecessary: YES didCreate: &created];
+			
+			if (created) {
+				// if we don't have a copy of the object in memory, inflate one and write it
+				// to the database. Note that these will probably be freed shortly.
+				[object updateWithResourceDictionary:modelDictionary];
+				[object setup];
+				[modifiedOrUnloadedModels addObject: object];
+
+			} else {
+				// if we have a copy of the object in memory already, let's be smart. Only apply
+				// changes to the model if necessary. This prevents unnecessary notifications from
+				// being fired, animations in the interface, etc.
+				if ([object differentFromResourceDictionary: modelDictionary]) {
+					[object updateWithResourceDictionary:modelDictionary];
+					[modifiedOrUnloadedModels addObject: object];
+				}
+			}
+			
+			[models addObject:object];
+		}
+	});
+
+	[[INDatabaseManager shared] persistModels: modifiedOrUnloadedModels];
 	return models;
 }
 

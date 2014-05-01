@@ -13,5 +13,6 @@
 - (void)weaklyAssociateValue:(id)value withKey:(void *)key;
 - (id)associatedValueForKey:(void *)key;
 - (void)performSelectorOnMainThreadOnce:(SEL)selector;
+- (void)markPerformedSelector:(SEL)selector;
 
 @end
