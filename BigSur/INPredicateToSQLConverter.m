@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Inbox. All rights reserved.
 //
 
-#import "INPredicateConverter.h"
+#import "INPredicateToSQLConverter.h"
 #import "INModelObject.h"
 
 static NSString * SQLNullValueString = @"NULL";
 
-@implementation INPredicateConverter
+@implementation INPredicateToSQLConverter
 
 - (NSString *)SQLExpressionForKeyPath:(NSString *)keyPath
 {

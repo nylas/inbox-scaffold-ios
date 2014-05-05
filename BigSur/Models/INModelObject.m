@@ -13,7 +13,7 @@
 #import "NSObject+Properties.h"
 #import "NSString+FormatConversion.h"
 #import "NSDictionary+FormatConversion.h"
-#import "INPredicateConverter.h"
+#import "INPredicateToSQLConverter.h"
 #import "INDatabaseManager.h"
 
 
@@ -125,7 +125,7 @@
 
 - (void)updateWithResourceDictionary:(NSDictionary *)json
 {
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"INModelObjects should not be mutated from background threads.");
+	NSAssert([NSThread isMainThread], @"INModelObjects should not be mutated from background threads.");
 	
 	if ([json isKindOfClass:[NSDictionary class]] == NO)
 		NSAssert(false, @"updateWithResourceDictionary called with json that is not a dictionary");

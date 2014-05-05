@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "INThread.h"
+#import "INRecipientsLabel.h"
 
 @interface INThreadTableViewCell : UITableViewCell
 
@@ -15,7 +16,7 @@
 @property (nonatomic, strong) UILabel * dateLabel;
 @property (nonatomic, strong) UILabel * bodyLabel;
 @property (nonatomic, strong) UILabel * subjectLabel;
-@property (nonatomic, strong) UILabel * participantsLabel;
+@property (nonatomic, strong) INRecipientsLabel * participantsLabel;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 

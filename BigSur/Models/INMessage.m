@@ -7,6 +7,7 @@
 //
 
 #import "INMessage.h"
+#import "NSString+FormatConversion.h"
 
 @implementation INMessage
 
@@ -35,6 +36,13 @@
 	return [[super databaseIndexProperties] arrayByAddingObjectsFromArray: @[@"threadID", @"subject", @"date"]];
 }
 
+- (NSURL*)fromGravatarURL
+{
+	NSString * email = [[_from firstObject] objectForKey: @"email"];
+    email = [[email stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] lowercaseString];
+    NSString * p = [NSString stringWithFormat: @"http://www.gravatar.com/avatar/%@?s=184", [email md5Value]];
+	return [NSURL URLWithString: p];
+}
 
 
 @end

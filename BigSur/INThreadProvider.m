@@ -10,6 +10,7 @@
 #import "INAPIManager.h"
 #import "INThread.h"
 #import "INModelArrayResponseSerializer.h"
+#import "INPredicateToQueryParamConverter.h"
 
 @implementation INThreadProvider
 
@@ -23,7 +24,14 @@
 
 - (NSDictionary *)queryParamsForPredicate:(NSPredicate*)predicate
 {
-	return @{@"limit": @(20)};
+	INPredicateToQueryParamConverter * converter = [[INPredicateToQueryParamConverter alloc] init];
+	[converter setKeysToParamsTable: @{@"to": @"to", @"from": @"from", @"cc": @"cc", @"bcc": @"bcc", @"threadID": @"thread", @"label": @"label"}];
+	[converter setKeysToLIKEParamsTable: @{@"subject": @"subject"}];
+
+	NSMutableDictionary * params = [[converter paramsForPredicate: predicate] mutableCopy];
+	[params setObject:@(20) forKey:@"limit"];
+	
+	return params;
 }
 
 @end

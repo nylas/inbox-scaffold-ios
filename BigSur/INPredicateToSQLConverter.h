@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface INPredicateConverter : NSObject
+@interface INPredicateToSQLConverter : NSObject
 
 @property (nonatomic, strong) Class targetModelClass;
 

@@ -7,6 +7,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="INThreadViewController">
             <connections>
                 <outlet property="collectionView" destination="ahO-7u-cuo" id="wr8-Es-S6g"/>
+                <outlet property="threadHeaderView" destination="z6b-0t-Xl8" id="aZW-JK-6Xu"/>
+                <outlet property="threadSubjectLabel" destination="9ou-s0-7qv" id="LGk-3i-bCe"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="TIw-YW-BBY"/>
             </connections>
         </placeholder>
@@ -31,6 +33,20 @@
                         <outlet property="delegate" destination="-1" id="Sv3-MD-lJM"/>
                     </connections>
                 </collectionView>
+                <view contentMode="scaleToFill" id="z6b-0t-Xl8">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9ou-s0-7qv">
+                            <rect key="frame" x="15" y="10" width="291" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

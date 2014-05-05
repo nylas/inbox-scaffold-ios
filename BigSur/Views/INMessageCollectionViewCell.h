@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "INMessage.h"
+#import "INRecipientsLabel.h"
 
 @class INMessageCollectionViewCell;
 
@@ -19,6 +20,10 @@ typedef void (^ CellBlock)();
 @property (nonatomic, strong) CellBlock messageHeightDeterminedBlock;
 
 @property (nonatomic, weak) IBOutlet UIWebView * bodyWebView;
+@property (nonatomic, weak) IBOutlet UIButton * fromProfileButton;
+@property (nonatomic, weak) IBOutlet INRecipientsLabel * fromField;
+@property (nonatomic, weak) IBOutlet INRecipientsLabel * toField;
+@property (weak, nonatomic) IBOutlet UILabel * dateField;
 
 + (float)cachedHeightForMessage:(INMessage*)message;
 

@@ -17,8 +17,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: [[INViewController alloc] init]];
+	[[nav navigationBar] setTranslucent: NO];
+	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController: [[INViewController alloc] init]];
+	self.window.rootViewController = nav;
 	[self.window makeKeyAndVisible];
 
 	if (![[INAPIManager shared] account]) {

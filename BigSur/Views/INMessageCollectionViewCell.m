@@ -8,10 +8,15 @@
 
 #import "INMessageCollectionViewCell.h"
 #import "NSObject+AssociatedObjects.h"
+#import "UIButton+AFNetworking.h"
+#import "NSString+FormatConversion.h"
+#import "INConvenienceCategories.h"
 
 #define ASSOCIATED_CACHED_HEIGHT @"cell-message-height"
+#define MESSAGE_HEADER_HEIGHT 65
 
 static NSString * messageCSS = nil;
+static NSString * messageJS = nil;
 
 @implementation INMessageCollectionViewCell
 
@@ -25,6 +30,14 @@ static NSString * messageCSS = nil;
 	[self setBackgroundColor: [UIColor whiteColor]];
 	[self setClipsToBounds: NO];
 	
+	[_fromField setTextColor: [UIColor blueColor]];
+	[_fromField setTextFont: [UIFont boldSystemFontOfSize: 15]];
+	[_fromField setRecipientsClickable: YES];
+	
+	[_toField setTextColor: [UIColor grayColor]];
+	[_toField setTextFont: [UIFont systemFontOfSize: 14]];
+	[_toField setRecipientsClickable: NO];
+
 	[[self layer] setCornerRadius: 2];
 	[[self layer] setShadowRadius: 1];
 	[[self layer] setShadowOffset: CGSizeMake(0, 1)];
@@ -45,12 +58,31 @@ static NSString * messageCSS = nil;
 	if (messageCSS == nil) {
 		NSString * messageCSSPath = [[NSBundle mainBundle] pathForResource:@"message" ofType:@"css"];
 		messageCSS = [NSString stringWithContentsOfFile:messageCSSPath encoding:NSUTF8StringEncoding error:nil];
+		NSString * messageJSPath = [[NSBundle mainBundle] pathForResource:@"message" ofType:@"js"];
+		messageJS = [NSString stringWithContentsOfFile:messageJSPath encoding:NSUTF8StringEncoding error:nil];
 	}
 	
-	NSString * html = [NSString stringWithFormat: @"<style>%@</style>\n%@", messageCSS, [message body]];
+	[_fromProfileButton setImageForState:UIControlStateNormal withURL:[_message fromGravatarURL] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
+	[_fromField setRecipients: [message from]];
+	[_toField setRecipients: [message to]];
+	[_dateField setText: [NSString stringForMessageDate: [_message date]]];
 	
+	NSString * html = [NSString stringWithFormat: @"<style>%@</style>\n%@", messageCSS, [message body]];
+	NSRange endHead = [html rangeOfString: @"</head>"];
+	if (endHead.location != NSNotFound) {
+		html = [NSString stringWithFormat:@"%@<meta name=\"viewport\" content=\"width=300\">%@", [html substringToIndex: endHead.location], [html substringFromIndex: endHead.location]];
+		[_bodyWebView setScalesPageToFit: YES];
+	} else {
+		[_bodyWebView setScalesPageToFit: NO];
+	}
+
 	[_bodyWebView loadHTMLString:html baseURL:nil];
+	[_bodyWebView setDataDetectorTypes: UIDataDetectorTypeAll];
 	[[_bodyWebView scrollView] setScrollEnabled: NO];
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -58,11 +90,26 @@ static NSString * messageCSS = nil;
 	if ([[self class] cachedHeightForMessage: _message])
 		return;
 		
-	NSString *output = [webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"];
-	[_message associateValue:[NSNumber numberWithFloat: [output floatValue] + 44] withKey: ASSOCIATED_CACHED_HEIGHT];
+//	[_bodyWebView stringByEvaluatingJavaScriptFromString: messageJS];
+
+	float height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"] floatValue];
+	float width = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollWidth;"] floatValue];
+	if ([_bodyWebView scalesPageToFit] == NO)
+		width = 300;
+		
+	[_message associateValue:[NSNumber numberWithFloat: height / (width / 300.0) + MESSAGE_HEADER_HEIGHT] withKey: ASSOCIATED_CACHED_HEIGHT];
 
 	if (_messageHeightDeterminedBlock)
 		_messageHeightDeterminedBlock(self);
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+	if ((navigationType == UIWebViewNavigationTypeOther) || (navigationType == UIWebViewNavigationTypeReload))
+		return YES;
+
+	[[UIApplication sharedApplication] openURL: [request URL]];
+	return NO;
 }
 
 @end

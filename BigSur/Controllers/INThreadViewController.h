@@ -14,6 +14,8 @@
 @interface INThreadViewController : UIViewController <INModelProviderDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView * collectionView;
+@property (weak, nonatomic) IBOutlet UILabel * threadSubjectLabel;
+@property (weak, nonatomic) IBOutlet UIView *threadHeaderView;
 
 @property (nonatomic, strong) INThread * thread;
 @property (nonatomic, strong) INModelProvider * messageProvider;

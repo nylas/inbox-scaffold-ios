@@ -7,7 +7,7 @@
 //
 
 #import "INDatabaseManager.h"
-#import "INPredicateConverter.h"
+#import "INPredicateToSQLConverter.h"
 #import "FMResultSet+INModelQueries.h"
 #import "NSObject+Properties.h"
 
@@ -299,7 +299,7 @@ static void initialize_INDatabaseManager() {
 - (void)selectModelsOfClass:(Class)klass matching:(NSPredicate *)wherePredicate sortedBy:(NSArray *)sortDescriptors limit:(int)limit offset:(int)offset withCallback:(ResultsBlock)callback
 {
 	NSMutableString * query = [[NSMutableString alloc] initWithFormat:@"SELECT * FROM %@", [klass databaseTableName]];
-	INPredicateConverter * converter = [[INPredicateConverter alloc] init];
+	INPredicateToSQLConverter * converter = [[INPredicateToSQLConverter alloc] init];
 	
 	[converter setTargetModelClass: klass];
 	

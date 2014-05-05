@@ -7,6 +7,7 @@
 //
 
 #import "INMessageProvider.h"
+#import "INPredicateToQueryParamConverter.h"
 #import "INThread.h"
 
 @implementation INMessageProvider
@@ -22,31 +23,11 @@
 
 - (NSDictionary *)queryParamsForPredicate:(NSPredicate*)predicate
 {
-	NSMutableDictionary * params = [NSMutableDictionary dictionary];
-	
-	if ([predicate isKindOfClass: [NSCompoundPredicate class]]) {
-		if ([(NSCompoundPredicate*)predicate compoundPredicateType] != NSAndPredicateType)
-			NSAssert(false, @"Only AND predicates are currently supported in constructing queries.");
-			
-		for (NSPredicate * subpredicate in [(NSCompoundPredicate*)predicate subpredicates])
-			[params addEntriesFromDictionary: [self queryParamsForPredicate: subpredicate]];
-	
-	} else if ([predicate isKindOfClass: [NSComparisonPredicate class]]) {
-		NSComparisonPredicate * pred = (NSComparisonPredicate*)predicate;
-		if ([[pred rightExpression] expressionType] != NSConstantValueExpressionType)
-			NSAssert(false, @"Only constant values can be on the RHS of predicates.");
-		if ([[pred leftExpression] expressionType] != NSKeyPathExpressionType)
-			NSAssert(false, @"Only property names can be on the LHS of predicates.");
-				
+	INPredicateToQueryParamConverter * converter = [[INPredicateToQueryParamConverter alloc] init];
+	[converter setKeysToParamsTable: @{@"to": @"to", @"from": @"from", @"cc": @"cc", @"bcc": @"bcc", @"threadID": @"thread", @"label": @"label"}];
 
-		NSString * keyPath = [[pred leftExpression] keyPath];
-		
-		if ([keyPath isEqualToString: @"namespaceID"]) {
-			// ignore - it's in the URL
-		} else if ([keyPath isEqualToString: @"threadID"]) {
-			[params setObject:[[pred rightExpression] constantValue] forKey:@"thread"];
-		}
-	}
+	NSMutableDictionary * params = [[converter paramsForPredicate: predicate] mutableCopy];
+	[params setObject:@(20) forKey:@"limit"];
 	
 	return params;
 }

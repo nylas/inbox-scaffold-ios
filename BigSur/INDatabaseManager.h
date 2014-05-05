@@ -48,11 +48,12 @@
 @interface INDatabaseManager : NSObject
 {
 	NSMutableDictionary * _initializedModelClasses;
-	NSHashTable * _observers;
-
 	FMDatabaseQueue * _queue;
 	dispatch_queue_t _queryDispatchQueue;
 }
+
+@property (nonatomic, strong, readonly) NSHashTable * observers;
+
 
 + (INDatabaseManager *)shared;
 

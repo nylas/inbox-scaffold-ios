@@ -8,6 +8,7 @@
 
 #import "INThreadViewController.h"
 #import "INMessageCollectionViewCell.h"
+#import "UIView+FrameAdditions.h"
 #import "NSObject+AssociatedObjects.h"
 #import "INMessage.h"
 
@@ -33,6 +34,16 @@
 	[_messageProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
 	[_messageProvider setDelegate: self];
 	[_messageProvider refresh];
+	
+	[[_threadHeaderView layer] setShadowOffset: CGSizeMake(0, 1)];
+	[[_threadHeaderView layer] setShadowOpacity: 0.1];
+	[[_threadHeaderView layer] setShadowRadius: 1];
+	[_threadSubjectLabel setText: [_thread subject]];
+
+	[_threadSubjectLabel sizeToFit];
+	[_threadHeaderView setFrameHeight: _threadSubjectLabel.frame.size.height + _threadSubjectLabel.frame.origin.y * 2];
+	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
+	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
 }
 
 - (void)didReceiveMemoryWarning

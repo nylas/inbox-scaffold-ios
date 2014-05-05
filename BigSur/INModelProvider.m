@@ -92,6 +92,9 @@
 
 - (void)setItemRange:(NSRange)itemRange
 {
+	if ((_itemRange.length == itemRange.length) && (_itemRange.location == itemRange.location))
+		return;
+		
 	_itemRange = itemRange;
 	[self performSelectorOnMainThreadOnce:@selector(refresh)];
 }
@@ -142,7 +145,7 @@
 	NSString * path = [_modelClass resourceAPIName];
 	
 	if (_namespaceID)
-		path = [NSString stringWithFormat:@"/n/%@/%@/all", _namespaceID, path];
+		path = [NSString stringWithFormat:@"/n/%@/%@", _namespaceID, path];
 
 	_fetchOperation = [[INAPIManager shared] GET:path parameters:params success:^(AFHTTPRequestOperation * operation, NSArray * models) {
 		NSLog(@"GET %@ (%@) RETRIEVED %lu %@s", path, [params description], (unsigned long)[models count], NSStringFromClass(_modelClass));
@@ -178,7 +181,7 @@
 
 - (void)managerDidPersistModels:(NSArray *)savedArray
 {
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"-managerDidPersistModels is not threadsafe.");
+	NSAssert([NSThread isMainThread], @"-managerDidPersistModels is not threadsafe.");
 	
 	NSMutableSet * savedModels = [NSMutableSet set];
 	for (INModelObject * model in savedArray)
@@ -270,7 +273,7 @@
 
 - (void)managerDidUnpersistModels:(NSArray*)models
 {
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"-managerDidUnpersistModels is not threadsafe.");
+	NSAssert([NSThread isMainThread], @"-managerDidUnpersistModels is not threadsafe.");
 
 	NSMutableArray * newItems = [NSMutableArray arrayWithArray: self.items];
 	[newItems removeObjectsInArray: models];
@@ -291,12 +294,15 @@
 	} else if ([self.delegate respondsToSelector:@selector(providerDataChanged)]) {
 		self.items = newItems;
 		[self.delegate providerDataChanged];
+
+	} else {
+		self.items = newItems;
 	}
 }
 
 - (void)managerDidReset
 {
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"-managerDidReset is not threadsafe.");
+	NSAssert([NSThread isMainThread], @"-managerDidReset is not threadsafe.");
 	[self refresh];
 }
 

@@ -17,4 +17,6 @@
 @property (nonatomic, strong) NSArray * from;
 @property (nonatomic, strong) NSArray * to;
 
+- (NSURL*)fromGravatarURL;
+
 @end

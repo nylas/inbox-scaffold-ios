@@ -9,6 +9,7 @@
 #import "INThreadTableViewCell.h"
 #import "NSString+FormatConversion.h"
 #import "UIView+FrameAdditions.h"
+#import "INConvenienceCategories.h"
 
 #define INSETS UIEdgeInsetsMake(8, 10, 8, 12)
 
@@ -16,7 +17,7 @@
 
 - (id)initWithReuseIdentifier:(NSString*)identifier
 {
-	self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 	if (self) {
 		[[[self imageView] layer] setCornerRadius: 3];
 		[[[self imageView] layer] setMasksToBounds:YES];
@@ -26,9 +27,10 @@
 		[_dateLabel setTextColor: [UIColor grayColor]];
 		[self addSubview: _dateLabel];
 		
-		_participantsLabel = [self detailTextLabel];
+		_participantsLabel = [[INRecipientsLabel alloc] initWithFrame: CGRectZero];
 		[_participantsLabel setTextColor: [UIColor colorWithWhite:0.2 alpha:1]];
-		[_participantsLabel setFont: [UIFont systemFontOfSize: 13]];
+		[_participantsLabel setTextFont: [UIFont systemFontOfSize: 13]];
+		[self addSubview: _participantsLabel];
 		
 		_bodyLabel = [[UILabel alloc] initWithFrame: CGRectZero];
 		_subjectLabel = [self textLabel];
@@ -71,19 +73,11 @@
 	
 	[[self imageView] setImage: [UIImage imageNamed: @"profile_placeholder.png"]];
 
-	[_participantsLabel setText: @"Joshua Franklin"];
+	[_participantsLabel setRecipients:[_thread participants]];
 	[_subjectLabel setText: [_thread subject]];
 	[_bodyLabel setText: @"So glad to hear you guys will makei t to the BBQ this year! It looks like it'll be a great time but this is too much text."];
 	
-	NSTimeInterval twelveHours = -60 * 60 * 12;
-	NSString * dateString = nil;
-	
-	if ([[_thread lastMessageDate] timeIntervalSinceNow] > twelveHours)
-		dateString = [NSString stringWithDate:[_thread lastMessageDate] format:@"h:mm aa"];
-	else
-		dateString = [NSString stringWithDate:[_thread lastMessageDate] format:@"MM/dd/YY"];
-	
-	[[self dateLabel] setText: dateString];
+	[[self dateLabel] setText: [NSString stringForMessageDate: [_thread lastMessageDate]]];
 }
 
 @end
