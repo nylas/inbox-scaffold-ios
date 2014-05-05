@@ -13,6 +13,7 @@
 @interface INThread : INModelObject
 
 @property (nonatomic, strong) NSString * subject;
+@property (nonatomic, strong) NSString * snippet;
 @property (nonatomic, strong) NSArray * participants;
 @property (nonatomic, strong) NSDate * lastMessageDate;
 @property (nonatomic, strong) NSArray * messageIDs;

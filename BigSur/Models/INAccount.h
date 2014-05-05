@@ -17,5 +17,6 @@
 @property (nonatomic, strong) NSString * authToken;
 
 - (NSArray*)namespaces;
+- (NSArray*)ownEmailAddresses;
 
 @end

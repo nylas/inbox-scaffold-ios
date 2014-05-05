@@ -12,9 +12,9 @@
 #import "INAccount.h"
 
 #if DEBUG
-  #define API_URL		[NSURL URLWithString:@"http://192.168.10.200:5555/"]
+  #define API_URL		[NSURL URLWithString:@"http://localhost:5555/"]
 #else
-  #define API_URL		[NSURL URLWithString:@"http://192.168.10.200:5555/"]
+  #define API_URL		[NSURL URLWithString:@"http://localhost:5555/"]
 #endif
 
 #define OPERATIONS_FILE [@"~/Documents/operations.plist" stringByExpandingTildeInPath]
@@ -47,11 +47,17 @@ static void initialize_INAPIManager() {
 		[self.requestSerializer setCachePolicy: NSURLRequestReloadRevalidatingCacheData];
 		
 		INAccount * account = [self account];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[account reload: NULL];
+		});
+		
 		[self.requestSerializer setAuthorizationHeaderFieldWithUsername:account.authToken password:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveOperations) name:UIApplicationWillTerminateNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationFinished:) name:AFNetworkingOperationDidFinishNotification object:nil];
 		[self loadOperations];
 		
+		[[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+
 		typeof(self) __weak __self = self;
 		self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain: [API_URL host]];
 		[self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -161,7 +167,7 @@ static void initialize_INAPIManager() {
 - (void)authenticate:(AuthenticationBlock)completionBlock
 {
 	// TODO: Insert auth to get user ID here
-	NSString * userID = @"6zq90uveyf24fqxxadlrafnxy";
+	NSString * userID = @"aw0c1mxdeitsr4gx0t6pqcmxz";
 	NSString * authToken = @"whatevs";
 	
 	NSString * userPath = [NSString stringWithFormat: @"/u/%@", userID];
@@ -172,10 +178,21 @@ static void initialize_INAPIManager() {
 		[account updateWithResourceDictionary: responseObject];
 		[account setAuthToken: authToken];
 		
-		[self setAccount: account];
-
-		if (completionBlock)
-			completionBlock(account, nil);
+		int __block __loading = 0;
+		for (INNamespace * namespace in [account namespaces]) {
+			__loading+=1;
+			
+			[namespace reload:^(NSError *error) {
+				__loading -=1;
+				if (__loading == 0) {
+					// initialize all namespace objects before we announce an account change
+					[self setAccount: account];
+					
+					if (completionBlock)
+						completionBlock(account, nil);
+				}
+			}];
+		}
 
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		if (completionBlock)

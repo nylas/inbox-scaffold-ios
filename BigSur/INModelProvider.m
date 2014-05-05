@@ -11,6 +11,7 @@
 #import "INModelArrayResponseSerializer.h"
 #import "NSObject+AssociatedObjects.h"
 
+
 @implementation INModelProviderChange : NSObject
 
 + (INModelProviderChange *)changeOfType:(INModelProviderChangeType)type forItem:(INModelObject *)item atIndex:(NSInteger)index

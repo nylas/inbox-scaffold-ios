@@ -17,6 +17,6 @@
 @property (nonatomic, strong) UIFont * textFont;
 @property (nonatomic, assign) BOOL recipientsClickable;
 
-- (void)setRecipients:(NSArray*)recipients;
+- (void)setRecipients:(NSArray*)recipients includeMe:(BOOL)includeMe;
 
 @end

@@ -158,8 +158,7 @@
 
 - (void)reload:(ErrorBlock)callback
 {
-	NSString * path = [[[self class] resourceAPIName] stringByAppendingPathComponent: [self ID]];
-	[[INAPIManager shared] GET:path parameters:@{} success:^(AFHTTPRequestOperation * operation, id responseObject) {
+	[[INAPIManager shared] GET:[self resourceAPIPath] parameters:@{} success:^(AFHTTPRequestOperation * operation, id responseObject) {
 		[self updateWithResourceDictionary:responseObject];
 		[[INDatabaseManager shared] persistModel:self];
 		if (callback)
@@ -210,7 +209,7 @@
 
 + (NSMutableDictionary *)resourceMapping
 {
-	return [@{@"ID": @"id", @"namespaceID": @"ns", @"createdAt": @"created_at", @"updatedAt": @"updated_at"} mutableCopy];
+	return [@{@"ID": @"id", @"namespaceID": @"namespace", @"createdAt": @"created_at", @"updatedAt": @"updated_at"} mutableCopy];
 }
 
 + (NSString *)resourceAPIName

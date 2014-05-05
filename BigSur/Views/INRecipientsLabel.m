@@ -8,6 +8,7 @@
 
 #import "INRecipientsLabel.h"
 #import "UIView+FrameAdditions.h"
+#import "INAccount.h"
 
 @implementation INRecipientsLabel
 
@@ -31,31 +32,73 @@
 	[self addSubview: _moreButton];
 }
 
-- (void)setRecipients:(NSArray*)recipients
+- (void)setRecipients:(NSArray*)recipients includeMe:(BOOL)includeMe
 {
+	NSArray * youAddresses = [[[INAPIManager shared] account] ownEmailAddresses];
+	
 	[_buttons makeObjectsPerformSelector: @selector(removeFromSuperview)];
 	_buttons = [[NSMutableArray alloc] init];
 	
-	[_moreButton setTitleColor: [UIColor blueColor] forState:UIControlStateNormal];
+	[_moreButton setTitleColor:_textColor forState:UIControlStateNormal];
 	[[_moreButton titleLabel] setFont: _textFont];
 
 	BOOL firstNamesOnly = ([recipients count] > 2);
+	BOOL includedMe = NO;
 	
-	for (int ii = 0; ii < [recipients count]; ii ++) {
-		NSString * name = [[recipients objectAtIndex: ii] objectForKey: @"name"];
-		if (firstNamesOnly && ([name rangeOfString:@" "].location != NSNotFound))
-			name = [name substringToIndex: [name rangeOfString: @" "].location];
+	NSMutableArray * names = [NSMutableArray array];
+	for (NSDictionary * recipient in recipients) {
+		NSString * name = recipient[@"name"];
+		
+		// show "Me" instead of your name
+		if ([youAddresses containsObject: recipient[@"email"]]) {
+			if (includedMe)
+				continue;
+			includedMe = YES;
+			
+			if (includeMe)
+				name = @"Me";
+			else
+				continue;
+		}
+
+		// show only a first name if there are more than 2 recipients
+		if (firstNamesOnly) {
+			// Parse names like "McConnel, Jenny T."
+			BOOL commaSeparatedParts = ([name rangeOfString: @","].location != NSNotFound);
+			if (commaSeparatedParts)
+				name = [name substringFromIndex: [name rangeOfString:@","].location+1];
+			
+			// Parse out the first word from the name
+			name = [name stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+			BOOL twoParts = ([name rangeOfString:@" "].location != NSNotFound);
+			if (twoParts)
+				name = [name substringToIndex: [name rangeOfString: @" "].location];
+		}
+		
+		// trim whitespace from names
+		name = [name stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+		
+		// use email address of recipeint if name is not provided
 		if ([name length] == 0)
-			name = [[recipients objectAtIndex: ii] objectForKey: @"email"];
+			name = [recipient objectForKey: @"email"];
+		
+		if ([name isEqualToString: @"Me"])
+			[names insertObject:name atIndex:0];
+		else
+			[names addObject: name];
+	}
 	
-		if (ii == [recipients count] - 2)
-			name = [name stringByAppendingString: @" and "];
-		else if (ii < (int)[recipients count] - 2)
+	for (int ii = 0; ii < [names count]; ii ++) {
+		NSString * name = [names objectAtIndex: ii];
+		if (ii == [names count] - 2)
+			name = [name stringByAppendingString: @" & "];
+		else if (ii < (int)[names count] - 2)
 			name = [name stringByAppendingString: @", "];
 		
 		UIButton * b = [UIButton buttonWithType: UIButtonTypeCustom];
 		[b setTitle:name forState:UIControlStateNormal];
 		[[b titleLabel] setFont: _textFont];
+		[[b titleLabel] setLineBreakMode: NSLineBreakByTruncatingTail];
 		[b setTitleColor: _textColor forState:UIControlStateNormal];
 		[_buttons addObject: b];
 		[self addSubview: b];
@@ -73,14 +116,15 @@
 	int hidden = 0;
 	
 	for (UIButton * b in _buttons) {
-		[b setFrame: CGRectMake(x, 0, 1000, self.frame.size.height)];
-		[b sizeToFit];
-		[b setFrameHeight: self.frame.size.height];
+		CGSize size = [[b titleForState: UIControlStateNormal] sizeWithAttributes: @{NSFontAttributeName: [[b titleLabel] font]}];
+		[b setFrame: CGRectMake(x, 0, fminf(self.frame.size.width, size.width), self.frame.size.height)];
 		
 		if (x + [b frame].size.width > self.frame.size.width - 50)
 			hide = YES;
 		
-		if (hide) {
+		BOOL isFirstItem = (x == 0);
+		
+		if (hide && !isFirstItem) {
 			[b setHidden:YES];
 			hidden ++;
 			continue;

@@ -28,12 +28,32 @@
 	return @[];
 }
 
+- (NSString*)resourceAPIPath
+{
+	return [NSString stringWithFormat:@"/a/%@", self.ID];
+}
+
 - (NSArray*)namespaces
 {
 	NSMutableArray * namespaces = [NSMutableArray array];
 	for (NSString * ID in _namespaceIDs) {
-		[namespaces addObject: [INNamespace instanceWithID: ID]];
+		INNamespace * namespace = [INNamespace instanceWithID: ID];
+		[namespaces addObject: namespace];
+		
+		if (![namespace emailAddress])
+			[namespace reload: NULL];
 	}
 	return namespaces;
+}
+
+- (NSArray*)ownEmailAddresses
+{
+	NSMutableArray * youAddresses = [NSMutableArray array];
+	INAccount * account = [[INAPIManager shared] account];
+	for (INNamespace * namespace in [account namespaces]) {
+		if ([namespace emailAddress])
+			[youAddresses addObject:[ namespace emailAddress]];
+	}
+	return youAddresses;
 }
 @end

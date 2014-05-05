@@ -22,22 +22,22 @@
 		[[[self imageView] layer] setCornerRadius: 3];
 		[[[self imageView] layer] setMasksToBounds:YES];
 		
-		_dateLabel = [[UILabel alloc] initWithFrame: CGRectZero];
-		[_dateLabel setFont: [UIFont systemFontOfSize: 13]];
-		[_dateLabel setTextColor: [UIColor grayColor]];
-		[self addSubview: _dateLabel];
-		
 		_participantsLabel = [[INRecipientsLabel alloc] initWithFrame: CGRectZero];
 		[_participantsLabel setTextColor: [UIColor colorWithWhite:0.2 alpha:1]];
 		[_participantsLabel setTextFont: [UIFont systemFontOfSize: 13]];
 		[self addSubview: _participantsLabel];
+		
+		_dateLabel = [[UILabel alloc] initWithFrame: CGRectZero];
+		[_dateLabel setFont: [UIFont systemFontOfSize: 13]];
+		[_dateLabel setTextColor: [UIColor grayColor]];
+		[self addSubview: _dateLabel];
 		
 		_bodyLabel = [[UILabel alloc] initWithFrame: CGRectZero];
 		_subjectLabel = [self textLabel];
 		[_subjectLabel setFont: [UIFont boldSystemFontOfSize: 15]];
 		
 		[_bodyLabel setTextColor: [UIColor grayColor]];
-		[_bodyLabel setFont: [UIFont systemFontOfSize: 14]];
+		[_bodyLabel setFont: [UIFont systemFontOfSize: 13]];
 		[_bodyLabel setNumberOfLines: 2];
 		[self addSubview: _bodyLabel];
 	}
@@ -59,7 +59,7 @@
 	float textW = f.size.width - textX - INSETS.right;
 	[_participantsLabel setFrame: CGRectMake(textX, INSETS.top, _dateLabel.frame.origin.x - textX, 16)];
 	[_subjectLabel setFrame: CGRectMake(textX, [_participantsLabel bottomRight].y, textW, 20)];
-	[_bodyLabel setFrame: CGRectMake(textX, [_subjectLabel bottomRight].y, textW, 36)];
+	[_bodyLabel setFrame: CGRectMake(textX, [_subjectLabel bottomRight].y, textW, 35)];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -73,11 +73,14 @@
 	
 	[[self imageView] setImage: [UIImage imageNamed: @"profile_placeholder.png"]];
 
-	[_participantsLabel setRecipients:[_thread participants]];
+	BOOL includeMe = (([[_thread messageIDs] count] > 1) || ([[_thread participants] count] > 2));
+	[_participantsLabel setRecipients:[_thread participants] includeMe: includeMe];
 	[_subjectLabel setText: [_thread subject]];
-	[_bodyLabel setText: @"So glad to hear you guys will makei t to the BBQ this year! It looks like it'll be a great time but this is too much text."];
+
+	NSString * cleanSnippet = [[_thread snippet] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	[_bodyLabel setText: cleanSnippet];
 	
-	[[self dateLabel] setText: [NSString stringForMessageDate: [_thread lastMessageDate]]];
+	[_dateLabel setText: [NSString stringForMessageDate: [_thread lastMessageDate]]];
 }
 
 @end

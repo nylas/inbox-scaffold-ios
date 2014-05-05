@@ -8,6 +8,7 @@
 
 #import "INViewController.h"
 #import "INThreadViewController.h"
+#import "INContactsViewController.h"
 #import "INThreadTableViewCell.h"
 #import "INAPIOperation.h"
 #import "INAccount.h"
@@ -37,6 +38,9 @@
 	_refreshControl = [[UIRefreshControl alloc] init];
 	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
 	[_tableView addSubview: _refreshControl];
+	
+	UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithTitle:@"Contacts" style:UIBarButtonItemStyleBordered target:self action:@selector(showContacts)];
+	[self.navigationItem setLeftBarButtonItem: item];
 }
 
 - (void)prepareForDisplay
@@ -51,6 +55,13 @@
 	[_threadsProvider refresh];
 }
 
+- (void)showContacts
+{
+	INContactsViewController * contacts = [[INContactsViewController alloc] init];
+	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: contacts];
+	[self presentViewController: nav animated:YES completion:NULL];
+}
+
 - (void)refresh
 {
 	[_threadsProvider refresh];
@@ -63,8 +74,6 @@
 
 - (void)providerDataAltered:(INModelProviderChangeSet *)changeSet
 {
-	NSLog(@"Applying Changes: %@", [changeSet description]);
-	
 	[_tableView beginUpdates];
 	[_tableView deleteRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeRemove] withRowAnimation:UITableViewRowAnimationLeft];
 	[_tableView insertRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeAdd] withRowAnimation:UITableViewRowAnimationTop];

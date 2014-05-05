@@ -18,7 +18,9 @@
 	[mapping addEntriesFromDictionary:@{
 		@"subject": @"subject",
 		@"participants": @"participants",
-		@"lastMessageDate": @"recent_date"
+		@"lastMessageDate": @"last_message_timestamp",
+		@"messageIDs": @"messages",
+		@"snippet": @"snippet"
 	}];
 	return mapping;
 }

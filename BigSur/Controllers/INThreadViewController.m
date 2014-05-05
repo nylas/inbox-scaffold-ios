@@ -7,6 +7,7 @@
 //
 
 #import "INThreadViewController.h"
+#import "INComposeViewController.h"
 #import "INMessageCollectionViewCell.h"
 #import "UIView+FrameAdditions.h"
 #import "NSObject+AssociatedObjects.h"
@@ -29,7 +30,6 @@
 	
 	[_collectionView registerNib:[UINib nibWithNibName:@"INMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"message"];
 	
-	// give us messages!
 	_messageProvider = [_thread newMessageProvider];
 	[_messageProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
 	[_messageProvider setDelegate: self];
@@ -44,11 +44,21 @@
 	[_threadHeaderView setFrameHeight: _threadSubjectLabel.frame.size.height + _threadSubjectLabel.frame.origin.y * 2];
 	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
 	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
+	
+	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemReply target:self action:@selector(replyTapped:)];
+	[self.navigationItem setRightBarButtonItem: reply];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (IBAction)replyTapped:(id)sender
+{
+	INComposeViewController * composer = [[INComposeViewController alloc] initWithThread: _thread];
+	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composer];
+	[self presentViewController: nav animated:YES completion:NULL];
 }
 
 #pragma Collection View Data Source

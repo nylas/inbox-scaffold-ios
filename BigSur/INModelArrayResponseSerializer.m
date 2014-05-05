@@ -32,10 +32,10 @@
 	id responseObject = [super responseObjectForResponse:response data:data error:error];
 
 	BOOL badJSONClass = ([responseObject isKindOfClass:[NSArray class]] == NO);
-	BOOL badAPIResponse = ([responseObject isKindOfClass: [NSDictionary class]] && [[responseObject objectForKey: @"type"] isEqualToString: @"api_error"]);
+	BOOL badAPIResponse = ([responseObject isKindOfClass: [NSDictionary class]] && [responseObject[@"type"] isEqualToString: @"api_error"]);
 	
 	if (badAPIResponse) {
-		*error = [NSError errorWithDomain:@"IN" code:100 userInfo:@{NSLocalizedDescriptionKey: @"The JSON object returned was an error."}];
+		*error = [NSError errorWithDomain:@"IN" code:100 userInfo:@{NSLocalizedDescriptionKey: responseObject[@"message"]}];
 		return nil;
 	}
 	

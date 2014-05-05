@@ -63,8 +63,8 @@ static NSString * messageJS = nil;
 	}
 	
 	[_fromProfileButton setImageForState:UIControlStateNormal withURL:[_message fromGravatarURL] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
-	[_fromField setRecipients: [message from]];
-	[_toField setRecipients: [message to]];
+	[_fromField setRecipients: [message from] includeMe: YES];
+	[_toField setRecipients: [message to] includeMe: YES];
 	[_dateField setText: [NSString stringForMessageDate: [_message date]]];
 	
 	NSString * html = [NSString stringWithFormat: @"<style>%@</style>\n%@", messageCSS, [message body]];

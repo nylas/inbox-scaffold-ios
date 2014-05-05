@@ -25,11 +25,13 @@
 - (NSDictionary *)queryParamsForPredicate:(NSPredicate*)predicate
 {
 	INPredicateToQueryParamConverter * converter = [[INPredicateToQueryParamConverter alloc] init];
-	[converter setKeysToParamsTable: @{@"to": @"to", @"from": @"from", @"cc": @"cc", @"bcc": @"bcc", @"threadID": @"thread", @"label": @"label"}];
-	[converter setKeysToLIKEParamsTable: @{@"subject": @"subject"}];
+	[converter setKeysToParamsTable: @{@"to": @"to", @"from": @"from", @"cc": @"cc", @"bcc": @"bcc", @"threadID": @"thread", @"label": @"label", @"subject":@"subject"}];
 
 	NSMutableDictionary * params = [[converter paramsForPredicate: predicate] mutableCopy];
-	[params setObject:@(20) forKey:@"limit"];
+
+	// currently not useful, because the sort order is on item ID
+//	[params setObject:@(self.itemRange.location) forKey:@"offset"];
+//	[params setObject:@(self.itemRange.length) forKey:@"limit"];
 	
 	return params;
 }
