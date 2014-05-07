@@ -40,4 +40,5 @@
 	return [[INMessageProvider alloc] initWithThreadID: [self ID] andNamespaceID:[self namespaceID]];
 }
 
+
 @end

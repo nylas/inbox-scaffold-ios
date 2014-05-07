@@ -25,7 +25,7 @@
 - (NSDictionary *)queryParamsForPredicate:(NSPredicate*)predicate
 {
 	INPredicateToQueryParamConverter * converter = [[INPredicateToQueryParamConverter alloc] init];
-	[converter setKeysToParamsTable: @{@"to": @"to", @"from": @"from", @"cc": @"cc", @"bcc": @"bcc", @"threadID": @"thread", @"label": @"label", @"subject":@"subject"}];
+	[converter setKeysToParamsTable: @{@"to": @"to", @"from": @"from", @"cc": @"cc", @"bcc": @"bcc", @"threadID": @"thread", @"label": @"label"}];
 
 	NSMutableDictionary * params = [[converter paramsForPredicate: predicate] mutableCopy];
 

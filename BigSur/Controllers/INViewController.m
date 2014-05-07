@@ -38,6 +38,7 @@
 	_refreshControl = [[UIRefreshControl alloc] init];
 	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
 	[_tableView addSubview: _refreshControl];
+	[_tableView setSeparatorInset: UIEdgeInsetsMake(0, 0, 0, 0)];
 	
 	UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithTitle:@"Contacts" style:UIBarButtonItemStyleBordered target:self action:@selector(showContacts)];
 	[self.navigationItem setLeftBarButtonItem: item];

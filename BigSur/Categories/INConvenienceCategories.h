@@ -13,3 +13,9 @@
 + (NSString *)stringForMessageDate:(NSDate*)date;
 
 @end
+
+@interface NSURL (INConvenienceCategories)
+
++ (NSURL*)URLForGravatar:(NSString*)email;
+
+@end

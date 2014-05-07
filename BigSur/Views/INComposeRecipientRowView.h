@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "INComposeRowView.h"
+#import "INDeleteDetectingTextField.h"
 
-@interface INComposeRecipientRowView : INComposeRowView <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
-
+@interface INComposeRecipientRowView : INComposeRowView <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UITextFieldDelegate>
+{
+	INDeleteDetectingTextField * _textField;
+}
+@property (nonatomic, strong) NSMutableArray * recipients;
 @property (nonatomic, strong) UICollectionView * recipientsCollectionView;
 
 @end

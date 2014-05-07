@@ -10,6 +10,7 @@
 #import "INThread.h"
 #import "INComposeRecipientRowView.h"
 #import "INComposeSubjectRowView.h"
+#import "INPlaceholderTextView.h"
 
 @interface INComposeViewController : UIViewController
 
@@ -17,7 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) NSMutableArray *scrollViewRows;
-@property (strong, nonatomic) UITextView * bodyTextView;
+@property (strong, nonatomic) INPlaceholderTextView * bodyTextView;
 @property (strong, nonatomic) INComposeRecipientRowView * toRecipientsView;
 @property (strong, nonatomic) INComposeRecipientRowView * ccBccRecipientsView;
 @property (strong, nonatomic) INComposeSubjectRowView * subjectView;

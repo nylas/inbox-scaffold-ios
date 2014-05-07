@@ -21,3 +21,14 @@
 }
 
 @end
+
+@implementation NSURL (INConvenienceCategories)
+
++ (NSURL*)URLForGravatar:(NSString*)email
+{
+	email = [[email stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] lowercaseString];
+	NSString * p = [NSString stringWithFormat: @"http://www.gravatar.com/avatar/%@?s=184", [email md5Value]];
+	return [NSURL URLWithString: p];
+}
+
+@end

@@ -9,7 +9,10 @@
 #import "INThreadTableViewCell.h"
 #import "NSString+FormatConversion.h"
 #import "UIView+FrameAdditions.h"
+#import "UIImageView+AFNetworking.h"
 #import "INConvenienceCategories.h"
+#import "INAPIManager.h"
+#import "INAccount.h"
 
 #define INSETS UIEdgeInsetsMake(8, 10, 8, 12)
 
@@ -71,7 +74,16 @@
 {
 	_thread = thread;
 	
-	[[self imageView] setImage: [UIImage imageNamed: @"profile_placeholder.png"]];
+	NSArray * youAddresses = [[[INAPIManager shared] account] ownEmailAddresses];
+	NSString * otherEmail = nil;
+	for (NSDictionary * recipient in _thread.participants) {
+		if ([youAddresses containsObject: recipient[@"email"]])
+			continue;
+		otherEmail = recipient[@"email"];
+		break;
+	}
+			
+	[[self imageView] setImageWithURL:[NSURL URLForGravatar: otherEmail] placeholderImage:[UIImage imageNamed: @"profile_placeholder.png"]];
 
 	BOOL includeMe = (([[_thread messageIDs] count] > 1) || ([[_thread participants] count] > 2));
 	[_participantsLabel setRecipients:[_thread participants] includeMe: includeMe];

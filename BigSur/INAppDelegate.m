@@ -13,12 +13,15 @@
 #import "INModelProvider.h"
 #import "INModelObject+Uniquing.h"
 
+
 @implementation INAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: [[INViewController alloc] init]];
 	[[nav navigationBar] setTranslucent: NO];
+	
+	[[UINavigationBar appearance] setTintColor: [UIColor colorWithRed:0 green:153.0/255.0 blue:204.0/255.0 alpha:1]];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = nav;

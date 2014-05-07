@@ -7,9 +7,10 @@
 //
 
 #import "INComposeRowView.h"
+#import "INPlaceholderTextView.h"
 
 @interface INComposeSubjectRowView : INComposeRowView
 
-@property (nonatomic, strong) UITextView * subjectField;
+@property (nonatomic, strong) INPlaceholderTextView * subjectField;
 
 @end

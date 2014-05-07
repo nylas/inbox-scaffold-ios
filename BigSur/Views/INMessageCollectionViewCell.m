@@ -42,6 +42,9 @@ static NSString * messageJS = nil;
 	[[self layer] setShadowRadius: 1];
 	[[self layer] setShadowOffset: CGSizeMake(0, 1)];
 	[[self layer] setShadowOpacity: 0.1];
+
+	[[_fromProfileButton layer] setCornerRadius: 3];
+	[[_fromProfileButton layer] setMasksToBounds:YES];
 }
 
 - (void)layoutSubviews
@@ -62,7 +65,8 @@ static NSString * messageJS = nil;
 		messageJS = [NSString stringWithContentsOfFile:messageJSPath encoding:NSUTF8StringEncoding error:nil];
 	}
 	
-	[_fromProfileButton setImageForState:UIControlStateNormal withURL:[_message fromGravatarURL] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
+	NSString * email = [[_message.from firstObject] objectForKey: @"email"];
+	[_fromProfileButton setImageForState:UIControlStateNormal withURL:[NSURL URLForGravatar: email] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
 	[_fromField setRecipients: [message from] includeMe: YES];
 	[_toField setRecipients: [message to] includeMe: YES];
 	[_dateField setText: [NSString stringForMessageDate: [_message date]]];

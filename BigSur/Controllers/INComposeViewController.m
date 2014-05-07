@@ -24,20 +24,19 @@
 {
     [super viewDidLoad];
 	
-	
 	// create our views
-	_toRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 50)];
+	_toRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
 	[_toRecipientsView.rowLabel setText: @"To:"];
 	
-	_ccBccRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 50)];
+	_ccBccRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
 	[_ccBccRecipientsView.rowLabel setText: @"Cc/Bcc:"];
 	
-	_subjectView = [[INComposeSubjectRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 50)];
-	[_subjectView.rowLabel setText: @"Subject:"];
+	_subjectView = [[INComposeSubjectRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
 
-	_bodyTextView = [[UITextView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
+	_bodyTextView = [[INPlaceholderTextView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
+	[_bodyTextView setPlaceholder: @"Compose a message..."];
 	[_bodyTextView setFont: [UIFont systemFontOfSize: 15]];
-	[_bodyTextView setTextContainerInset: UIEdgeInsetsMake(5,5,5,5)];
+	[_bodyTextView setTextContainerInset: UIEdgeInsetsMake(5,4,5,4)];
 	[_bodyTextView setScrollEnabled: NO];
 
 	// create our constraints
@@ -51,7 +50,7 @@
 		view.translatesAutoresizingMaskIntoConstraints = NO;
 		[self.scrollView addSubview: view];
 		[self.scrollView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view(==320)]|" options:0 metrics:nil views:@{@"view":view}]];
-		[self.scrollView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"V:[view(>=30)]" options:0 metrics:nil views:@{@"view":view}]];
+		[self.scrollView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"V:[view(>=40)]" options:0 metrics:nil views:@{@"view":view}]];
 	}
 
 	[self.scrollView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[first]" options:0 metrics:nil views:@{@"first": [rows firstObject]}]];
@@ -60,8 +59,11 @@
 	[self.scrollView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"V:[last]|" options:0 metrics:nil views:@{@"last": [rows lastObject]}]];
 
 	// create the nav item
-	UIBarButtonItem * x = [[UIBarButtonItem alloc] initWithTitle:@"x" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelTapped:)];
-	[self.navigationItem setLeftBarButtonItem: x];
+	UIBarButtonItem * cancel = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed: @"icon_cancel.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(cancelTapped:)];
+	[self.navigationItem setLeftBarButtonItem: cancel];
+
+	UIBarButtonItem * send = [[UIBarButtonItem alloc] initWithTitle: @"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendTapped:)];
+	[self.navigationItem setRightBarButtonItem: send];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -84,11 +86,17 @@
 {
 	CGRect keyboardFrame = [[[notif userInfo] objectForKey: UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	[self.scrollView setFrameHeight: self.view.frame.size.height - keyboardFrame.size.height];
+	[self.scrollView scrollRectToVisible: _bodyTextView.frame animated:YES];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notif
 {
 	[self.scrollView setFrameHeight: self.view.frame.size.height];
+}
+
+- (void)sendTapped:(id)sender
+{
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)cancelTapped:(id)sender
