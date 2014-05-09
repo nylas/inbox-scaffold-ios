@@ -31,6 +31,7 @@
     self = [super initWithFrame:frame];
     if (self) {
 		[self.actionButton setImage: [UIImage imageNamed: @"icon_add_recipient.png"] forState:UIControlStateNormal];
+		[self setClipsToBounds: NO];
 		
 		UICollectionViewFlowLayout * layout = [[INLeftJustifiedFlowLayout alloc] init];
 		[layout setScrollDirection: UICollectionViewScrollDirectionVertical];
@@ -49,6 +50,9 @@
 		[self addSubview: _recipientsCollectionView];
 		self.bodyView = _recipientsCollectionView;
 
+		_autocompletionView = [[INAutocompletionResultsView alloc] initWithFrame: CGRectMake(0, 0, self.frame.size.width, 0)];
+		[_autocompletionView setDelegate: self];
+		
 		typeof(self) __weak __self = self;
 		_textField = [[INDeleteDetectingTextField alloc] initWithFrame: CGRectZero];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldTextDidChange:) name:UITextFieldTextDidChangeNotification object:_textField];
@@ -83,6 +87,14 @@
 	[self addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(7)-[body]-(7)-|" options:0 metrics:nil views: @{@"body": _recipientsCollectionView}]];
 	[self addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(14)-[label]" options:NSLayoutFormatAlignAllBaseline metrics:nil views: @{@"label": self.rowLabel, @"action":self.actionButton}]];
 	[super updateConstraints];
+}
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	
+	CGRect frame = [self convertRect:[self bounds] toView:[self superview]];
+	[_autocompletionView setFrameOrigin: CGPointMake(0, frame.origin.y + frame.size.height)];
 }
 
 - (void)propogateConstraintChanges
@@ -195,6 +207,7 @@
 - (void)textFieldTextDidChange:(NSNotification*)notif
 {
 	[self propogateConstraintChanges];
+	[self updateAutocompletionQuery: [_textField text]];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -217,6 +230,7 @@
 	[self addRecipientAfterValidation: text];
 	[_textField setText: @""];
 	[self propogateConstraintChanges];
+	[self updateAutocompletionQuery: nil];
 }
 
 - (void)addRecipientAfterValidation:(NSString*)email
@@ -253,6 +267,33 @@
 	}
 	
 	return NO;
+}
+
+#pragma mark Autocompletion
+
+- (void)updateAutocompletionQuery:(NSString*)typedText
+{
+	if ([typedText length] < 3) {
+		[_autocompletionView removeFromSuperview];
+		_autocompletionView.provider = nil;
+		
+	} else {
+		if (!_autocompletionView.provider) {
+			INAccount * account = [[INAPIManager shared] account];
+			INNamespace * namespace = [[account namespaces] firstObject];
+			INModelProvider * provider = [namespace newContactsProvider];
+			[_autocompletionView setProvider: provider];
+		}
+		NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat: @"email BEGINSWITH %@", typedText];
+		[_autocompletionView.provider setItemFilterPredicate: predicate];
+		[self.superview addSubview: _autocompletionView];
+	}
+}
+
+- (void)autocompletionResultPicked:(id)item
+{
+	[_textField setText: [item email]];
+	[self addRecipientFromTextField];
 }
 
 @end

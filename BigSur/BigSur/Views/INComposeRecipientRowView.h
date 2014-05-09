@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "INComposeRowView.h"
 #import "INDeleteDetectingTextField.h"
+#import "INAutocompletionResultsView.h"
 
-@interface INComposeRecipientRowView : INComposeRowView <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UITextFieldDelegate>
+@interface INComposeRecipientRowView : INComposeRowView <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UITextFieldDelegate, INAutocompletionResultsViewDelegate>
 {
 	INDeleteDetectingTextField * _textField;
 }
 @property (nonatomic, strong) NSMutableArray * recipients;
 @property (nonatomic, strong) UICollectionView * recipientsCollectionView;
-
+@property (nonatomic, strong) INAutocompletionResultsView * autocompletionView;
 @end

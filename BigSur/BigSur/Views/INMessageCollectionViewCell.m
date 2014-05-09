@@ -60,8 +60,8 @@ static NSString * messageJS = nil;
 	
 	NSString * email = [[_message.from firstObject] objectForKey: @"email"];
 	[_fromProfileButton setImageForState:UIControlStateNormal withURL:[NSURL URLForGravatar: email] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
-	[_fromField setRecipients: [message from] includeMe: YES];
-	[_toField setRecipients: [message to] includeMe: YES];
+	[_fromField setPrefixString: @"" andRecipients: [message from] includeMe: YES];
+	[_toField setPrefixString:@"To: " andRecipients: [message to] includeMe: YES];
 	[_dateField setText: [NSString stringForMessageDate: [_message date]]];
     
     [_bodyWebView setMessageHTML: [_message body]];

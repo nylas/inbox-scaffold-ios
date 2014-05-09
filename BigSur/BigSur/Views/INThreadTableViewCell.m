@@ -84,7 +84,7 @@
 	[[self imageView] setImageWithURL:[NSURL URLForGravatar: otherEmail] placeholderImage:[UIImage imageNamed: @"profile_placeholder.png"]];
 
 	BOOL includeMe = (([[_thread messageIDs] count] > 1) || ([[_thread participants] count] > 2));
-	[_participantsLabel setRecipients:[_thread participants] includeMe: includeMe];
+	[_participantsLabel setPrefixString: @"" andRecipients:[_thread participants] includeMe: includeMe];
 	[_subjectLabel setText: [_thread subject]];
 
 	NSString * cleanSnippet = [[_thread snippet] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];

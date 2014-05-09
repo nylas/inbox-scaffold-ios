@@ -49,6 +49,7 @@
 		43AE9BC819185C46005D70C0 /* INComposeSubjectRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */; };
 		43AE9BCB19186DD1005D70C0 /* INPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */; };
 		43AE9BCE191943BB005D70C0 /* INThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BCD191943BB005D70C0 /* INThemeManager.m */; };
+		43DB20EE191D5D4800DCFA4A /* INAutocompletionResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */; };
 		43F22A7619071A1100A032D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7519071A1100A032D1 /* Foundation.framework */; };
 		43F22A7819071A1100A032D1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7719071A1100A032D1 /* CoreGraphics.framework */; };
 		43F22A7A19071A1100A032D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7919071A1100A032D1 /* UIKit.framework */; };
@@ -117,6 +118,8 @@
 		43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INPlaceholderTextView.m; sourceTree = "<group>"; };
 		43AE9BCC191943BB005D70C0 /* INThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThemeManager.h; sourceTree = "<group>"; };
 		43AE9BCD191943BB005D70C0 /* INThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INThemeManager.m; sourceTree = "<group>"; };
+		43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAutocompletionResultsView.h; sourceTree = "<group>"; };
+		43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAutocompletionResultsView.m; sourceTree = "<group>"; };
 		43F22A7219071A1100A032D1 /* BigSur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BigSur.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F22A7519071A1100A032D1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		43F22A7719071A1100A032D1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -208,6 +211,8 @@
 				43AE9BC419185ACF005D70C0 /* INComposeRowView.m */,
 				43AE9BBD191841DE005D70C0 /* INComposeRecipientRowView.h */,
 				43AE9BBE191841DE005D70C0 /* INComposeRecipientRowView.m */,
+				43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */,
+				43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */,
 				43F788D81919902100B6E0E5 /* INComposeRecipientCollectionViewCell.h */,
 				43F788D91919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m */,
 				43AE9BC619185C46005D70C0 /* INComposeSubjectRowView.h */,
@@ -540,6 +545,7 @@
 				43AE9BBF191841DE005D70C0 /* INComposeRecipientRowView.m in Sources */,
 				439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */,
 				43F22AD019071C5200A032D1 /* INViewController.m in Sources */,
+				43DB20EE191D5D4800DCFA4A /* INAutocompletionResultsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
