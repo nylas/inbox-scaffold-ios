@@ -17,6 +17,8 @@
 		_subjectField = [[INPlaceholderTextView alloc] initWithFrame: CGRectZero];
 		[_subjectField setText: @""];
 		[_subjectField setPlaceholder: @"Subject"];
+        [_subjectField setDelegate: self];
+        [_subjectField setReturnKeyType: UIReturnKeyNext];
 		[_subjectField setScrollEnabled: NO];
 		[_subjectField setTextContainerInset: UIEdgeInsetsZero];
 		[_subjectField setTranslatesAutoresizingMaskIntoConstraints: NO];
@@ -41,5 +43,28 @@
 	[super updateConstraints];
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString * newText = [[textView text] stringByReplacingCharactersInRange:range withString:text];
+
+    // if the user has inserted a tab or return, reject the change and move to the next text field.
+    // Unfortunately iOS doesn't expose any equivalent to Mac OS X's nextKeyResponder, so we have
+    // to do it ourselves. The simplest way is to look at our sibling views and find the next one
+    // that can become first responder.
+    if (([newText rangeOfString: @"\n"].location != NSNotFound) || ([newText rangeOfString: @"\t"].location != NSNotFound)) {
+
+        NSArray * siblings = [[self superview] subviews];
+        int ii = [siblings indexOfObject: self];
+        for (int x = ii; x < [siblings count]; x++){
+            UIView * v = [siblings objectAtIndex: x];
+            if ([v canBecomeFirstResponder]) {
+                [v becomeFirstResponder];
+                break;
+            }
+        }
+        return NO;
+    }
+    return YES;
+}
 
 @end

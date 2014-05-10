@@ -9,7 +9,7 @@
 #import "INComposeRowView.h"
 #import "INPlaceholderTextView.h"
 
-@interface INComposeSubjectRowView : INComposeRowView
+@interface INComposeSubjectRowView : INComposeRowView <UITextViewDelegate>
 
 @property (nonatomic, strong) INPlaceholderTextView * subjectField;
 

@@ -10,6 +10,15 @@
 
 @implementation INContactsViewController
 
+- (id)initForSelectingContactWithCallback:(ContactSelectionBlock)block
+{
+    self = [super init];
+    if (self) {
+        _contactSelectionCallback = block;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -19,9 +28,9 @@
 	UIBarButtonItem * left = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelTapped:)];
 	[[self navigationItem] setLeftBarButtonItem: left];
 
-	INAccount * account = [[INAPIManager shared] account];
-	INNamespace * namespace = [[account namespaces] firstObject];
-	
+    [_tableView setRowHeight: 50];
+    
+	INNamespace * namespace = [[[INAPIManager shared] namespaces] firstObject];
 	self.contactsProvider = [namespace newContactsProvider];
 	[_contactsProvider setDelegate:self];
 	[_contactsProvider refresh];
@@ -69,12 +78,24 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell * cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"contact"];
-	if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"contact"];
+	if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"contact"];
 	
 	INContact * contact = [[_contactsProvider items] objectAtIndex: [indexPath row]];
 	[[cell textLabel] setText: [contact name]];
-	
+	[[cell detailTextLabel] setText: [contact email]];
+    [[cell detailTextLabel] setTextColor: [UIColor grayColor]];
 	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    INContact * contact = [[_contactsProvider items] objectAtIndex: [indexPath row]];
+    if (_contactSelectionCallback) {
+        _contactSelectionCallback(contact);
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 
 @end

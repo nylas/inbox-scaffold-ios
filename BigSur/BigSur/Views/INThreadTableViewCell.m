@@ -72,7 +72,7 @@
 {
 	_thread = thread;
 	
-	NSArray * youAddresses = [[[INAPIManager shared] account] ownEmailAddresses];
+	NSArray * youAddresses = [[INAPIManager shared] namespaceEmailAddresses];
 	NSString * otherEmail = nil;
 	for (NSDictionary * recipient in _thread.participants) {
 		if ([youAddresses containsObject: recipient[@"email"]])

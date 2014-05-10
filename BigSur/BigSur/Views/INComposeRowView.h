@@ -15,5 +15,6 @@
 @property (nonatomic, strong) UILabel * rowLabel;
 @property (nonatomic, strong) UIView * bodyView;
 @property (nonatomic, strong) UIButton * actionButton;
+@property (nonatomic, assign) BOOL animatesBottomBorder;
 
 @end

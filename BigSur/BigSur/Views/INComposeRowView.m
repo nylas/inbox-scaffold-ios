@@ -27,6 +27,7 @@
 		[_actionButton setTitleColor: [_rowLabel textColor] forState:UIControlStateNormal];
 		[[_actionButton titleLabel] setFont: [UIFont boldSystemFontOfSize: 35]];
 		[_actionButton setFrame: CGRectMake(0, 0, 40, 40)];
+        [_actionButton setHidden: YES];
 		[self addSubview: _actionButton];
 		
 		_bottomBorder = [[CALayer alloc] init];
@@ -48,23 +49,37 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-	[self setNeedsUpdateConstraints];
 
 	[CATransaction begin];
-	[CATransaction setDisableActions: YES];
+	[CATransaction setDisableActions: !_animatesBottomBorder];
 	[_bottomBorder setFrame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height)];
 	[CATransaction commit];
+}
+
+- (UIButton*)actionButton
+{
+    [_actionButton setHidden: NO];
+    return _actionButton;
 }
 
 - (void)updateConstraints
 {
 	NSDictionary * views = @{@"label":_rowLabel, @"body": _bodyView, @"action": _actionButton};
-
-	if ([[_rowLabel text] length]) {
+    BOOL hasLabel = [[_rowLabel text] length];
+    BOOL hasAction = ![_actionButton isHidden];
+    
+    // todo: this is a little silly
+    
+	if (hasLabel && hasAction) {
 		[self addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(9)-[label]-(2)-[body]-[action(==40)]-(0)-|" options:0 metrics:nil views: views]];
-	} else {
+    } else if (hasLabel && !hasAction) {
+		[self addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(9)-[label]-(2)-[body]-(4)-|" options:0 metrics:nil views: views]];
+    } else if (!hasLabel && hasAction) {
 		[self addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(4)-[body]-[action(==40)]-(0)-|" options:0 metrics:nil views: views]];
+    } else {
+		[self addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(4)-[body]-(4)-|" options:0 metrics:nil views: views]];
 	}
+
 	[self addConstraint: [NSLayoutConstraint constraintWithItem:_rowLabel attribute:NSLayoutAttributeBaseline relatedBy:NSLayoutRelationEqual toItem:_actionButton attribute:NSLayoutAttributeBaseline multiplier:1 constant:-4]];
 	[super updateConstraints];
 }

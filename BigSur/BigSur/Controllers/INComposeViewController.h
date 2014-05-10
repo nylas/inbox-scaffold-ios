@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "INComposeRecipientRowView.h"
 #import "INComposeSubjectRowView.h"
+#import "INComposeAttachmentsRowView.h"
 #import "INPlaceholderTextView.h"
 
-@interface INComposeViewController : UIViewController
-
+@interface INComposeViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+{
+    NSMutableArray * _verticalLayoutConstraints;
+    
+}
 @property (nonatomic, strong) INThread * thread;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -21,6 +25,7 @@
 @property (strong, nonatomic) INComposeRecipientRowView * toRecipientsView;
 @property (strong, nonatomic) INComposeRecipientRowView * ccBccRecipientsView;
 @property (strong, nonatomic) INComposeSubjectRowView * subjectView;
+@property (strong, nonatomic) INComposeAttachmentsRowView * attachmentsView;
 
 - (id)initWithThread:(INThread*)thread;
 

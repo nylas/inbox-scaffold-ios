@@ -35,7 +35,7 @@
 
 - (void)setPrefixString:(NSString*)prefix andRecipients:(NSArray*)recipients includeMe:(BOOL)includeMe
 {
-	NSArray * youAddresses = [[[INAPIManager shared] account] ownEmailAddresses];
+	NSArray * youAddresses = [[INAPIManager shared] namespaceEmailAddresses];
 	
 	[_buttons makeObjectsPerformSelector: @selector(removeFromSuperview)];
 	_buttons = [[NSMutableArray alloc] init];

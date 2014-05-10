@@ -28,6 +28,8 @@
 		4317023E19132BA10002491F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7919071A1100A032D1 /* UIKit.framework */; };
 		4317024419132BA10002491F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4317024219132BA10002491F /* InfoPlist.strings */; };
 		4317024619132BA10002491F /* INModelProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4317024519132BA10002491F /* INModelProviderTests.m */; };
+		4319792E191D8A0100523C8B /* INComposeAttachmentsRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */; };
+		43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43197930191D938300523C8B /* INAttachmentTableViewCell.m */; };
 		433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */; };
 		433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */; };
 		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
@@ -80,6 +82,10 @@
 		4317024319132BA10002491F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4317024519132BA10002491F /* INModelProviderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INModelProviderTests.m; sourceTree = "<group>"; };
 		4317024719132BA10002491F /* BigSurTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BigSurTests-Prefix.pch"; sourceTree = "<group>"; };
+		4319792C191D8A0100523C8B /* INComposeAttachmentsRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INComposeAttachmentsRowView.h; path = BigSur/Views/INComposeAttachmentsRowView.h; sourceTree = SOURCE_ROOT; };
+		4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INComposeAttachmentsRowView.m; path = BigSur/Views/INComposeAttachmentsRowView.m; sourceTree = SOURCE_ROOT; };
+		4319792F191D938300523C8B /* INAttachmentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAttachmentTableViewCell.h; sourceTree = "<group>"; };
+		43197930191D938300523C8B /* INAttachmentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAttachmentTableViewCell.m; sourceTree = "<group>"; };
 		4325D513191329DC00743CD4 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		433711AD191C0A0100E7F793 /* NSString+FormatConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FormatConversion.h"; sourceTree = "<group>"; };
 		433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FormatConversion.m"; sourceTree = "<group>"; };
@@ -211,6 +217,10 @@
 				43AE9BC419185ACF005D70C0 /* INComposeRowView.m */,
 				43AE9BBD191841DE005D70C0 /* INComposeRecipientRowView.h */,
 				43AE9BBE191841DE005D70C0 /* INComposeRecipientRowView.m */,
+				4319792F191D938300523C8B /* INAttachmentTableViewCell.h */,
+				43197930191D938300523C8B /* INAttachmentTableViewCell.m */,
+				4319792C191D8A0100523C8B /* INComposeAttachmentsRowView.h */,
+				4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */,
 				43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */,
 				43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */,
 				43F788D81919902100B6E0E5 /* INComposeRecipientCollectionViewCell.h */,
@@ -542,7 +552,9 @@
 				43AAF5511912EB72000FA5AF /* UIView+FrameAdditions.m in Sources */,
 				43F22A8619071A1100A032D1 /* INAppDelegate.m in Sources */,
 				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
+				43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */,
 				43AE9BBF191841DE005D70C0 /* INComposeRecipientRowView.m in Sources */,
+				4319792E191D8A0100523C8B /* INComposeAttachmentsRowView.m in Sources */,
 				439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */,
 				43F22AD019071C5200A032D1 /* INViewController.m in Sources */,
 				43DB20EE191D5D4800DCFA4A /* INAutocompletionResultsView.m in Sources */,

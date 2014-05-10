@@ -17,12 +17,13 @@
 	[[nav navigationBar] setTranslucent: NO];
 	
 	[[UINavigationBar appearance] setTintColor: [UIColor colorWithRed:0 green:153.0/255.0 blue:204.0/255.0 alpha:1]];
+	[[UIProgressView appearance] setTintColor: [UIColor colorWithRed:0 green:153.0/255.0 blue:204.0/255.0 alpha:1]];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = nav;
 	[self.window makeKeyAndVisible];
 
-	if (![[INAPIManager shared] account]) {
+	if (![[INAPIManager shared] namespaces]) {
 		[[INAPIManager shared] authenticate:^(INAccount * account, NSError *error) {
 			if (error)
 				[[[UIAlertView alloc] initWithTitle:@"Auth Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];

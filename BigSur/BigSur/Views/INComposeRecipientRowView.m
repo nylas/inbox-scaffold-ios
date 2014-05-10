@@ -18,7 +18,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-	return CGSizeMake(self.frame.size.width, [[self collectionViewLayout] collectionViewContentSize].height);
+	return CGSizeMake(UIViewNoIntrinsicMetric, [[self collectionViewLayout] collectionViewContentSize].height);
 }
 
 @end
@@ -197,7 +197,7 @@
 		[newTokens removeLastObject];
 		
 		for (NSString * email in newTokens)
-			[self addRecipientAfterValidation: email];
+			[self addRecipientWithName: email andEmail:email];
 
 		return NO;
 	}
@@ -226,14 +226,16 @@
 
 - (void)addRecipientFromTextField
 {
-	NSString * text = _textField.text;
-	[self addRecipientAfterValidation: text];
+	[self addRecipientWithName:_textField.text andEmail: _textField.text];
 	[_textField setText: @""];
-	[self propogateConstraintChanges];
-	[self updateAutocompletionQuery: nil];
 }
 
-- (void)addRecipientAfterValidation:(NSString*)email
+- (void)addRecipientFromContact:(INContact*)contact
+{
+    [self addRecipientWithName:contact.name andEmail:contact.email];
+}
+
+- (void)addRecipientWithName:(NSString*)name andEmail:(NSString*)email
 {
 	email = [email stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	if ([email length] == 0)
@@ -246,6 +248,9 @@
 	[CATransaction setDisableActions: YES];
 	[_recipientsCollectionView insertItemsAtIndexPaths: @[indexPath]];
 	[CATransaction commit];
+    
+	[self propogateConstraintChanges];
+	[self updateAutocompletionQuery: nil];
 }
 
 #pragma Tap Recognizer for Selecting Text Field
@@ -279,8 +284,7 @@
 		
 	} else {
 		if (!_autocompletionView.provider) {
-			INAccount * account = [[INAPIManager shared] account];
-			INNamespace * namespace = [[account namespaces] firstObject];
+            INNamespace * namespace = [[[INAPIManager shared] namespaces] firstObject];
 			INModelProvider * provider = [namespace newContactsProvider];
 			[_autocompletionView setProvider: provider];
 		}

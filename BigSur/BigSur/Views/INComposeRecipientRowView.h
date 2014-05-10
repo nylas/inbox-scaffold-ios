@@ -18,4 +18,7 @@
 @property (nonatomic, strong) NSMutableArray * recipients;
 @property (nonatomic, strong) UICollectionView * recipientsCollectionView;
 @property (nonatomic, strong) INAutocompletionResultsView * autocompletionView;
+
+- (void)addRecipientFromContact:(INContact*)contact;
+
 @end

@@ -17,7 +17,7 @@
 {
 	self = [super init];
 	if (self) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareForDisplay) name:INAccountChangedNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareForDisplay) name:INNamespacesChangedNotification object:nil];
 	}
 	return self;
 }
@@ -43,8 +43,7 @@
 
 - (void)prepareForDisplay
 {
-	INAccount * account = [[INAPIManager shared] account];
-	INNamespace * namespace = [[account namespaces] firstObject];
+	INNamespace * namespace = [[[INAPIManager shared] namespaces] firstObject];
 	
 	self.threadsProvider = [namespace newThreadsProvider];
 	[_threadsProvider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
