@@ -17,7 +17,7 @@
 	if ([date timeIntervalSinceNow] > twelveHours)
 		return [NSString stringWithDate:date format:@"h:mm aa"];
 	else
-		return [NSString stringWithDate:date format:@"MM/dd/YY"];
+		return [NSString stringWithDate:date format:@"MMM d, YYYY"];
 }
 
 @end

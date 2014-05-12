@@ -24,6 +24,8 @@ typedef void (^ CellBlock)();
 @property (nonatomic, weak) IBOutlet INRecipientsLabel * fromField;
 @property (nonatomic, weak) IBOutlet INRecipientsLabel * toField;
 @property (weak, nonatomic) IBOutlet UILabel * dateField;
+@property (nonatomic, weak) IBOutlet UIView * headerContainerView;
+@property (nonatomic, strong) CALayer * headerBorderLayer;
 
 + (float)cachedHeightForMessage:(INMessage*)message;
 

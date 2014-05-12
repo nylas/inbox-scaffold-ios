@@ -9,6 +9,7 @@
 #import "INComposeRecipientCollectionViewCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "INConvenienceCategories.h"
+#import "INThemeManager.h"
 
 @implementation INComposeRecipientCollectionViewCell
 
@@ -27,16 +28,16 @@
 		_profileImage = [[UIImageView alloc] initWithFrame: CGRectZero];
 		[_insetView addSubview: _profileImage];
 
+		// [[[self contentView] layer] setShadowOffset: CGSizeMake(0, 1)];
+		// [[[self contentView] layer] setShadowOpacity: 0.2];
+		// [[[self contentView] layer] setShadowRadius: 1];
 		[[[self contentView] layer] setBorderWidth: 1.0 / [[UIScreen mainScreen] scale]];
 		[[[self contentView] layer] setBorderColor: [[UIColor colorWithWhite:215.0/255.0 alpha:1] CGColor]];
-		[[[self contentView] layer] setShadowOffset: CGSizeMake(0, 1)];
-		[[[self contentView] layer] setShadowOpacity: 0.2];
-		[[[self contentView] layer] setShadowRadius: 1];
 		[[[self contentView] layer] setCornerRadius: 4];
-		[_insetView setClipsToBounds: YES];
-		[[_insetView layer] setCornerRadius: 4];
 
+		[_insetView setClipsToBounds: YES];
 		[_insetView setBackgroundColor: [UIColor colorWithWhite:244.0/255.0 alpha:1]];
+		[[_insetView layer] setCornerRadius: 4];
     }
     return self;
 }
@@ -65,9 +66,11 @@
 	[super setSelected: selected];
 	
 	if (selected) {
-		[_insetView setBackgroundColor: [UIColor colorWithRed:0 green:153.0/255.0 blue:204.0/255.0 alpha:1]];
+		[_insetView setBackgroundColor: [[INThemeManager shared] tintColor]];
+		[[[self contentView] layer] setBorderColor: [[UIColor colorWithRed:0 green:0.42 blue:0.56 alpha:1] CGColor]];
 	} else {
 		[_insetView setBackgroundColor: [UIColor colorWithWhite:244.0/255.0 alpha:1]];
+		[[[self contentView] layer] setBorderColor: [[UIColor colorWithWhite:215.0/255.0 alpha:1] CGColor]];
 	}
 }
 

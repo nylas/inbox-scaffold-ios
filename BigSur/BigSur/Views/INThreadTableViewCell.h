@@ -12,8 +12,10 @@
 @interface INThreadTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) INThread * thread;
+@property (nonatomic, strong) UILabel * threadCountLabel;
 @property (nonatomic, strong) UILabel * dateLabel;
 @property (nonatomic, strong) UILabel * bodyLabel;
+@property (nonatomic, strong) UIView * unreadDot;
 @property (nonatomic, strong) UILabel * subjectLabel;
 @property (nonatomic, strong) INRecipientsLabel * participantsLabel;
 

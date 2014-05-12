@@ -11,9 +11,10 @@
 #import "UIButton+AFNetworking.h"
 #import "NSString+FormatConversion.h"
 #import "INConvenienceCategories.h"
+#import "INThemeManager.h"
 
 #define ASSOCIATED_CACHED_HEIGHT @"cell-message-height"
-#define MESSAGE_HEADER_HEIGHT 73
+#define MESSAGE_HEADER_HEIGHT 76
 
 static NSString * messageCSS = nil;
 static NSString * messageJS = nil;
@@ -27,10 +28,12 @@ static NSString * messageJS = nil;
 
 - (void)awakeFromNib
 {
+	[super awakeFromNib];
+	
 	[self setBackgroundColor: [UIColor whiteColor]];
 	[self setClipsToBounds: NO];
 	
-	[_fromField setTextColor: [UIColor blueColor]];
+	[_fromField setTextColor: [[INThemeManager shared] tintColor]];
 	[_fromField setTextFont: [UIFont boldSystemFontOfSize: 15]];
 	[_fromField setRecipientsClickable: YES];
 	
@@ -42,7 +45,13 @@ static NSString * messageJS = nil;
 	[[self layer] setShadowRadius: 1];
 	[[self layer] setShadowOffset: CGSizeMake(0, 1)];
 	[[self layer] setShadowOpacity: 0.1];
-
+	[[self layer] setBorderWidth: 1.0 / [[UIScreen mainScreen] scale]];
+	[[self layer] setBorderColor: [[UIColor colorWithWhite:0.8 alpha:1] CGColor]];
+	
+	_headerBorderLayer = [CALayer layer];
+	[_headerBorderLayer setBackgroundColor: [[UIColor colorWithWhite:0.8 alpha:1] CGColor]];
+	[[_headerContainerView layer] addSublayer: _headerBorderLayer];
+	
 	[[_fromProfileButton layer] setCornerRadius: 3];
 	[[_fromProfileButton layer] setMasksToBounds:YES];
 }
@@ -52,6 +61,7 @@ static NSString * messageJS = nil;
 	[super layoutSubviews];
 	
 	[[self layer] setShadowPath: CGPathCreateWithRect(self.contentView.bounds, NULL)];
+	[_headerBorderLayer setFrame: CGRectMake(0, _headerContainerView.frame.size.height - 0.5, _headerContainerView.frame.size.width, 0.5)];
 }
 
 - (void)setMessage:(INMessage *)message

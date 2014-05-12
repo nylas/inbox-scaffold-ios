@@ -79,7 +79,7 @@
         [self invalidateIntrinsicContentSize];
         [self updateConstraints];
         [self.superview layoutIfNeeded];
-        [_bottomBorder setFrame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height)];
+		[self positionBottomBorder];
         tableBlock();
         [_attachmentsTableView endUpdates];
     } completion:^(BOOL finished) {

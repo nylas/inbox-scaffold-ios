@@ -8,6 +8,7 @@
 
 #import "INAppDelegate.h"
 #import "INViewController.h"
+#import "INThemeManager.h"
 
 @implementation INAppDelegate
 
@@ -16,8 +17,11 @@
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: [[INViewController alloc] init]];
 	[[nav navigationBar] setTranslucent: NO];
 	
-	[[UINavigationBar appearance] setTintColor: [UIColor colorWithRed:0 green:153.0/255.0 blue:204.0/255.0 alpha:1]];
-	[[UIProgressView appearance] setTintColor: [UIColor colorWithRed:0 green:153.0/255.0 blue:204.0/255.0 alpha:1]];
+	[[UINavigationBar appearance] setBarTintColor: [UIColor colorWithWhite:0.956 alpha:1]];
+	[[UINavigationBar appearance] setTintColor: [[INThemeManager shared] tintColor]];
+	[[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: [UIColor colorWithWhite:0.29 alpha:1], NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:20]}];
+
+	[[UIProgressView appearance] setTintColor: [[INThemeManager shared] tintColor]];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = nav;

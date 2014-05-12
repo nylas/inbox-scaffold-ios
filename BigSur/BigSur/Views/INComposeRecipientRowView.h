@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UICollectionView * recipientsCollectionView;
 @property (nonatomic, strong) INAutocompletionResultsView * autocompletionView;
 
+- (void)addRecipients:(NSObject<NSFastEnumeration>*)recipients;
 - (void)addRecipientFromContact:(INContact*)contact;
 
 @end

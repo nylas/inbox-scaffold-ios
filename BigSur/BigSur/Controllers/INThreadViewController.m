@@ -46,8 +46,9 @@
 	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
 	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
 	
-	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemReply target:self action:@selector(replyTapped:)];
-	[self.navigationItem setRightBarButtonItem: reply];
+	UIBarButtonItem * archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(archiveTapped:)];
+	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
+	[self.navigationItem setRightBarButtonItems:@[reply, archive] animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,6 +61,11 @@
 	INComposeViewController * composer = [[INComposeViewController alloc] initWithThread: _thread];
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composer];
 	[self presentViewController: nav animated:YES completion:NULL];
+}
+
+- (IBAction)archiveTapped:(id)sender
+{
+	
 }
 
 #pragma Collection View Data Source

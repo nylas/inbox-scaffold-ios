@@ -10,11 +10,13 @@
 
 @interface INComposeRowView : UIView
 {
-	CALayer * _bottomBorder;
+	UIView * _bottomBorder;
 }
 @property (nonatomic, strong) UILabel * rowLabel;
 @property (nonatomic, strong) UIView * bodyView;
 @property (nonatomic, strong) UIButton * actionButton;
 @property (nonatomic, assign) BOOL animatesBottomBorder;
+
+- (void)positionBottomBorder;
 
 @end

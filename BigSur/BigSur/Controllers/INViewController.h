@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "INRootViewController.h"
 
-@interface INViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate, UISearchBarDelegate>
+@interface INViewController : INRootViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate, UISearchBarDelegate>
 {
 	float _scrollViewPrevOffset;
 }
@@ -16,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UITableView * tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIRefreshControl * refreshControl;
+@property (strong, nonatomic) UILabel * titleLabel;
+@property (strong, nonatomic) UILabel * titleUnreadLabel;
 
 @property (strong, nonatomic) INModelProvider * threadsProvider;
 

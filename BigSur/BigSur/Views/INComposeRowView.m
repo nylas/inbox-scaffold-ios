@@ -30,10 +30,11 @@
         [_actionButton setHidden: YES];
 		[self addSubview: _actionButton];
 		
-		_bottomBorder = [[CALayer alloc] init];
-		[_bottomBorder setBorderColor: [[UIColor colorWithWhite:0.84 alpha:1] CGColor]];
-		[_bottomBorder setBorderWidth: 1.0 / [[UIScreen mainScreen] scale]];
-		[[self layer] addSublayer: _bottomBorder];
+		_bottomBorder = [[UIView alloc] init];
+		[_bottomBorder setFrame: CGRectMake(0, 0, frame.size.width, 0.5)];
+		[_bottomBorder setTranslatesAutoresizingMaskIntoConstraints: NO];
+		[_bottomBorder setBackgroundColor: [UIColor colorWithWhite:0.84 alpha:1]];
+		[self addSubview: _bottomBorder];
 
 		[self setClipsToBounds: YES];
 		[self setBackgroundColor: [UIColor whiteColor]];
@@ -49,10 +50,14 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+	[self positionBottomBorder];
+}
 
+- (void)positionBottomBorder
+{
 	[CATransaction begin];
 	[CATransaction setDisableActions: !_animatesBottomBorder];
-	[_bottomBorder setFrame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height)];
+	[_bottomBorder setFrame: CGRectMake(-1, self.frame.size.height - 0.5, self.frame.size.width + 2, 0.5)];
 	[CATransaction commit];
 }
 

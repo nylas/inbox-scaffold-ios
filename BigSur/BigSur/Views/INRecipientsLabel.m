@@ -27,8 +27,10 @@
 
 - (void)setup
 {
-    _textColor = [UIColor blackColor];
-    _textFont = [UIFont systemFontOfSize: 14];
+	if (!_textColor)
+		_textColor = [UIColor blackColor];
+    if (!_textFont)
+		_textFont = [UIFont systemFontOfSize: 14];
 	_moreButton = [UIButton buttonWithType: UIButtonTypeCustom];
 	[self addSubview: _moreButton];
 }
@@ -103,9 +105,10 @@
 		
 		UIButton * b = [UIButton buttonWithType: UIButtonTypeCustom];
 		[b setTitle:name forState:UIControlStateNormal];
+		[b setTitleColor: _textColor forState:UIControlStateNormal];
+		[b setTitleColor: _textColor forState:UIControlStateDisabled];
 		[[b titleLabel] setFont: _textFont];
 		[[b titleLabel] setLineBreakMode: NSLineBreakByTruncatingTail];
-		[b setTitleColor: _textColor forState:UIControlStateNormal];
 		[_buttons addObject: b];
 		[self addSubview: b];
 	}

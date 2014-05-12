@@ -230,6 +230,12 @@
 	[_textField setText: @""];
 }
 
+- (void)addRecipients:(NSObject<NSFastEnumeration>*)recipients
+{
+	for (id recipient in recipients)
+	    [self addRecipientWithName:[recipient valueForKey: @"name"] andEmail:[recipient valueForKey: @"email"]];
+}
+
 - (void)addRecipientFromContact:(INContact*)contact
 {
     [self addRecipientWithName:contact.name andEmail:contact.email];
@@ -240,14 +246,17 @@
 	email = [email stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	if ([email length] == 0)
 		return;
-		
-	NSIndexPath * indexPath = [NSIndexPath indexPathForItem:[_recipients count] inSection:0];
-	[_recipients addObject: @{@"name": email, @"email": email}];
 	
-	[CATransaction begin];
-	[CATransaction setDisableActions: YES];
-	[_recipientsCollectionView insertItemsAtIndexPaths: @[indexPath]];
-	[CATransaction commit];
+	[_recipientsCollectionView performBatchUpdates:^{
+		NSIndexPath * indexPath = [NSIndexPath indexPathForItem:[_recipients count] inSection:0];
+		[_recipients addObject: @{@"name": email, @"email": email}];
+		[CATransaction begin];
+		[CATransaction setDisableActions: YES];
+		[_recipientsCollectionView insertItemsAtIndexPaths: @[indexPath]];
+		[CATransaction commit];
+
+	} completion:^(BOOL finished) {
+	}];
     
 	[self propogateConstraintChanges];
 	[self updateAutocompletionQuery: nil];

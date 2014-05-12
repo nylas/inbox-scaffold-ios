@@ -46,6 +46,25 @@
 
     [self arrangeContentViews];
     
+	// listen for taps on the scroll view beneath the text view to activate the text view
+	UITapGestureRecognizer * recognzier = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focusBodyTextView:)];
+	[recognzier setDelegate: self];
+	[_scrollView addGestureRecognizer: recognzier];
+
+	// populate content views
+	if (_thread) {
+		[self setTitle:@"New Reply"];
+
+		NSMutableArray * participants = [NSMutableArray array];
+		for (NSDictionary * participant in [_thread participants])
+			if (![[[INAPIManager shared] namespaceEmailAddresses] containsObject: participant[@"email"]])
+				[participants addObject: participant];
+		[_toRecipientsView addRecipients: participants];
+		
+	} else {
+		[self setTitle: @"New Message"];
+	}
+
 	// create the nav item
 	UIBarButtonItem * cancel = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed: @"icon_cancel.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(cancelTapped:)];
 	[self.navigationItem setLeftBarButtonItem: cancel];
@@ -164,6 +183,22 @@
         [_attachmentsView addAttachment: [info objectForKey: UIImagePickerControllerOriginalImage]];
         [self arrangeContentViews];
     }];
+}
+
+#pragma mark Collecting Touches beneath Body
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+	// Touching anywhere below the body text view should activate the body text view,
+	// but don't screw with touches to valid elements of our compose sheet.
+	if ([touch locationInView: self.scrollView].y > _bodyTextView.frame.origin.y + _bodyTextView.frame.size.height)
+		return YES;
+	return NO;
+}
+
+- (void)focusBodyTextView:(UITapGestureRecognizer*)recognizer
+{
+	[_bodyTextView becomeFirstResponder];
 }
 
 @end

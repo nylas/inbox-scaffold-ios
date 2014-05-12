@@ -9,6 +9,7 @@
 #import "INViewController.h"
 #import "INThreadViewController.h"
 #import "INContactsViewController.h"
+#import "INComposeViewController.h"
 #import "INThreadTableViewCell.h"
 
 @implementation INViewController
@@ -29,16 +30,20 @@
 
 - (void)viewDidLoad
 {
-	[self setTitle: @"Threads"];
+	[super viewDidLoad];
 	[self prepareForDisplay];
 
+	_titleLabel = [[UILabel alloc] initWithFrame: CGRectZero];
+	[_titleLabel setFont: self.navigationController.navigationBar.titleTextAttributes[NSFontAttributeName]];
+	[_titleLabel setTextColor: self.navigationController.navigationBar.titleTextAttributes[NSForegroundColorAttributeName]];
+	
 	_refreshControl = [[UIRefreshControl alloc] init];
 	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
 	[_tableView addSubview: _refreshControl];
 	[_tableView setSeparatorInset: UIEdgeInsetsMake(0, 0, 0, 0)];
 	
-	UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithTitle:@"Contacts" style:UIBarButtonItemStyleBordered target:self action:@selector(showContacts)];
-	[self.navigationItem setLeftBarButtonItem: item];
+	UIBarButtonItem * compose = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"icon_compose.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(composeTapped:)];
+	[self.navigationItem setRightBarButtonItem: compose];
 }
 
 - (void)prepareForDisplay
@@ -52,11 +57,11 @@
 	[_threadsProvider refresh];
 }
 
-- (void)showContacts
+- (IBAction)composeTapped:(id)sender
 {
-	INContactsViewController * contacts = [[INContactsViewController alloc] init];
-	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: contacts];
-	[self presentViewController: nav animated:YES completion:NULL];
+	INComposeViewController * compose = [[INComposeViewController alloc] initWithThread: nil];
+	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: compose];
+	[self presentViewController:nav animated:YES completion:NULL];
 }
 
 - (void)refresh

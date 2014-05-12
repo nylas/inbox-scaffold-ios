@@ -7,6 +7,7 @@
 //
 
 #import "INDeleteDetectingTextField.h"
+#import "INThemeManager.h"
 
 @implementation INDeleteDetectingTextField
 
@@ -28,7 +29,7 @@
 
 - (void)showInsertionPoint
 {
-	[self setTintColor: [UIColor blueColor]];
+	[self setTintColor: [[INThemeManager shared] tintColor]];
 }
 
 @end

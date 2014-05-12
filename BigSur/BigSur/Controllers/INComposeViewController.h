@@ -12,7 +12,7 @@
 #import "INComposeAttachmentsRowView.h"
 #import "INPlaceholderTextView.h"
 
-@interface INComposeViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface INComposeViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 {
     NSMutableArray * _verticalLayoutConstraints;
     

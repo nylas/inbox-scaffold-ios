@@ -89,6 +89,7 @@
 	
 	INContact * contact = [[_provider items] objectAtIndex: [indexPath row]];
 	[[cell textLabel] setText: [contact email]];
+	[[cell textLabel] setFont: [UIFont systemFontOfSize: 14]];
 	[[cell textLabel] setTextColor: [UIColor grayColor]];
 	
 	return cell;

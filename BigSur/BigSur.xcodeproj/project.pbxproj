@@ -50,8 +50,9 @@
 		43AE9BC519185ACF005D70C0 /* INComposeRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BC419185ACF005D70C0 /* INComposeRowView.m */; };
 		43AE9BC819185C46005D70C0 /* INComposeSubjectRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */; };
 		43AE9BCB19186DD1005D70C0 /* INPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */; };
-		43AE9BCE191943BB005D70C0 /* INThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BCD191943BB005D70C0 /* INThemeManager.m */; };
 		43DB20EE191D5D4800DCFA4A /* INAutocompletionResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */; };
+		43DB20F1192145F100DCFA4A /* INThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20F0192145F100DCFA4A /* INThemeManager.m */; };
+		43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20F31921498200DCFA4A /* INRootViewController.m */; };
 		43F22A7619071A1100A032D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7519071A1100A032D1 /* Foundation.framework */; };
 		43F22A7819071A1100A032D1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7719071A1100A032D1 /* CoreGraphics.framework */; };
 		43F22A7A19071A1100A032D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7919071A1100A032D1 /* UIKit.framework */; };
@@ -122,10 +123,12 @@
 		43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INComposeSubjectRowView.m; sourceTree = "<group>"; };
 		43AE9BC919186DD1005D70C0 /* INPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INPlaceholderTextView.h; sourceTree = "<group>"; };
 		43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INPlaceholderTextView.m; sourceTree = "<group>"; };
-		43AE9BCC191943BB005D70C0 /* INThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThemeManager.h; sourceTree = "<group>"; };
-		43AE9BCD191943BB005D70C0 /* INThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INThemeManager.m; sourceTree = "<group>"; };
 		43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAutocompletionResultsView.h; sourceTree = "<group>"; };
 		43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAutocompletionResultsView.m; sourceTree = "<group>"; };
+		43DB20EF192145F100DCFA4A /* INThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThemeManager.h; sourceTree = "<group>"; };
+		43DB20F0192145F100DCFA4A /* INThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INThemeManager.m; sourceTree = "<group>"; };
+		43DB20F21921498200DCFA4A /* INRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INRootViewController.h; sourceTree = "<group>"; };
+		43DB20F31921498200DCFA4A /* INRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INRootViewController.m; sourceTree = "<group>"; };
 		43F22A7219071A1100A032D1 /* BigSur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BigSur.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F22A7519071A1100A032D1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		43F22A7719071A1100A032D1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -286,8 +289,8 @@
 			children = (
 				43F22A8419071A1100A032D1 /* INAppDelegate.h */,
 				43F22A8519071A1100A032D1 /* INAppDelegate.m */,
-				43AE9BCC191943BB005D70C0 /* INThemeManager.h */,
-				43AE9BCD191943BB005D70C0 /* INThemeManager.m */,
+				43DB20EF192145F100DCFA4A /* INThemeManager.h */,
+				43DB20F0192145F100DCFA4A /* INThemeManager.m */,
 				43AAF5461912D607000FA5AF /* Views */,
 				43F22AC219071C5200A032D1 /* Categories */,
 				43F22AC919071C5200A032D1 /* Controllers */,
@@ -326,6 +329,8 @@
 		43F22AC919071C5200A032D1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				43DB20F21921498200DCFA4A /* INRootViewController.h */,
+				43DB20F31921498200DCFA4A /* INRootViewController.m */,
 				43F22ACA19071C5200A032D1 /* INViewController.h */,
 				43F22ACB19071C5200A032D1 /* INViewController.m */,
 				43F22ACC19071C5200A032D1 /* INViewController.xib */,
@@ -542,8 +547,8 @@
 				43F788DA1919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m in Sources */,
 				43AAF54E1912E985000FA5AF /* INThreadTableViewCell.m in Sources */,
 				43AAF5491912D607000FA5AF /* INMessageCollectionViewCell.m in Sources */,
+				43DB20F1192145F100DCFA4A /* INThemeManager.m in Sources */,
 				43AE9B751918045C005D70C0 /* INContactsViewController.m in Sources */,
-				43AE9BCE191943BB005D70C0 /* INThemeManager.m in Sources */,
 				43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */,
 				43AE9BC219185999005D70C0 /* INLeftJustifiedFlowLayout.m in Sources */,
 				43F22A8219071A1100A032D1 /* main.m in Sources */,
@@ -552,6 +557,7 @@
 				43AAF5511912EB72000FA5AF /* UIView+FrameAdditions.m in Sources */,
 				43F22A8619071A1100A032D1 /* INAppDelegate.m in Sources */,
 				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
+				43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */,
 				43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */,
 				43AE9BBF191841DE005D70C0 /* INComposeRecipientRowView.m in Sources */,
 				4319792E191D8A0100523C8B /* INComposeAttachmentsRowView.m in Sources */,
