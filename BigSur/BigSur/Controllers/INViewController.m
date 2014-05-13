@@ -53,6 +53,7 @@
 	self.threadsProvider = [namespace newThreadsProvider];
 	[_threadsProvider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
 	[_threadsProvider setDelegate:self];
+	[_threadsProvider setItemFilterPredicate: [NSComparisonPredicate predicateWithFormat:@"ANY tagIDs = %@", INTagIDUnread]];
 	[_threadsProvider setItemRange: NSMakeRange(0, 20)];
 	[_threadsProvider refresh];
 }
