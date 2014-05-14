@@ -32,6 +32,7 @@
 		43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43197930191D938300523C8B /* INAttachmentTableViewCell.m */; };
 		433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */; };
 		433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */; };
+		4342322F1923F84E002AE05D /* INTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4342322E1923F84E002AE05D /* INTagsView.m */; };
 		438159FB1922E6D70069116A /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159F81922E6D70069116A /* JSSlidingViewController.m */; };
 		438159FF1922E7580069116A /* INSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159FD1922E7580069116A /* INSidebarViewController.m */; };
 		43815A001922E7580069116A /* INSidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 438159FE1922E7580069116A /* INSidebarViewController.xib */; };
@@ -97,6 +98,8 @@
 		433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FormatConversion.m"; sourceTree = "<group>"; };
 		433711B0191C0A3000E7F793 /* NSObject+AssociatedObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AssociatedObjects.h"; sourceTree = "<group>"; };
 		433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AssociatedObjects.m"; sourceTree = "<group>"; };
+		4342322D1923F84E002AE05D /* INTagsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTagsView.h; path = BigSur/Views/INTagsView.h; sourceTree = SOURCE_ROOT; };
+		4342322E1923F84E002AE05D /* INTagsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTagsView.m; path = BigSur/Views/INTagsView.m; sourceTree = SOURCE_ROOT; };
 		438159F71922E6D70069116A /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
 		438159F81922E6D70069116A /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
 		438159FC1922E7580069116A /* INSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarViewController.h; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 		43AAF5461912D607000FA5AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4342322D1923F84E002AE05D /* INTagsView.h */,
+				4342322E1923F84E002AE05D /* INTagsView.m */,
 				43815A011922F5790069116A /* INInboxNavTitleView.h */,
 				43815A021922F5790069116A /* INInboxNavTitleView.m */,
 				43815A041922F8370069116A /* INSidebarTableViewCell.h */,
@@ -599,6 +604,7 @@
 				43AE9BCB19186DD1005D70C0 /* INPlaceholderTextView.m in Sources */,
 				43AAF5511912EB72000FA5AF /* UIView+FrameAdditions.m in Sources */,
 				43F22A8619071A1100A032D1 /* INAppDelegate.m in Sources */,
+				4342322F1923F84E002AE05D /* INTagsView.m in Sources */,
 				43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */,
 				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
 				43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */,

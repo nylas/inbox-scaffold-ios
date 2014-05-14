@@ -38,11 +38,17 @@
 	[[_threadHeaderView layer] setShadowOpacity: 0.1];
 	[[_threadHeaderView layer] setShadowRadius: 1];
 	
+	float headerPadding = _threadSubjectLabel.frame.origin.y;
+	
     [_threadSubjectLabel setText: [_thread subject]];
     [_threadSubjectLabel sizeToFit];
 	[_threadSubjectLabel setFrameWidth: _threadSubjectLabel.frame.size.width + 1]; // fix for rounding error
     
-    [_threadHeaderView setFrameHeight: _threadSubjectLabel.frame.size.height + _threadSubjectLabel.frame.origin.y * 2];
+	[_tagsView setAlignment: NSTextAlignmentRight];
+	[_tagsView setTags: [_thread tags]];
+	[_tagsView setFrameY: [_threadSubjectLabel bottomLeft].y + headerPadding / 2];
+    [_threadHeaderView setFrameHeight: [_tagsView bottomLeft].y + headerPadding];
+
 	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
 	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
 	

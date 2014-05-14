@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "INTagsView.h"
 
 @interface INThreadViewController : UIViewController <INModelProviderDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UICollectionView * collectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView * collectionView;
 @property (weak, nonatomic) IBOutlet UILabel * threadSubjectLabel;
 @property (weak, nonatomic) IBOutlet UIView *threadHeaderView;
+@property (weak, nonatomic) IBOutlet INTagsView *tagsView;
 
 @property (nonatomic, strong) INThread * thread;
 @property (nonatomic, strong) INModelProvider * messageProvider;
