@@ -18,9 +18,9 @@
         _titleLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 0, 30)];
         [_titleLabel setFont: [[UINavigationBar appearance] titleTextAttributes][NSFontAttributeName]];
         [_titleLabel setTextColor: [[UINavigationBar appearance] titleTextAttributes][NSForegroundColorAttributeName]];
-        _titleUnreadLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 6, 0, 20)];
-        [_titleUnreadLabel setFont: [UIFont boldSystemFontOfSize: 12]];
-        [_titleUnreadLabel setTextColor: [_titleLabel textColor]];
+        _titleUnreadLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 8, 0, 18)];
+        [_titleUnreadLabel setFont: [UIFont fontWithName:@"HelveticaNeue" size: 14]];
+        [_titleUnreadLabel setTextColor: [UIColor colorWithWhite:0.4 alpha:1]];
         [_titleUnreadLabel setTextAlignment: NSTextAlignmentCenter];
         [_titleUnreadLabel setBackgroundColor: [UIColor whiteColor]];
 
@@ -35,14 +35,14 @@
     float x = 0;
     
     [_titleLabel setText: title];
-    [_titleLabel setFrameWidth: [_titleLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleLabel font]}].width + 6];
+    [_titleLabel setFrameWidth: ceilf([_titleLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleLabel font]}].width) + 6];
     x += [_titleLabel frame].size.width;
     
     if (count == NSNotFound) {
         [_titleUnreadLabel setFrameWidth: 0];
     } else {
         [_titleUnreadLabel setText: [NSString stringWithFormat: @"%ld", count]];
-        [_titleUnreadLabel setFrameWidth: [_titleUnreadLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleUnreadLabel font]}].width + 6];
+        [_titleUnreadLabel setFrameWidth: ceilf([_titleUnreadLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleUnreadLabel font]}].width) + 6];
         [_titleUnreadLabel setFrameX: x];
         x += [_titleUnreadLabel frame].size.width;
     }

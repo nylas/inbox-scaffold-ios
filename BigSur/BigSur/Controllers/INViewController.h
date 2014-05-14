@@ -12,6 +12,7 @@
 
 @interface INViewController : INRootViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate, UISearchBarDelegate>
 {
+	INThreadProvider * _threadProvider;
 	float _scrollViewPrevOffset;
 }
 
@@ -20,8 +21,6 @@
 @property (strong, nonatomic) IBOutlet UIRefreshControl * refreshControl;
 @property (strong, nonatomic) IBOutlet INInboxNavTitleView * titleView;
 
-@property (strong, nonatomic) NSPredicate * threadPredicate;
-@property (strong, nonatomic) INThreadProvider * threadProvider;
-
+@property (strong, nonatomic) INTag * tag;
 
 @end

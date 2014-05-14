@@ -33,7 +33,10 @@
     _sidebarViewController = [[INSidebarViewController alloc] init];
     
     // initialze content view controllers
-	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: [[INViewController alloc] init]];
+	_mainViewController = [[INViewController alloc] init];
+	[_mainViewController setTag: [INTag instanceWithID: INTagIDInbox]];
+	
+	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: _mainViewController];
 	[[nav navigationBar] setTranslucent: NO];
 	
     // initialize the controller that manages the sliding of the sidebar tray
@@ -50,13 +53,18 @@
 			if (error) {
 				[[[UIAlertView alloc] initWithTitle:@"Sign In Failed" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
             } else {
-                _currentNamespace = [namespaces firstObject];
-                [[NSNotificationCenter defaultCenter] postNotificationName:BigSurNamespaceChanged object:nil];
+				[self setCurrentNamespace: [namespaces firstObject]];
             }
         }];
     }
 
 	return YES;
+}
+
+- (void)setCurrentNamespace:(INNamespace *)namespace
+{
+	_currentNamespace = namespace;
+	[[NSNotificationCenter defaultCenter] postNotificationName:BigSurNamespaceChanged object:nil];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -89,6 +97,12 @@
 - (void)slidingViewControllerWillOpen:(JSSlidingViewController *)viewController
 {
     [_sidebarViewController refresh];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+}
+
+- (void)slidingViewControllerWillClose:(JSSlidingViewController *)viewController
+{
+	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 }
 
 @end

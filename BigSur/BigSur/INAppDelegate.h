@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JSSlidingViewController.h"
 #import "INSidebarViewController.h"
+#import "INViewController.h"
 
 static NSString * BigSurNamespaceChanged = @"BigSurNamespaceChanged";
 
@@ -16,6 +17,7 @@ static NSString * BigSurNamespaceChanged = @"BigSurNamespaceChanged";
 
 @property (strong, nonatomic) JSSlidingViewController * slidingViewController;
 @property (strong, nonatomic) INSidebarViewController * sidebarViewController;
+@property (strong, nonatomic) INViewController * mainViewController;
 
 @property (strong, nonatomic) UIWindow * window;
 @property (strong, nonatomic) INNamespace * currentNamespace;

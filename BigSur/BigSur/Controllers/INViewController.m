@@ -21,7 +21,7 @@
 {
 	self = [super init];
 	if (self) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareForDisplay) name:BigSurNamespaceChanged object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareThreadProvider) name:BigSurNamespaceChanged object:nil];
 	}
 	return self;
 }
@@ -34,12 +34,10 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    [self setTitle: @"Inbox"];
-	[self prepareForDisplay];
-
     _titleView = [[INInboxNavTitleView alloc] initWithFrame: CGRectZero];
-    [_titleView setTitle: [self title] andUnreadCount: NSNotFound];
     [self.navigationItem setTitleView: _titleView];
+
+	[self prepareThreadProvider];
     
 	_refreshControl = [[UIRefreshControl alloc] init];
 	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
@@ -50,23 +48,31 @@
 	[self.navigationItem setRightBarButtonItem: compose];
 }
 
-- (void)prepareForDisplay
+- (void)prepareThreadProvider
 {
     INNamespace * namespace = [[INAppDelegate current] currentNamespace];
 	
-	self.threadProvider = [namespace newThreadProvider];
-	[_threadProvider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
-	[_threadProvider setDelegate:self];
-	[_threadProvider setItemFilterPredicate: _threadPredicate];
-	[_threadProvider setItemRange: NSMakeRange(0, 20)];
-	[_threadProvider refresh];
+	INThreadProvider * provider = [namespace newThreadProvider];
+	[provider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
+	[provider setDelegate:self];
+	[provider setItemFilterPredicate: _threadProvider.itemFilterPredicate];
+	[provider setItemRange: NSMakeRange(0, 20)];
+	[provider refresh];
+	
+	_threadProvider = provider;
 }
 
-- (void)setThreadPredicate:(NSPredicate *)threadPredicate
+- (void)setTag:(INTag*)tag
 {
-    _threadPredicate = threadPredicate;
-    [self prepareForDisplay];
+	_tag = tag;
+	
+	[_threadProvider setItemFilterPredicate: [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]];
+    [_threadProvider refresh];
+
+	[self setTitle: [tag name]];
+    [_titleView setTitle: [self title] andUnreadCount: NSNotFound];
 }
+
 
 #pragma Actions
 

@@ -14,7 +14,15 @@
 {
     self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
+		[[self textLabel] setFont: [UIFont fontWithName:@"HelveticaNeue-Light" size:16]];
+		[[self textLabel] setTextColor: [UIColor whiteColor]];
+		[[self detailTextLabel] setFont: [UIFont fontWithName:@"HelveticaNeue-Medium" size:14]];
+		[[self detailTextLabel] setTextColor: [UIColor colorWithWhite:1 alpha:0.5]];
+
+		[self setBackgroundColor: [UIColor colorWithWhite:0 alpha:0.05]];
+		
+		[self setSelectedBackgroundView: [[UIView alloc] init]];
+		[[self selectedBackgroundView] setBackgroundColor: [UIColor colorWithWhite:0 alpha:0.3]];
     }
     return self;
 }
@@ -24,11 +32,20 @@
     // Initialization code
 }
 
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	[[self imageView] setContentMode: UIViewContentModeCenter];
+	
+	float h = self.frame.size.height;
+	[[self imageView] setFrame: CGRectMake(8, (h-20)/2 + 1, 20, 20)];
+	[[self textLabel] setFrame: CGRectMake(8 + 20 + 8, 0, self.frame.size.width, h-1)];
+	[[self detailTextLabel] setFrame: CGRectMake(self.frame.size.width - 46, 0, 30, h)];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 @end

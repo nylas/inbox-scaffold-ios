@@ -9,6 +9,7 @@
 #import "INRecipientsLabel.h"
 #import "UIView+FrameAdditions.h"
 
+
 @implementation INRecipientsLabel
 
 - (id)initWithFrame:(CGRect)frame
