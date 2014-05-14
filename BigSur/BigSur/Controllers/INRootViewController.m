@@ -7,6 +7,7 @@
 //
 
 #import "INRootViewController.h"
+#import "JSSlidingViewController.h"
 
 @implementation INRootViewController
 
@@ -25,9 +26,21 @@
     [super didReceiveMemoryWarning];
 }
 
+- (JSSlidingViewController*)parentSlidingViewController
+{
+    JSSlidingViewController * js = (JSSlidingViewController *)[self parentViewController];
+    if ([js isKindOfClass: [JSSlidingViewController class]] == NO)
+        js = (JSSlidingViewController *)[js parentViewController];
+    return js;
+}
+
 - (IBAction)sidebarTapped:(id)sender
 {
-	
+	JSSlidingViewController * js = [self parentSlidingViewController];
+    if ([js isOpen])
+        [js closeSlider:YES completion:nil];
+    else
+        [js openSlider:YES completion:nil];
 }
 
 @end

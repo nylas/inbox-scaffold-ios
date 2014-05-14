@@ -11,6 +11,9 @@
 #import "INContactsViewController.h"
 #import "INComposeViewController.h"
 #import "INThreadTableViewCell.h"
+#import "UIView+FrameAdditions.h"
+#import "INThemeManager.h"
+#import "INAppDelegate.h"
 
 @implementation INViewController
 
@@ -18,7 +21,7 @@
 {
 	self = [super init];
 	if (self) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareForDisplay) name:INNamespacesChangedNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareForDisplay) name:BigSurNamespaceChanged object:nil];
 	}
 	return self;
 }
@@ -31,12 +34,13 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+    [self setTitle: @"Inbox"];
 	[self prepareForDisplay];
 
-	_titleLabel = [[UILabel alloc] initWithFrame: CGRectZero];
-	[_titleLabel setFont: self.navigationController.navigationBar.titleTextAttributes[NSFontAttributeName]];
-	[_titleLabel setTextColor: self.navigationController.navigationBar.titleTextAttributes[NSForegroundColorAttributeName]];
-	
+    _titleView = [[INInboxNavTitleView alloc] initWithFrame: CGRectZero];
+    [_titleView setTitle: [self title] andUnreadCount: NSNotFound];
+    [self.navigationItem setTitleView: _titleView];
+    
 	_refreshControl = [[UIRefreshControl alloc] init];
 	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
 	[_tableView addSubview: _refreshControl];
@@ -48,15 +52,23 @@
 
 - (void)prepareForDisplay
 {
-	INNamespace * namespace = [[[INAPIManager shared] namespaces] firstObject];
+    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
 	
-	self.threadsProvider = [namespace newThreadsProvider];
-	[_threadsProvider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
-	[_threadsProvider setDelegate:self];
-	[_threadsProvider setItemFilterPredicate: [NSComparisonPredicate predicateWithFormat:@"ANY tagIDs = %@", INTagIDUnread]];
-	[_threadsProvider setItemRange: NSMakeRange(0, 20)];
-	[_threadsProvider refresh];
+	self.threadProvider = [namespace newThreadProvider];
+	[_threadProvider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
+	[_threadProvider setDelegate:self];
+	[_threadProvider setItemFilterPredicate: _threadPredicate];
+	[_threadProvider setItemRange: NSMakeRange(0, 20)];
+	[_threadProvider refresh];
 }
+
+- (void)setThreadPredicate:(NSPredicate *)threadPredicate
+{
+    _threadPredicate = threadPredicate;
+    [self prepareForDisplay];
+}
+
+#pragma Actions
 
 - (IBAction)composeTapped:(id)sender
 {
@@ -65,14 +77,19 @@
 	[self presentViewController:nav animated:YES completion:NULL];
 }
 
+#pragma Refreshing & Thread Ppovider
+
 - (void)refresh
 {
-	[_threadsProvider refresh];
+	[_threadProvider refresh];
 }
 
 - (void)providerDataChanged
 {
 	[_tableView reloadData];
+    [_threadProvider countUnreadItemsWithCallback:^(long count) {
+        [_titleView setTitle: [self title] andUnreadCount: count];
+    }];
 }
 
 - (void)providerDataAltered:(INModelProviderChangeSet *)changeSet
@@ -82,6 +99,10 @@
 	[_tableView insertRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeAdd] withRowAnimation:UITableViewRowAnimationTop];
 	[_tableView endUpdates];
 	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeUpdate] withRowAnimation:UITableViewRowAnimationLeft];
+
+    [_threadProvider countUnreadItemsWithCallback:^(long count) {
+        [_titleView setTitle: [self title] andUnreadCount: count];
+    }];
 }
 
 - (void)providerDataFetchFailed:(NSError *)error
@@ -105,7 +126,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
 	NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"subject CONTAINS[cd] %@", searchText];
-	[_threadsProvider setItemFilterPredicate:predicate];
+	[_threadProvider setItemFilterPredicate:predicate];
 }
 
 #pragma mark Table View Data Source
@@ -117,7 +138,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [[_threadsProvider items] count];
+	return [[_threadProvider items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -125,7 +146,7 @@
 	INThreadTableViewCell * cell = (INThreadTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];
 	if (!cell) cell = [[INThreadTableViewCell alloc] initWithReuseIdentifier:@"cell"];
 
-	INThread * thread = [[_threadsProvider items] objectAtIndex:[indexPath row]];
+	INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
 	[cell setThread: thread];
 	return cell;
 }
@@ -134,7 +155,7 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	INThread * thread = [[_threadsProvider items] objectAtIndex:[indexPath row]];
+	INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
 	
 	INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: thread];
 	[self.navigationController pushViewController:threadVC animated:YES];

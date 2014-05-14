@@ -7,6 +7,8 @@
 //
 
 #import "INContactsViewController.h"
+#import "INAppDelegate.h"
+
 
 @implementation INContactsViewController
 
@@ -30,8 +32,8 @@
 
     [_tableView setRowHeight: 50];
     
-	INNamespace * namespace = [[[INAPIManager shared] namespaces] firstObject];
-	self.contactsProvider = [namespace newContactsProvider];
+    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+	self.contactsProvider = [namespace newContactProvider];
 	[_contactsProvider setDelegate:self];
 	[_contactsProvider refresh];
 }

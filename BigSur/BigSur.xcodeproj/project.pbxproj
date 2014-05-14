@@ -32,6 +32,11 @@
 		43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43197930191D938300523C8B /* INAttachmentTableViewCell.m */; };
 		433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */; };
 		433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */; };
+		438159FB1922E6D70069116A /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159F81922E6D70069116A /* JSSlidingViewController.m */; };
+		438159FF1922E7580069116A /* INSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159FD1922E7580069116A /* INSidebarViewController.m */; };
+		43815A001922E7580069116A /* INSidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 438159FE1922E7580069116A /* INSidebarViewController.xib */; };
+		43815A031922F5790069116A /* INInboxNavTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A021922F5790069116A /* INInboxNavTitleView.m */; };
+		43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A051922F8370069116A /* INSidebarTableViewCell.m */; };
 		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
 		43A9684B191C087400F24844 /* Inbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A9684A191C087400F24844 /* Inbox.framework */; };
 		43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A9684F191C099600F24844 /* INConvenienceCategories.m */; };
@@ -92,6 +97,15 @@
 		433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FormatConversion.m"; sourceTree = "<group>"; };
 		433711B0191C0A3000E7F793 /* NSObject+AssociatedObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AssociatedObjects.h"; sourceTree = "<group>"; };
 		433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AssociatedObjects.m"; sourceTree = "<group>"; };
+		438159F71922E6D70069116A /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
+		438159F81922E6D70069116A /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
+		438159FC1922E7580069116A /* INSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarViewController.h; sourceTree = "<group>"; };
+		438159FD1922E7580069116A /* INSidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSidebarViewController.m; sourceTree = "<group>"; };
+		438159FE1922E7580069116A /* INSidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INSidebarViewController.xib; sourceTree = "<group>"; };
+		43815A011922F5790069116A /* INInboxNavTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INInboxNavTitleView.h; path = BigSur/Views/INInboxNavTitleView.h; sourceTree = SOURCE_ROOT; };
+		43815A021922F5790069116A /* INInboxNavTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INInboxNavTitleView.m; path = BigSur/Views/INInboxNavTitleView.m; sourceTree = SOURCE_ROOT; };
+		43815A041922F8370069116A /* INSidebarTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarTableViewCell.h; sourceTree = "<group>"; };
+		43815A051922F8370069116A /* INSidebarTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSidebarTableViewCell.m; sourceTree = "<group>"; };
 		439283BF191450AA00926291 /* INRecipientsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INRecipientsLabel.h; path = BigSur/Views/INRecipientsLabel.h; sourceTree = SOURCE_ROOT; };
 		439283C0191450AA00926291 /* INRecipientsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INRecipientsLabel.m; path = BigSur/Views/INRecipientsLabel.m; sourceTree = SOURCE_ROOT; };
 		43A9684A191C087400F24844 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../InboxFramework/DerivedData/InboxFramework/Build/Products/Debug-iphonesimulator/Inbox.framework"; sourceTree = "<group>"; };
@@ -207,9 +221,30 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		438159F31922E6D70069116A /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				438159F41922E6D70069116A /* JSSlidingViewController */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		438159F41922E6D70069116A /* JSSlidingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				438159F71922E6D70069116A /* JSSlidingViewController.h */,
+				438159F81922E6D70069116A /* JSSlidingViewController.m */,
+			);
+			path = JSSlidingViewController;
+			sourceTree = "<group>";
+		};
 		43AAF5461912D607000FA5AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				43815A011922F5790069116A /* INInboxNavTitleView.h */,
+				43815A021922F5790069116A /* INInboxNavTitleView.m */,
+				43815A041922F8370069116A /* INSidebarTableViewCell.h */,
+				43815A051922F8370069116A /* INSidebarTableViewCell.m */,
 				43AE9BC919186DD1005D70C0 /* INPlaceholderTextView.h */,
 				43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */,
 				43F788DE1919991F00B6E0E5 /* INDeleteDetectingTextField.h */,
@@ -294,6 +329,7 @@
 				43AAF5461912D607000FA5AF /* Views */,
 				43F22AC219071C5200A032D1 /* Categories */,
 				43F22AC919071C5200A032D1 /* Controllers */,
+				438159F31922E6D70069116A /* Vendor */,
 				43F22A7C19071A1100A032D1 /* Supporting Files */,
 				43F22A8D19071A1100A032D1 /* Images.xcassets */,
 			);
@@ -337,6 +373,9 @@
 				43AE9B721918045C005D70C0 /* INContactsViewController.h */,
 				43AE9B731918045C005D70C0 /* INContactsViewController.m */,
 				43AE9B741918045C005D70C0 /* INContactsViewController.xib */,
+				438159FC1922E7580069116A /* INSidebarViewController.h */,
+				438159FD1922E7580069116A /* INSidebarViewController.m */,
+				438159FE1922E7580069116A /* INSidebarViewController.xib */,
 				43AAF5331911B8E5000FA5AF /* INThreadViewController.h */,
 				43AAF5341911B8E5000FA5AF /* INThreadViewController.m */,
 				43AAF5351911B8E5000FA5AF /* INThreadViewController.xib */,
@@ -441,6 +480,7 @@
 				43F22A8E19071A1100A032D1 /* Images.xcassets in Resources */,
 				43AE9B761918045C005D70C0 /* INContactsViewController.xib in Resources */,
 				43AAF5371911B8E5000FA5AF /* INThreadViewController.xib in Resources */,
+				43815A001922E7580069116A /* INSidebarViewController.xib in Resources */,
 				43F22A8019071A1100A032D1 /* InfoPlist.strings in Resources */,
 				43AE9B7B191833AF005D70C0 /* INComposeViewController.xib in Resources */,
 				43F22AD119071C5200A032D1 /* INViewController.xib in Resources */,
@@ -539,12 +579,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				43AAF5361911B8E5000FA5AF /* INThreadViewController.m in Sources */,
+				43815A031922F5790069116A /* INInboxNavTitleView.m in Sources */,
 				43F788E01919991F00B6E0E5 /* INDeleteDetectingTextField.m in Sources */,
 				433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */,
 				43FBF37F191AE3C100C05AFC /* INMessageContentWebView.m in Sources */,
 				43AE9BC519185ACF005D70C0 /* INComposeRowView.m in Sources */,
 				43AE9B7A191833AF005D70C0 /* INComposeViewController.m in Sources */,
 				43F788DA1919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m in Sources */,
+				438159FB1922E6D70069116A /* JSSlidingViewController.m in Sources */,
 				43AAF54E1912E985000FA5AF /* INThreadTableViewCell.m in Sources */,
 				43AAF5491912D607000FA5AF /* INMessageCollectionViewCell.m in Sources */,
 				43DB20F1192145F100DCFA4A /* INThemeManager.m in Sources */,
@@ -553,9 +595,11 @@
 				43AE9BC219185999005D70C0 /* INLeftJustifiedFlowLayout.m in Sources */,
 				43F22A8219071A1100A032D1 /* main.m in Sources */,
 				43AE9BC819185C46005D70C0 /* INComposeSubjectRowView.m in Sources */,
+				438159FF1922E7580069116A /* INSidebarViewController.m in Sources */,
 				43AE9BCB19186DD1005D70C0 /* INPlaceholderTextView.m in Sources */,
 				43AAF5511912EB72000FA5AF /* UIView+FrameAdditions.m in Sources */,
 				43F22A8619071A1100A032D1 /* INAppDelegate.m in Sources */,
+				43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */,
 				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
 				43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */,
 				43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */,

@@ -12,27 +12,49 @@
 
 @implementation INAppDelegate
 
++ (INAppDelegate*)current
+{
+    return (INAppDelegate*)[[UIApplication sharedApplication] delegate];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: [[INViewController alloc] init]];
-	[[nav navigationBar] setTranslucent: NO];
-	
+    // apply appearance overrides
 	[[UINavigationBar appearance] setBarTintColor: [UIColor colorWithWhite:0.956 alpha:1]];
 	[[UINavigationBar appearance] setTintColor: [[INThemeManager shared] tintColor]];
 	[[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: [UIColor colorWithWhite:0.29 alpha:1], NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:20]}];
-
 	[[UIProgressView appearance] setTintColor: [[INThemeManager shared] tintColor]];
+    
+    // load previous app state
+    NSArray * namespaces = [[INAPIManager shared] namespaces];
+    _currentNamespace = [namespaces firstObject];
+    
+    // initialize the sidebar controller
+    _sidebarViewController = [[INSidebarViewController alloc] init];
+    
+    // initialze content view controllers
+	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: [[INViewController alloc] init]];
+	[[nav navigationBar] setTranslucent: NO];
 	
+    // initialize the controller that manages the sliding of the sidebar tray
+    _slidingViewController = [[JSSlidingViewController alloc] initWithFrontViewController: nav backViewController: _sidebarViewController];
+    _slidingViewController.useBouncyAnimations = NO;
+    _slidingViewController.delegate = self;
+    
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = nav;
+	self.window.rootViewController = _slidingViewController;
 	[self.window makeKeyAndVisible];
-
-	if (![[INAPIManager shared] namespaces]) {
-		[[INAPIManager shared] authenticate:^(INAccount * account, NSError *error) {
-			if (error)
-				[[[UIAlertView alloc] initWithTitle:@"Auth Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-		}];
-	}
+    
+	if (!_currentNamespace) {
+		[[INAPIManager shared] authenticate:^(NSArray * namespaces, NSError *error) {
+			if (error) {
+				[[[UIAlertView alloc] initWithTitle:@"Sign In Failed" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+            } else {
+                _currentNamespace = [namespaces firstObject];
+                [[NSNotificationCenter defaultCenter] postNotificationName:BigSurNamespaceChanged object:nil];
+            }
+        }];
+    }
 
 	return YES;
 }
@@ -62,6 +84,11 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)slidingViewControllerWillOpen:(JSSlidingViewController *)viewController
+{
+    [_sidebarViewController refresh];
 }
 
 @end

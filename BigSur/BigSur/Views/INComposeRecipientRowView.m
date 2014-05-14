@@ -10,6 +10,7 @@
 #import "INLeftJustifiedFlowLayout.h"
 #import "INComposeRecipientCollectionViewCell.h"
 #import "UIView+FrameAdditions.h"
+#import "INAppDelegate.h"
 
 @interface INIntrinsicallySizedCollectionView : UICollectionView
 @end
@@ -293,8 +294,8 @@
 		
 	} else {
 		if (!_autocompletionView.provider) {
-            INNamespace * namespace = [[[INAPIManager shared] namespaces] firstObject];
-			INModelProvider * provider = [namespace newContactsProvider];
+            INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+			INModelProvider * provider = [namespace newContactProvider];
 			[_autocompletionView setProvider: provider];
 		}
 		NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat: @"email BEGINSWITH %@", typedText];
