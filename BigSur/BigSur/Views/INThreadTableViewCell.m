@@ -88,6 +88,7 @@
 	[_subjectLabel setFrame: CGRectMake(textX, [_participantsLabel bottomRight].y, textW, 20)];
 	[_unreadDot setFrameCenter: CGPointMake(20, _subjectLabel.center.y)];
 	[_bodyLabel setFrame: CGRectMake(textX, [_subjectLabel bottomRight].y, textW, 35)];
+	[_bodyLabel sizeToFit];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -118,8 +119,36 @@
 	else
 		[_threadCountLabel setText: @""];
 		
-	NSString * cleanSnippet = [[_thread snippet] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	[_bodyLabel setText: cleanSnippet];
+	NSString * snippet = [_thread snippet];
+	unichar * cleaned = calloc(sizeof(unichar), [snippet length]);
+	int cleanedLength = 0;
+
+	NSCharacterSet * punctuationSet = [NSCharacterSet punctuationCharacterSet];
+	NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+	
+	BOOL hasSpace = YES;
+	for (int ii = 0; ii < [snippet length]; ii ++) {
+		unichar c = [snippet characterAtIndex: ii];
+		BOOL isWhitespace = [whitespaceSet characterIsMember: c];
+		
+		if (isWhitespace) {
+			// If this character is whitespace, only add it to our string if we don't
+			// already have a whitespace character.
+			if (!hasSpace)
+				cleaned[cleanedLength++] = ' ';
+			hasSpace = YES;
+		} else {
+			// If this character is punctuation and our trailing character is a whitespace
+			// character, place the punctutation where the whitespace is. Otherwise just
+			// append the character.
+			if (hasSpace && [punctuationSet characterIsMember: c])
+				cleanedLength --;
+			cleaned[cleanedLength++] = c;
+			hasSpace = NO;
+		}
+	}
+	NSString * cleanedString = [[NSString alloc] initWithCharactersNoCopy:cleaned length:cleanedLength freeWhenDone:YES];
+	[_bodyLabel setText: cleanedString];
 }
 
 @end
