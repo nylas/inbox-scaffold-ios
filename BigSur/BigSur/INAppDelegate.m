@@ -10,6 +10,7 @@
 #import "INViewController.h"
 #import "INThemeManager.h"
 #import "INAuthViewController.h"
+#import "INStupidFullSyncEngine.h"
 
 @implementation INAppDelegate
 
@@ -29,6 +30,13 @@
     // load previous app state
     NSArray * namespaces = [[INAPIManager shared] namespaces];
     [self setCurrentNamespace: [namespaces firstObject]];
+    
+    // tell Inbox we want to delegate all data syncing to a sync engine and not
+    // have data loaded for each of the displayed by INModelProviders (which would be
+    // be preferred if our app only ever loaded a specific view of attachments, or
+    // something like that...)
+    INStupidFullSyncEngine * engine = [[INStupidFullSyncEngine alloc] initWithConfiguration: @{}];
+    [[INAPIManager shared] setSyncEngine: engine];
     
     // initialize the sidebar controller
     _sidebarViewController = [[INSidebarViewController alloc] init];

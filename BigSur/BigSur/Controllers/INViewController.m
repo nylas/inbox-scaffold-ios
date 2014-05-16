@@ -14,6 +14,7 @@
 #import "UIView+FrameAdditions.h"
 #import "INThemeManager.h"
 #import "INAppDelegate.h"
+#import "INStupidFullSyncEngine.h"
 
 @implementation INViewController
 
@@ -86,7 +87,12 @@
 
 - (void)refresh
 {
-	[_threadProvider refresh];
+    INStupidFullSyncEngine * syncEngine = (INStupidFullSyncEngine*)[[INAPIManager shared] syncEngine];
+    [syncEngine syncClass:[INThread class] callback:^(NSError *error) {
+        if ([_refreshControl isRefreshing])
+            [[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+        [_refreshControl endRefreshing];
+    }];
 }
 
 - (void)providerDataChanged
@@ -108,19 +114,6 @@
     [_threadProvider countUnreadItemsWithCallback:^(long count) {
         [_titleView setTitle: [self title] andUnreadCount: count];
     }];
-}
-
-- (void)providerDataFetchFailed:(NSError *)error
-{
-    // Only show error messages if the user requested the refresh
-    if ([_refreshControl isRefreshing])
-        [[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-	[_refreshControl endRefreshing];
-}
-
-- (void)providerDataFetchCompleted
-{
-	[_refreshControl endRefreshing];
 }
 
 #pragma mark Search

@@ -40,6 +40,7 @@
 		43815A001922E7580069116A /* INSidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 438159FE1922E7580069116A /* INSidebarViewController.xib */; };
 		43815A031922F5790069116A /* INInboxNavTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A021922F5790069116A /* INInboxNavTitleView.m */; };
 		43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A051922F8370069116A /* INSidebarTableViewCell.m */; };
+		438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */; };
 		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
 		43A9684B191C087400F24844 /* Inbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A9684A191C087400F24844 /* Inbox.framework */; };
 		43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A9684F191C099600F24844 /* INConvenienceCategories.m */; };
@@ -114,6 +115,8 @@
 		43815A021922F5790069116A /* INInboxNavTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INInboxNavTitleView.m; path = BigSur/Views/INInboxNavTitleView.m; sourceTree = SOURCE_ROOT; };
 		43815A041922F8370069116A /* INSidebarTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarTableViewCell.h; sourceTree = "<group>"; };
 		43815A051922F8370069116A /* INSidebarTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSidebarTableViewCell.m; sourceTree = "<group>"; };
+		438BEA031926C9F500E5C67D /* INStupidFullSyncEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INStupidFullSyncEngine.h; sourceTree = "<group>"; };
+		438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INStupidFullSyncEngine.m; sourceTree = "<group>"; };
 		439283BF191450AA00926291 /* INRecipientsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INRecipientsLabel.h; path = BigSur/Views/INRecipientsLabel.h; sourceTree = SOURCE_ROOT; };
 		439283C0191450AA00926291 /* INRecipientsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INRecipientsLabel.m; path = BigSur/Views/INRecipientsLabel.m; sourceTree = SOURCE_ROOT; };
 		43A9684A191C087400F24844 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../InboxFramework/DerivedData/InboxFramework/Build/Products/Debug-iphonesimulator/Inbox.framework"; sourceTree = "<group>"; };
@@ -336,6 +339,8 @@
 				43F22A8519071A1100A032D1 /* INAppDelegate.m */,
 				43DB20EF192145F100DCFA4A /* INThemeManager.h */,
 				43DB20F0192145F100DCFA4A /* INThemeManager.m */,
+				438BEA031926C9F500E5C67D /* INStupidFullSyncEngine.h */,
+				438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */,
 				43AAF5461912D607000FA5AF /* Views */,
 				43F22AC219071C5200A032D1 /* Categories */,
 				43F22AC919071C5200A032D1 /* Controllers */,
@@ -616,6 +621,7 @@
 				4342322F1923F84E002AE05D /* INTagsView.m in Sources */,
 				43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */,
 				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
+				438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */,
 				43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */,
 				435764AD192530BB00E6B340 /* INAuthViewController.m in Sources */,
 				43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */,
