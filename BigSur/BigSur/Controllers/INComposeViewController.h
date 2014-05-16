@@ -17,7 +17,8 @@
     NSMutableArray * _verticalLayoutConstraints;
     
 }
-@property (nonatomic, strong) INThread * thread;
+
+@property (nonatomic, strong) INMessage * draft;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) NSMutableArray *scrollViewRows;
@@ -27,6 +28,8 @@
 @property (strong, nonatomic) INComposeSubjectRowView * subjectView;
 @property (strong, nonatomic) INComposeAttachmentsRowView * attachmentsView;
 
-- (id)initWithThread:(INThread*)thread;
+- (id)initWithNewDraft;
+- (id)initWithNewDraftInReplyTo:(INThread*)thread;
+- (id)initWithExistingDraft:(INMessage*)draft;
 
 @end

@@ -15,7 +15,7 @@
 {
 	INDeleteDetectingTextField * _textField;
 }
-@property (nonatomic, strong) NSMutableArray * recipients;
+@property (nonatomic, strong, readonly) NSMutableArray * recipients;
 @property (nonatomic, strong) UICollectionView * recipientsCollectionView;
 @property (nonatomic, strong) INAutocompletionResultsView * autocompletionView;
 

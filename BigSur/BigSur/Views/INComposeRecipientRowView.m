@@ -73,7 +73,7 @@
 		[tapRecognizer setDelegate: self];
 		[_recipientsCollectionView addGestureRecognizer: tapRecognizer];
 
-		self.recipients = [NSMutableArray array];
+		_recipients = [NSMutableArray array];
     }
     return self;
 }

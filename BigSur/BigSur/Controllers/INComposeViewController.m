@@ -9,16 +9,52 @@
 #import "INComposeViewController.h"
 #import "INContactsViewController.h"
 #import "UIView+FrameAdditions.h"
+#import "UIActionSheet+Blocks.h"
+#import "NSString+FormatConversion.h"
+#import "INAppDelegate.h"
 
 @implementation INComposeViewController
 
-- (id)initWithThread:(INThread*)thread
+- (id)initWithNewDraft
+{
+    self = [super init];
+	if (self) {
+        _draft = [[INMessage alloc] init];
+
+		[self setTitle: @"New Message"];
+    }
+    return self;
+}
+
+- (id)initWithNewDraftInReplyTo:(INThread*)thread
 {
 	self = [super init];
 	if (self) {
-		_thread = thread;
+        _draft = [[INMessage alloc] init];
+        [_draft setThreadID: thread.ID];
+        
+        NSMutableArray * recipients = [NSMutableArray array];
+		for (NSDictionary * recipient in [thread participants])
+			if (![[[INAPIManager shared] namespaceEmailAddresses] containsObject: recipient[@"email"]])
+				[recipients addObject: recipient];
+        
+        [_draft setTo: recipients];
+        [_draft setSubject: thread.subject];
+        
+        [self setTitle:@"New Reply"];
 	}
 	return self;
+}
+
+- (id)initWithExistingDraft:(INMessage*)draft
+{
+    self = [super init];
+	if (self) {
+        _draft = draft;
+        
+		[self setTitle: @"Edit Draft"];
+    }
+    return self;
 }
 
 - (void)viewDidLoad
@@ -29,12 +65,14 @@
 	_toRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
 	[_toRecipientsView.rowLabel setText: @"To:"];
 	[[_toRecipientsView actionButton] addTarget:self action:@selector(addToRecipientTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [_toRecipientsView addRecipients: [_draft to]];
     
 	_ccBccRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
 	[_ccBccRecipientsView.rowLabel setText: @"Cc/Bcc:"];
-	
+    
 	_subjectView = [[INComposeSubjectRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
     [[_subjectView actionButton] addTarget:self action:@selector(addAttachmentTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [[_subjectView subjectField] setText: _draft.subject];
     
     _attachmentsView = [[INComposeAttachmentsRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
     
@@ -43,27 +81,14 @@
 	[_bodyTextView setFont: [UIFont systemFontOfSize: 15]];
 	[_bodyTextView setTextContainerInset: UIEdgeInsetsMake(5,4,5,4)];
 	[_bodyTextView setScrollEnabled: NO];
-
+    [_bodyTextView setText: [_draft body]];
+    
     [self arrangeContentViews];
     
 	// listen for taps on the scroll view beneath the text view to activate the text view
 	UITapGestureRecognizer * recognzier = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focusBodyTextView:)];
 	[recognzier setDelegate: self];
 	[_scrollView addGestureRecognizer: recognzier];
-
-	// populate content views
-	if (_thread) {
-		[self setTitle:@"New Reply"];
-
-		NSMutableArray * participants = [NSMutableArray array];
-		for (NSDictionary * participant in [_thread participants])
-			if (![[[INAPIManager shared] namespaceEmailAddresses] containsObject: participant[@"email"]])
-				[participants addObject: participant];
-		[_toRecipientsView addRecipients: participants];
-		
-	} else {
-		[self setTitle: @"New Message"];
-	}
 
 	// create the nav item
 	UIBarButtonItem * cancel = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed: @"icon_cancel.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(cancelTapped:)];
@@ -145,13 +170,56 @@
 
 - (IBAction)sendTapped:(id)sender
 {
-	[self dismissViewControllerAnimated:YES completion:NULL];
+    [_draft beginUpdates];
+    [self applyChangesToDraft];
+    
+    
+    INAPIOperation * save = [INAPIOperation operationForSavingDraft: _draft];
+    INAPIOperation * send = [INAPIOperation operationForSendingDraft: _draft];
+    [send addDependency: save];
+    [[INAPIManager shared] queueAPIOperation: save];
+    [[INAPIManager shared] queueAPIOperation: send];
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (IBAction)cancelTapped:(id)sender
 {
-	[self dismissViewControllerAnimated:YES completion:NULL];
+    BOOL hasSubject = ([[[_subjectView subjectField] text] length] > 0);
+    BOOL hasBody = ([[_bodyTextView text] length] > 0);
+    BOOL hasAttachments = ([[_attachmentsView attachments] count] > 0);
+    
+    if (hasSubject || hasBody || hasAttachments) {
+        [UIActionSheet showInView:self.view withTitle:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Draft" otherButtonTitles:@[@"Save Draft"] tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
+            if (buttonIndex == [actionSheet cancelButtonIndex])
+                return;
+            else if (buttonIndex == [actionSheet destructiveButtonIndex])
+                [self dismissViewControllerAnimated:YES completion:NULL];
+            else {
+                [_draft beginUpdates];
+                [self applyChangesToDraft];
+                [_draft commitUpdates];
+                [self dismissViewControllerAnimated:YES completion:NULL];
+            }
+        }];
+    } else {
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
+
+- (void)cancelWithoutSaving
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)applyChangesToDraft
+{
+    [_draft setNamespaceID: [[INAppDelegate current] currentNamespace].ID];
+    [_draft setTo: [_toRecipientsView recipients]];
+    [_draft setSubject: [[_subjectView subjectField] text]];
+    [_draft setBody: [_bodyTextView text]];
+}
+
 
 - (IBAction)addToRecipientTapped:(id)sender
 {

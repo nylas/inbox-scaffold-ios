@@ -78,7 +78,7 @@
 
 - (IBAction)composeTapped:(id)sender
 {
-	INComposeViewController * compose = [[INComposeViewController alloc] initWithThread: nil];
+	INComposeViewController * compose = [[INComposeViewController alloc] initWithNewDraft];
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: compose];
 	[self presentViewController:nav animated:YES completion:NULL];
 }
@@ -113,7 +113,9 @@
 
 - (void)providerDataFetchFailed:(NSError *)error
 {
-	[[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+    // Only show error messages if the user requested the refresh
+    if ([_refreshControl isRefreshing])
+        [[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
 	[_refreshControl endRefreshing];
 }
 

@@ -19,6 +19,7 @@
     self = [super init];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:BigSurNamespaceChanged object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:INNamespacesChangedNotification object:nil];
     }
     return self;
 }
@@ -47,6 +48,13 @@
         [_tagProvider setDelegate: self];
     }
     [_tagProvider refresh];
+}
+
+- (IBAction)signOutTapped:(id)sender
+{
+	[[[INAppDelegate current] slidingViewController] closeSlider:YES completion:^{
+        [[INAPIManager shared] signOut];
+    }];
 }
 
 #pragma mark Table View
@@ -103,6 +111,8 @@
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier: @"sidebarcell"];
         INNamespace * namespace = [[[INAPIManager shared] namespaces] objectAtIndex: [indexPath row]];
         [[cell textLabel] setText: [namespace emailAddress]];
+        [[cell detailTextLabel] setText: @""];
+        
 		if ([namespace isEqual: [[INAppDelegate current] currentNamespace]])
 			[[cell imageView] setImage: [UIImage imageNamed: @"sidebar_account_on.png"]];
 		else
@@ -138,7 +148,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if ([indexPath section] == 0) {
-		[tableView deselectRowAtIndexPath: indexPath animated: YES];
+		[tableView deselectRowAtIndexPath: indexPath animated: NO];
 		
 		INNamespace * namespace = [[[INAPIManager shared] namespaces] objectAtIndex: [indexPath row]];
 		[[INAppDelegate current] setCurrentNamespace: namespace];
@@ -162,7 +172,7 @@
 		ip = [NSIndexPath indexPathForRow:index inSection:1];
 
 	[_tableView reloadData];
-	[_tableView selectRowAtIndexPath:ip animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[_tableView selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 @end

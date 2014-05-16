@@ -9,6 +9,7 @@
 #import "INAppDelegate.h"
 #import "INViewController.h"
 #import "INThemeManager.h"
+#import "INAuthViewController.h"
 
 @implementation INAppDelegate
 
@@ -27,7 +28,7 @@
     
     // load previous app state
     NSArray * namespaces = [[INAPIManager shared] namespaces];
-    _currentNamespace = [namespaces firstObject];
+    [self setCurrentNamespace: [namespaces firstObject]];
     
     // initialize the sidebar controller
     _sidebarViewController = [[INSidebarViewController alloc] init];
@@ -47,17 +48,13 @@
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = _slidingViewController;
 	[self.window makeKeyAndVisible];
-    
-	if (!_currentNamespace) {
-		[[INAPIManager shared] authenticate:^(NSArray * namespaces, NSError *error) {
-			if (error) {
-				[[[UIAlertView alloc] initWithTitle:@"Sign In Failed" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-            } else {
-				[self setCurrentNamespace: [namespaces firstObject]];
-            }
-        }];
-    }
 
+    // monitor inbox for notifications that we need to authenticate or that
+    // our access to namespaces (email accounts) has changed.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxCheckAuthentication:) name:INAuthenticationChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxNamespacesChanged:) name:INNamespacesChangedNotification object:nil];
+    [self inboxCheckAuthentication: nil];
+    
 	return YES;
 }
 
@@ -103,6 +100,23 @@
 - (void)slidingViewControllerWillClose:(JSSlidingViewController *)viewController
 {
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+}
+
+- (void)inboxCheckAuthentication:(NSNotification*)notification
+{
+    if ([[INAPIManager shared] isSignedIn]) {
+        // we're good.
+    } else {
+        INAuthViewController * auth = [[INAuthViewController alloc] init];
+        [_slidingViewController presentViewController:auth animated:YES completion:NULL];
+    }
+}
+
+- (void)inboxNamespacesChanged:(NSNotification*)notification
+{
+    if ((!_currentNamespace) || ([[[INAPIManager shared] namespaces] containsObject: _currentNamespace] == NO)){
+        [self setCurrentNamespace: [[[INAPIManager shared] namespaces] firstObject]];
+    }
 }
 
 @end

@@ -16,4 +16,6 @@
 
 - (void)refresh;
 
+- (IBAction)signOutTapped:(id)sender;
+
 @end
