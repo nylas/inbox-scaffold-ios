@@ -22,6 +22,7 @@
 	self = [super init];
 	if (self) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareThreadProvider) name:BigSurNamespaceChanged object:nil];
+        [self prepareThreadProvider];
 	}
 	return self;
 }
@@ -37,8 +38,6 @@
     _titleView = [[INInboxNavTitleView alloc] initWithFrame: CGRectZero];
     [self.navigationItem setTitleView: _titleView];
 
-	[self prepareThreadProvider];
-    
 	_refreshControl = [[UIRefreshControl alloc] init];
 	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
 	[_tableView addSubview: _refreshControl];
@@ -165,8 +164,16 @@
 	
 	INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
 	
-	INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: thread];
-	[self.navigationController pushViewController:threadVC animated:YES];
+    if ([thread hasTagWithID:@"draft"]) {
+        //TODO not always last message
+        INMessage * message = [INMessage instanceWithID: [[thread messageIDs] lastObject]];
+        INComposeViewController * composeVC = [[INComposeViewController alloc] initWithExistingDraft: message];
+        UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composeVC];
+        [self presentViewController:nav animated:YES completion:NULL];
+    } else {
+        INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: thread];
+        [self.navigationController pushViewController:threadVC animated:YES];
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

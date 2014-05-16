@@ -113,7 +113,8 @@
 	[_participantsLabel setPrefixString: @"" andRecipients:[_thread participants] includeMe: includeMe];
 	[_dateLabel setText: [NSString stringForMessageDate: [_thread lastMessageDate]]];
 	[_subjectLabel setText: [_thread subject]];
-	
+    [_unreadDot setHidden: (![_thread hasTagWithID: INTagIDUnread])];
+    
 	if ([[_thread messageIDs] count] > 1)
 		[_threadCountLabel setText: [NSString stringWithFormat:@"%d", [[_thread messageIDs] count]]];
 	else

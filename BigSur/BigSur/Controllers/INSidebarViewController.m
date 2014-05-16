@@ -125,14 +125,17 @@
         INTag * tag = [[self displayedTags] objectAtIndex: [indexPath row]];
         INNamespace * namespace = [[INAppDelegate current] currentNamespace];
         
-        NSPredicate * predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-            [NSComparisonPredicate predicateWithFormat: @"namespaceID = %@", namespace.ID],
-            [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = 'unread'"],
-            [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]
-        ]];
-        [[INDatabaseManager shared] countModelsOfClass:[INThread class] matching: predicate withCallback:^(long count) {
-            [[cell detailTextLabel] setText: [NSString stringWithFormat:@"%ld", count]];
-        }];
+        BOOL hasNoUnread = ([[tag ID] isEqualToString: INTagIDDraft] || [[tag ID] isEqualToString: INTagIDArchive] || [[tag ID] isEqualToString: INTagIDSent]);
+        if (!hasNoUnread) {
+            NSPredicate * predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+                [NSComparisonPredicate predicateWithFormat: @"namespaceID = %@", namespace.ID],
+                [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = 'unread'"],
+                [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]
+            ]];
+            [[INDatabaseManager shared] countModelsOfClass:[INThread class] matching: predicate withCallback:^(long count) {
+                [[cell detailTextLabel] setText: [NSString stringWithFormat:@"%ld", count]];
+            }];
+        }
         
 		UIImage * presetImage = [UIImage imageNamed: [NSString stringWithFormat: @"sidebar_icon_%@.png", [[tag name] lowercaseString]]];
 		if (presetImage)

@@ -170,15 +170,12 @@
 
 - (IBAction)sendTapped:(id)sender
 {
-    [_draft beginUpdates];
-    [self applyChangesToDraft];
-    
-    
-    INAPIOperation * save = [INAPIOperation operationForSavingDraft: _draft];
-    INAPIOperation * send = [INAPIOperation operationForSendingDraft: _draft];
+    INSaveDraftChange * save = [self saveDraft];
+    INAddRemoveTagsChange * send = [INAddRemoveTagsChange operationForModel: _draft];
+    [[send tagIDsToRemove] addObject: @"draft"];
+    [[send tagIDsToAdd] addObject: @"sent"];
     [send addDependency: save];
-    [[INAPIManager shared] queueAPIOperation: save];
-    [[INAPIManager shared] queueAPIOperation: send];
+    [[INAPIManager shared] queueChange: send];
     
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -196,9 +193,7 @@
             else if (buttonIndex == [actionSheet destructiveButtonIndex])
                 [self dismissViewControllerAnimated:YES completion:NULL];
             else {
-                [_draft beginUpdates];
-                [self applyChangesToDraft];
-                [_draft commitUpdates];
+                [self saveDraft];
                 [self dismissViewControllerAnimated:YES completion:NULL];
             }
         }];
@@ -212,12 +207,16 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)applyChangesToDraft
+- (INSaveDraftChange *)saveDraft
 {
     [_draft setNamespaceID: [[INAppDelegate current] currentNamespace].ID];
     [_draft setTo: [_toRecipientsView recipients]];
     [_draft setSubject: [[_subjectView subjectField] text]];
     [_draft setBody: [_bodyTextView text]];
+
+    INSaveDraftChange * save = [INSaveDraftChange operationForModel: _draft];
+    [[INAPIManager shared] queueChange: save];
+    return save;
 }
 
 
