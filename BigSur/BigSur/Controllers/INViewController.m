@@ -43,7 +43,7 @@
 	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
 	[_tableView addSubview: _refreshControl];
 	[_tableView setSeparatorInset: UIEdgeInsetsMake(0, 0, 0, 0)];
-	
+    
 	UIBarButtonItem * compose = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"icon_compose.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(composeTapped:)];
 	[self.navigationItem setRightBarButtonItem: compose];
 }
@@ -169,6 +169,44 @@
         INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: thread];
         [self.navigationController pushViewController:threadVC animated:YES];
     }
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
+	
+    if ([_tag isEqual: [INTag tagWithID: INTagIDDraft]]) {
+        INDeleteDraftChange * delete = [INDeleteDraftChange operationForModel: [thread currentDraft]];
+        [[INAPIManager shared] queueChange: delete];
+
+    } else {
+        INAddRemoveTagsChange * archive = [INAddRemoveTagsChange operationForModel: thread];
+        [[archive tagIDsToAdd] addObject: INTagIDArchive];
+        [[INAPIManager shared] queueChange: archive];
+    }
+}
+
+- (void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[[INAppDelegate current] slidingViewController] setLocked:YES];
+}
+
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[[INAppDelegate current] slidingViewController] setLocked:NO];
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_tag isEqual: [INTag tagWithID: INTagIDDraft]])
+        return @"Delete Draft";
+    else
+        return @"Archive";
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

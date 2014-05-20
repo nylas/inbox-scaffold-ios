@@ -192,14 +192,15 @@
 	NSIndexPath * selectedIndexPath = [[_recipientsCollectionView indexPathsForSelectedItems] firstObject];
 	[_recipientsCollectionView deselectItemAtIndexPath:selectedIndexPath animated:NO];
 	
-	if ([newString rangeOfString: @","].location != NSNotFound) {
+	if ([string rangeOfString: @","].location != NSNotFound) {
 		NSMutableArray * newTokens = [[newString componentsSeparatedByString: @","] mutableCopy];
-		[textField setText: [newTokens lastObject]];
-		[newTokens removeLastObject];
 		
-		for (NSString * email in newTokens)
-			[self addRecipientWithName: email andEmail:email];
-
+        for (int ii = [newTokens count] - 1; ii >= 0; ii --) {
+            if ([self addRecipientFromText: [newTokens objectAtIndex: ii]])
+                [newTokens removeObjectAtIndex: ii];
+        }
+        [_textField setText: [newTokens componentsJoinedByString:@","]];
+        [self propogateConstraintChanges];
 		return NO;
 	}
 	return YES;
@@ -227,8 +228,8 @@
 
 - (void)addRecipientFromTextField
 {
-	[self addRecipientWithName:_textField.text andEmail: _textField.text];
-	[_textField setText: @""];
+    if ([self addRecipientFromText: _textField.text])
+        [_textField setText: @""];
 }
 
 - (void)addRecipients:(NSObject<NSFastEnumeration>*)recipients
@@ -242,6 +243,29 @@
     [self addRecipientWithName:contact.name andEmail:contact.email];
 }
 
+- (BOOL)addRecipientFromText:(NSString*)text
+{
+    INContact __block * contact = nil;
+    [[INDatabaseManager shared] selectModelsOfClassSync:[INContact class] withQuery:@"SELECT * FROM INContact WHERE email = :text OR name = :text" andParameters:@{@"text":text} andCallback:^(NSArray *objects) {
+        contact = (INContact *)[objects firstObject];
+    }];
+
+    BOOL isEmail = ([text rangeOfString:@"@"].location != NSNotFound);
+    
+    if (isEmail) {
+        [self addRecipientWithName:text andEmail: text];
+        return YES;
+
+    } else if (contact) {
+        [self addRecipientWithName:contact.name andEmail:contact.email];
+        return YES;
+
+    } else {
+        // do nothing. This is invalid input :-(
+        return NO;
+    }
+}
+
 - (void)addRecipientWithName:(NSString*)name andEmail:(NSString*)email
 {
 	email = [email stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -250,7 +274,7 @@
 	
 	[_recipientsCollectionView performBatchUpdates:^{
 		NSIndexPath * indexPath = [NSIndexPath indexPathForItem:[_recipients count] inSection:0];
-		[_recipients addObject: @{@"name": email, @"email": email}];
+		[_recipients addObject: @{@"name": name, @"email": email}];
 		[CATransaction begin];
 		[CATransaction setDisableActions: YES];
 		[_recipientsCollectionView insertItemsAtIndexPaths: @[indexPath]];
@@ -298,16 +322,17 @@
 			INModelProvider * provider = [namespace newContactProvider];
 			[_autocompletionView setProvider: provider];
 		}
-		NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat: @"email BEGINSWITH %@", typedText];
-		[_autocompletionView.provider setItemFilterPredicate: predicate];
+		NSPredicate * namePredicate = [NSComparisonPredicate predicateWithFormat: @"name BEGINSWITH %@", typedText];
+        NSPredicate * emailPredicate = [NSComparisonPredicate predicateWithFormat: @"email BEGINSWITH %@", typedText];
+        [_autocompletionView.provider setItemFilterPredicate: [NSCompoundPredicate orPredicateWithSubpredicates: @[namePredicate, emailPredicate]]];
 		[self.superview addSubview: _autocompletionView];
 	}
 }
 
 - (void)autocompletionResultPicked:(id)item
 {
-	[_textField setText: [item email]];
-	[self addRecipientFromTextField];
+	[self addRecipientFromContact: item];
+    [_textField setText: @""];
 }
 
 @end

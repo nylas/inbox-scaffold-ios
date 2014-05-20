@@ -10,6 +10,7 @@
 #import "INContactsViewController.h"
 #import "UIView+FrameAdditions.h"
 #import "UIActionSheet+Blocks.h"
+#import "UIAlertView+Blocks.h"
 #import "NSString+FormatConversion.h"
 #import "INAppDelegate.h"
 
@@ -71,7 +72,7 @@
 	UIBarButtonItem * cancel = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed: @"icon_cancel.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(cancelTapped:)];
 	[self.navigationItem setLeftBarButtonItem: cancel];
 
-	UIBarButtonItem * send = [[UIBarButtonItem alloc] initWithTitle: @"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendTapped:)];
+	UIBarButtonItem * send = [[UIBarButtonItem alloc] initWithTitle: @"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendAfterVerifyTapped:)];
 	[self.navigationItem setRightBarButtonItem: send];
 }
 
@@ -145,6 +146,27 @@
 	[self.scrollView setFrameHeight: self.view.frame.size.height];
 }
 
+- (IBAction)sendAfterVerifyTapped:(id)sender
+{
+    BOOL hasSubject = ([[[_subjectView subjectField] text] length] > 0);
+    BOOL hasTo = ([[_toRecipientsView recipients] count] > 0);
+    
+    if (!hasTo) {
+        [[[UIAlertView alloc] initWithTitle:@"No Recipients" message:@"Add one or more recipients before sending your message." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+        return;
+    }
+    
+    if (!hasSubject) {
+        [UIAlertView showWithTitle:@"No Subject" message:@"Send your message without a subject?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Send Anyway"] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex != [alertView cancelButtonIndex])
+                [self sendTapped:nil];
+        }];
+        return;
+    }
+    
+    [self sendTapped: sender];
+}
+
 - (IBAction)sendTapped:(id)sender
 {
     INSaveDraftChange * save = [self saveDraft];
@@ -168,11 +190,11 @@
             if (buttonIndex == [actionSheet cancelButtonIndex])
                 return;
             else if (buttonIndex == [actionSheet destructiveButtonIndex])
-                [self dismissViewControllerAnimated:YES completion:NULL];
-            else {
+                [self deleteDraft];
+            else
                 [self saveDraft];
-                [self dismissViewControllerAnimated:YES completion:NULL];
-            }
+
+            [self dismissViewControllerAnimated:YES completion:NULL];
         }];
     } else {
         [self dismissViewControllerAnimated:YES completion:NULL];
@@ -184,8 +206,16 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+- (INDeleteDraftChange *)deleteDraft
+{
+    INDeleteDraftChange * delete = [INDeleteDraftChange operationForModel: _draft];
+    [[INAPIManager shared] queueChange: delete];
+    return delete;
+}
+
 - (INSaveDraftChange *)saveDraft
 {
+    [_draft setCreatedAt: [NSDate date]];
     [_draft setNamespaceID: [[INAppDelegate current] currentNamespace].ID];
     [_draft setTo: [_toRecipientsView recipients]];
     [_draft setSubject: [[_subjectView subjectField] text]];

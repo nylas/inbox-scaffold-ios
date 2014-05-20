@@ -75,7 +75,13 @@
 	[tags addObject: [INTag tagWithID: INTagIDDraft]];
 	[tags addObject: [INTag tagWithID: INTagIDSent]];
 	[tags addObject: [INTag tagWithID: INTagIDArchive]];
-    [tags addObjectsFromArray: [_tagProvider items]];
+    
+    for (INTag * tag in [_tagProvider items]) {
+        if ([[tags valueForKey: @"ID"] containsObject: [tag ID]])
+            continue;
+        [tags addObject: tag];
+    }
+    
     return tags;
 }
 
