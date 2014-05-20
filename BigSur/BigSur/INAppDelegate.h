@@ -15,6 +15,8 @@ static NSString * BigSurNamespaceChanged = @"BigSurNamespaceChanged";
 
 @interface INAppDelegate : UIResponder <UIApplicationDelegate, JSSlidingViewControllerDelegate>
 
+@property (strong, nonatomic) NSString * runtimeLogPath;
+
 @property (strong, nonatomic) JSSlidingViewController * slidingViewController;
 @property (strong, nonatomic) INSidebarViewController * sidebarViewController;
 @property (strong, nonatomic) INViewController * mainViewController;

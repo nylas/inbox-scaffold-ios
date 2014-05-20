@@ -38,7 +38,7 @@
     [_titleLabel setFrameWidth: ceilf([_titleLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleLabel font]}].width) + 6];
     x += [_titleLabel frame].size.width;
     
-    if (count == NSNotFound) {
+    if ((count == NSNotFound) || (count == 0)) {
         [_titleUnreadLabel setFrameWidth: 0];
     } else {
         [_titleUnreadLabel setText: [NSString stringWithFormat: @"%ld", count]];
@@ -46,6 +46,7 @@
         [_titleUnreadLabel setFrameX: x];
         x += [_titleUnreadLabel frame].size.width;
     }
+    
     [self setBounds:CGRectMake(0, 0, x, 30)];
 }
 

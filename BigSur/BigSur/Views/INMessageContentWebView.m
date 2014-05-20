@@ -19,6 +19,9 @@ html, body {\
     -webkit-text-size-adjust: auto;\
     word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\
 }\
+div {\
+max-width:100%%;\
+}\
 .gmail_extra {\
     display:none;\
 }\

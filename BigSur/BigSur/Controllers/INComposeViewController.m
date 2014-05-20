@@ -15,44 +15,21 @@
 
 @implementation INComposeViewController
 
-- (id)initWithNewDraft
-{
-    self = [super init];
-	if (self) {
-        _draft = [[INMessage alloc] init];
 
-		[self setTitle: @"New Message"];
-    }
-    return self;
-}
-
-- (id)initWithNewDraftInReplyTo:(INThread*)thread
-{
-	self = [super init];
-	if (self) {
-        _draft = [[INMessage alloc] init];
-        [_draft setThreadID: thread.ID];
-        
-        NSMutableArray * recipients = [NSMutableArray array];
-		for (NSDictionary * recipient in [thread participants])
-			if (![[[INAPIManager shared] namespaceEmailAddresses] containsObject: recipient[@"email"]])
-				[recipients addObject: recipient];
-        
-        [_draft setTo: recipients];
-        [_draft setSubject: thread.subject];
-        
-        [self setTitle:@"New Reply"];
-	}
-	return self;
-}
-
-- (id)initWithExistingDraft:(INMessage*)draft
+- (id)initWithDraft:(INMessage*)draft
 {
     self = [super init];
 	if (self) {
         _draft = draft;
         
-		[self setTitle: @"Edit Draft"];
+        NSString * action = @"New";
+        if ([_draft createdAt])
+            action = @"Edit";
+        
+        if ([_draft threadID])
+            [self setTitle: [NSString stringWithFormat: @"%@ Reply", action]];
+        else
+            [self setTitle: [NSString stringWithFormat: @"%@ Draft", action]];
     }
     return self;
 }

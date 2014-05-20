@@ -11,6 +11,7 @@
 @interface INStupidFullSyncEngine : NSObject <INSyncEngine>
 
 @property (nonatomic, assign) BOOL syncInProgress;
+@property (nonatomic, strong) NSMutableArray * syncOperations;
 
 - (id)initWithConfiguration:(NSDictionary*)config;
 - (BOOL)providesCompleteCacheOf:(Class)klass;

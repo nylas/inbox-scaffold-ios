@@ -11,7 +11,6 @@
 #import "INAppDelegate.h"
 
 
-
 @implementation INSidebarViewController
 
 - (id)init
@@ -57,16 +56,25 @@
     }];
 }
 
+- (IBAction)syncStatusTapped:(id)sender
+{
+	[[[INAppDelegate current] slidingViewController] closeSlider:YES completion:^{
+        UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"INInternalInfoStoryboard" bundle:nil];
+        [self.parentViewController presentViewController:[storyboard instantiateInitialViewController] animated:YES completion:NULL];
+
+    }];
+}
+
 #pragma mark Table View
 
 - (NSArray *)displayedTags
 {
     NSMutableArray * tags = [NSMutableArray array];
-	[tags addObject: [INTag instanceWithID: INTagIDInbox]];
-	[tags addObject: [INTag instanceWithID: INTagIDFlagged]];
-	[tags addObject: [INTag instanceWithID: INTagIDDraft]];
-	[tags addObject: [INTag instanceWithID: INTagIDSent]];
-	[tags addObject: [INTag instanceWithID: INTagIDArchive]];
+	[tags addObject: [INTag tagWithID: INTagIDInbox]];
+	[tags addObject: [INTag tagWithID: INTagIDFlagged]];
+	[tags addObject: [INTag tagWithID: INTagIDDraft]];
+	[tags addObject: [INTag tagWithID: INTagIDSent]];
+	[tags addObject: [INTag tagWithID: INTagIDArchive]];
     [tags addObjectsFromArray: [_tagProvider items]];
     return tags;
 }
@@ -155,7 +163,7 @@
 		
 		INNamespace * namespace = [[[INAPIManager shared] namespaces] objectAtIndex: [indexPath row]];
 		[[INAppDelegate current] setCurrentNamespace: namespace];
-		[[[INAppDelegate current] mainViewController] setTag: [INTag instanceWithID: INTagIDInbox]];
+		[[[INAppDelegate current] mainViewController] setTag: [INTag tagWithID: INTagIDInbox]];
 		
 	} else {
         INTag * tag = [[self displayedTags] objectAtIndex: [indexPath row]];

@@ -17,6 +17,8 @@
 {
     self = [super init];
     if (self) {
+        self.syncOperations = [NSMutableArray array];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAndSync) name:INAuthenticationChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAndSync) name:BigSurNamespaceChanged object:nil];
         [self checkAndSync];
@@ -36,6 +38,10 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([[INAPIManager shared] isSignedIn])
             [self sync];
+        else {
+            [_syncOperations makeObjectsPerformSelector: @selector(cancel)];
+            [_syncOperations removeAllObjects];
+        }
     });
 }
 
@@ -54,6 +60,8 @@
 - (void)syncClass:(Class)klass page:(int)page callback:(ErrorBlock)callback
 {
     INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+    if (!namespace) return;
+    
     NSString * path = [NSString stringWithFormat:@"/n/%@/%@", [namespace ID], [klass resourceAPIName]];
     NSLog(@"SYNC: %@ - %d", path, page);
     
@@ -65,15 +73,18 @@
             if (callback)
                 callback(nil);
         }
+        [_syncOperations removeObject: operation];
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // sync interrupted
         if (callback)
             callback(error);
+        [_syncOperations removeObject: operation];
     }];
     
     INModelResponseSerializer * serializer = [[INModelResponseSerializer alloc] initWithModelClass: klass];
     [op setResponseSerializer:serializer];
+    [_syncOperations addObject: op];
 }
 
 @end

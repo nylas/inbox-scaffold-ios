@@ -28,8 +28,6 @@
 @property (strong, nonatomic) INComposeSubjectRowView * subjectView;
 @property (strong, nonatomic) INComposeAttachmentsRowView * attachmentsView;
 
-- (id)initWithNewDraft;
-- (id)initWithNewDraftInReplyTo:(INThread*)thread;
-- (id)initWithExistingDraft:(INMessage*)draft;
+- (id)initWithDraft:(INMessage*)draft;
 
 @end

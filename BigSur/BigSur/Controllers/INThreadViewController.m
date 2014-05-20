@@ -64,7 +64,8 @@
 
 - (IBAction)replyTapped:(id)sender
 {
-	INComposeViewController * composer = [[INComposeViewController alloc] initWithNewDraftInReplyTo: _thread];
+    INMessage * reply = [[INMessage alloc] initAsDraftIn:[_thread namespace] inReplyTo:_thread];
+	INComposeViewController * composer = [[INComposeViewController alloc] initWithDraft: reply];
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composer];
 	[self presentViewController: nav animated:YES completion:NULL];
 }

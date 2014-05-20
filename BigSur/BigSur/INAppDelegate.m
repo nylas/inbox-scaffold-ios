@@ -21,11 +21,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // locally save our own console output
+    _runtimeLogPath = [@"~/Documents/console.log" stringByExpandingTildeInPath];
+    [[NSFileManager defaultManager] removeItemAtPath:_runtimeLogPath error:NULL];
+    freopen([_runtimeLogPath cStringUsingEncoding:NSASCIIStringEncoding], "a+", stderr);
+    
     // apply appearance overrides
 	[[UINavigationBar appearance] setBarTintColor: [UIColor colorWithWhite:0.956 alpha:1]];
 	[[UINavigationBar appearance] setTintColor: [[INThemeManager shared] tintColor]];
 	[[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: [UIColor colorWithWhite:0.29 alpha:1], NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:20]}];
 	[[UIProgressView appearance] setTintColor: [[INThemeManager shared] tintColor]];
+	[[UISwitch appearance] setOnTintColor: [[INThemeManager shared] tintColor]];
     
     // load previous app state
     NSArray * namespaces = [[INAPIManager shared] namespaces];
@@ -43,7 +49,7 @@
     
     // initialze content view controllers
 	_mainViewController = [[INViewController alloc] init];
-	[_mainViewController setTag: [INTag instanceWithID: INTagIDInbox]];
+	[_mainViewController setTag: [INTag tagWithID: INTagIDInbox]];
 	
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: _mainViewController];
 	[[nav navigationBar] setTranslucent: NO];

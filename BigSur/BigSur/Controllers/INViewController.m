@@ -78,7 +78,9 @@
 
 - (IBAction)composeTapped:(id)sender
 {
-	INComposeViewController * compose = [[INComposeViewController alloc] initWithNewDraft];
+    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+    INMessage * draft = [[INMessage alloc] initAsDraftIn: namespace];
+	INComposeViewController * compose = [[INComposeViewController alloc] initWithDraft: draft];
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: compose];
 	[self presentViewController:nav animated:YES completion:NULL];
 }
@@ -158,9 +160,9 @@
 	INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
 	
     if ([thread hasTagWithID:@"draft"]) {
-        //TODO not always last message
-        INMessage * message = [INMessage instanceWithID: [[thread messageIDs] lastObject]];
-        INComposeViewController * composeVC = [[INComposeViewController alloc] initWithExistingDraft: message];
+        // TODO not always last message
+        INMessage * message = [thread currentDraft];
+        INComposeViewController * composeVC = [[INComposeViewController alloc] initWithDraft: message];
         UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composeVC];
         [self presentViewController:nav animated:YES completion:NULL];
     } else {

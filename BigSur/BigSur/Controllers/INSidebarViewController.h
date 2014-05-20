@@ -18,4 +18,6 @@
 
 - (IBAction)signOutTapped:(id)sender;
 
+- (IBAction)syncStatusTapped:(id)sender;
+
 @end

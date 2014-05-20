@@ -41,6 +41,10 @@
 		43815A031922F5790069116A /* INInboxNavTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A021922F5790069116A /* INInboxNavTitleView.m */; };
 		43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A051922F8370069116A /* INSidebarTableViewCell.m */; };
 		438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */; };
+		438BEA0C192AC16500E5C67D /* INInternalInfoStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */; };
+		438BEA0F192AC41100E5C67D /* INChangeQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA0E192AC41100E5C67D /* INChangeQueueViewController.m */; };
+		438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA12192AC4B300E5C67D /* INLogViewController.m */; };
+		438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA15192AC9A700E5C67D /* INDismissSegue.m */; };
 		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
 		43A9684B191C087400F24844 /* Inbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A9684A191C087400F24844 /* Inbox.framework */; };
 		43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A9684F191C099600F24844 /* INConvenienceCategories.m */; };
@@ -117,6 +121,13 @@
 		43815A051922F8370069116A /* INSidebarTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSidebarTableViewCell.m; sourceTree = "<group>"; };
 		438BEA031926C9F500E5C67D /* INStupidFullSyncEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INStupidFullSyncEngine.h; sourceTree = "<group>"; };
 		438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INStupidFullSyncEngine.m; sourceTree = "<group>"; };
+		438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = INInternalInfoStoryboard.storyboard; sourceTree = "<group>"; };
+		438BEA0D192AC41100E5C67D /* INChangeQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INChangeQueueViewController.h; sourceTree = "<group>"; };
+		438BEA0E192AC41100E5C67D /* INChangeQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INChangeQueueViewController.m; sourceTree = "<group>"; };
+		438BEA11192AC4B300E5C67D /* INLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INLogViewController.h; sourceTree = "<group>"; };
+		438BEA12192AC4B300E5C67D /* INLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INLogViewController.m; sourceTree = "<group>"; };
+		438BEA14192AC9A700E5C67D /* INDismissSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDismissSegue.h; sourceTree = "<group>"; };
+		438BEA15192AC9A700E5C67D /* INDismissSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDismissSegue.m; sourceTree = "<group>"; };
 		439283BF191450AA00926291 /* INRecipientsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INRecipientsLabel.h; path = BigSur/Views/INRecipientsLabel.h; sourceTree = SOURCE_ROOT; };
 		439283C0191450AA00926291 /* INRecipientsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INRecipientsLabel.m; path = BigSur/Views/INRecipientsLabel.m; sourceTree = SOURCE_ROOT; };
 		43A9684A191C087400F24844 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../InboxFramework/DerivedData/InboxFramework/Build/Products/Debug-iphonesimulator/Inbox.framework"; sourceTree = "<group>"; };
@@ -247,6 +258,20 @@
 				438159F81922E6D70069116A /* JSSlidingViewController.m */,
 			);
 			path = JSSlidingViewController;
+			sourceTree = "<group>";
+		};
+		438BEA10192AC41400E5C67D /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */,
+				438BEA14192AC9A700E5C67D /* INDismissSegue.h */,
+				438BEA15192AC9A700E5C67D /* INDismissSegue.m */,
+				438BEA0D192AC41100E5C67D /* INChangeQueueViewController.h */,
+				438BEA0E192AC41100E5C67D /* INChangeQueueViewController.m */,
+				438BEA11192AC4B300E5C67D /* INLogViewController.h */,
+				438BEA12192AC4B300E5C67D /* INLogViewController.m */,
+			);
+			name = Internal;
 			sourceTree = "<group>";
 		};
 		43AAF5461912D607000FA5AF /* Views */ = {
@@ -400,6 +425,7 @@
 				43AE9B77191833AF005D70C0 /* INComposeViewController.h */,
 				43AE9B78191833AF005D70C0 /* INComposeViewController.m */,
 				43AE9B79191833AF005D70C0 /* INComposeViewController.xib */,
+				438BEA10192AC41400E5C67D /* Internal */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -494,6 +520,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				438BEA0C192AC16500E5C67D /* INInternalInfoStoryboard.storyboard in Resources */,
 				43AAF54B1912D614000FA5AF /* INMessageCollectionViewCell.xib in Resources */,
 				43F22A8E19071A1100A032D1 /* Images.xcassets in Resources */,
 				43AE9B761918045C005D70C0 /* INContactsViewController.xib in Resources */,
@@ -598,6 +625,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43AAF5361911B8E5000FA5AF /* INThreadViewController.m in Sources */,
+				438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */,
 				43815A031922F5790069116A /* INInboxNavTitleView.m in Sources */,
 				43F788E01919991F00B6E0E5 /* INDeleteDetectingTextField.m in Sources */,
 				433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */,
@@ -620,8 +648,10 @@
 				43F22A8619071A1100A032D1 /* INAppDelegate.m in Sources */,
 				4342322F1923F84E002AE05D /* INTagsView.m in Sources */,
 				43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */,
+				438BEA0F192AC41100E5C67D /* INChangeQueueViewController.m in Sources */,
 				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
 				438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */,
+				438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */,
 				43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */,
 				435764AD192530BB00E6B340 /* INAuthViewController.m in Sources */,
 				43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */,
