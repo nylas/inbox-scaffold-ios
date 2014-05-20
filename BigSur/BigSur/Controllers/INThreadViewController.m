@@ -62,6 +62,11 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)dealloc
+{
+	[self.messageProvider setDelegate: nil];
+}
+
 - (IBAction)replyTapped:(id)sender
 {
     INMessage * reply = [[INMessage alloc] initAsDraftIn:[_thread namespace] inReplyTo:_thread];

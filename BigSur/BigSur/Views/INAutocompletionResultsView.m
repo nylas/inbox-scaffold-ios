@@ -88,7 +88,10 @@
 	if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
 	
 	INContact * contact = [[_provider items] objectAtIndex: [indexPath row]];
-	[[cell textLabel] setText: [contact email]];
+	if ([[contact name] length])
+		[[cell textLabel] setText: [NSString stringWithFormat:@"%@ (%@)", [contact name],[contact email]]];
+	else
+		[[cell textLabel] setText: [contact email]];
 	[[cell textLabel] setFont: [UIFont systemFontOfSize: 14]];
 	[[cell textLabel] setTextColor: [UIColor grayColor]];
 	

@@ -9,6 +9,7 @@
 #import "INSidebarViewController.h"
 #import "INSidebarTableViewCell.h"
 #import "INAppDelegate.h"
+#import "UIImage+BlurEffects.h"
 
 
 @implementation INSidebarViewController
@@ -154,8 +155,15 @@
 		UIImage * presetImage = [UIImage imageNamed: [NSString stringWithFormat: @"sidebar_icon_%@.png", [[tag name] lowercaseString]]];
 		if (presetImage)
 			[[cell imageView] setImage: presetImage];
-		else
-			[[cell imageView] setImage: nil];
+		else {
+			UIGraphicsBeginImageContextWithOptions(CGSizeMake(20, 20), NO, [[UIScreen mainScreen] scale]);
+			CGContextRef c = UIGraphicsGetCurrentContext();
+			CGContextSetFillColorWithColor(c, [[tag color] CGColor]);
+			CGContextFillEllipseInRect(c, CGRectMake(3, 3, 14, 14));
+			UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
+			UIGraphicsEndImageContext();
+			[[cell imageView] setImage: image];
+		}
 			
         [[cell textLabel] setText: [tag name]];
         return cell;

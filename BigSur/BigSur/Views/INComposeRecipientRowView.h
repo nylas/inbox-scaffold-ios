@@ -22,4 +22,6 @@
 - (void)addRecipients:(NSObject<NSFastEnumeration>*)recipients;
 - (void)addRecipientFromContact:(INContact*)contact;
 
+- (BOOL)containsInvalidRecipients;
+
 @end

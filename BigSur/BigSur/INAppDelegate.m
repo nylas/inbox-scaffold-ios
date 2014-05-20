@@ -23,9 +23,10 @@
 {
     // locally save our own console output
     _runtimeLogPath = [@"~/Documents/console.log" stringByExpandingTildeInPath];
+#if !DEBUG
     [[NSFileManager defaultManager] removeItemAtPath:_runtimeLogPath error:NULL];
     freopen([_runtimeLogPath cStringUsingEncoding:NSASCIIStringEncoding], "a+", stderr);
-    
+#endif
     // apply appearance overrides
 	[[UINavigationBar appearance] setBarTintColor: [UIColor colorWithWhite:0.956 alpha:1]];
 	[[UINavigationBar appearance] setTintColor: [[INThemeManager shared] tintColor]];

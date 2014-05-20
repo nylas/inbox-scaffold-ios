@@ -30,6 +30,7 @@
 		4317024619132BA10002491F /* INModelProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4317024519132BA10002491F /* INModelProviderTests.m */; };
 		4319792E191D8A0100523C8B /* INComposeAttachmentsRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */; };
 		43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43197930191D938300523C8B /* INAttachmentTableViewCell.m */; };
+		431A54A0192C0C5A00AE0719 /* UIImage+BlurEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 431A549F192C0C5A00AE0719 /* UIImage+BlurEffects.m */; };
 		433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */; };
 		433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */; };
 		4342322F1923F84E002AE05D /* INTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4342322E1923F84E002AE05D /* INTagsView.m */; };
@@ -100,6 +101,8 @@
 		4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INComposeAttachmentsRowView.m; path = BigSur/Views/INComposeAttachmentsRowView.m; sourceTree = SOURCE_ROOT; };
 		4319792F191D938300523C8B /* INAttachmentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAttachmentTableViewCell.h; sourceTree = "<group>"; };
 		43197930191D938300523C8B /* INAttachmentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAttachmentTableViewCell.m; sourceTree = "<group>"; };
+		431A549E192C0C5A00AE0719 /* UIImage+BlurEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlurEffects.h"; sourceTree = "<group>"; };
+		431A549F192C0C5A00AE0719 /* UIImage+BlurEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BlurEffects.m"; sourceTree = "<group>"; };
 		4325D513191329DC00743CD4 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		433711AD191C0A0100E7F793 /* NSString+FormatConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FormatConversion.h"; sourceTree = "<group>"; };
 		433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FormatConversion.m"; sourceTree = "<group>"; };
@@ -390,6 +393,8 @@
 		43F22AC219071C5200A032D1 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				431A549E192C0C5A00AE0719 /* UIImage+BlurEffects.h */,
+				431A549F192C0C5A00AE0719 /* UIImage+BlurEffects.m */,
 				433711B0191C0A3000E7F793 /* NSObject+AssociatedObjects.h */,
 				433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */,
 				433711AD191C0A0100E7F793 /* NSString+FormatConversion.h */,
@@ -628,6 +633,7 @@
 				438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */,
 				43815A031922F5790069116A /* INInboxNavTitleView.m in Sources */,
 				43F788E01919991F00B6E0E5 /* INDeleteDetectingTextField.m in Sources */,
+				431A54A0192C0C5A00AE0719 /* UIImage+BlurEffects.m in Sources */,
 				433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */,
 				43FBF37F191AE3C100C05AFC /* INMessageContentWebView.m in Sources */,
 				43AE9BC519185ACF005D70C0 /* INComposeRowView.m in Sources */,

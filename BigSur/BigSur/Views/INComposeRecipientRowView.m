@@ -12,6 +12,7 @@
 #import "UIView+FrameAdditions.h"
 #import "INAppDelegate.h"
 
+
 @interface INIntrinsicallySizedCollectionView : UICollectionView
 @end
 
@@ -29,6 +30,7 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
+
     self = [super initWithFrame:frame];
     if (self) {
 		[self.actionButton setImage: [UIImage imageNamed: @"icon_add_recipient.png"] forState:UIControlStateNormal];
@@ -132,6 +134,12 @@
 		[_textField showInsertionPoint];
 }
 
+- (BOOL)containsInvalidRecipients
+{
+	[self addRecipientFromTextField];
+	return ([[_textField text] length] > 0);
+}
+
 - (void)selectTextField:(UITapGestureRecognizer*)recognizer
 {
 	// necessary logic is in gestureRecognizerShouldBegin:, because this method doesn't get
@@ -194,6 +202,7 @@
 	
 	if ([string rangeOfString: @","].location != NSNotFound) {
 		NSMutableArray * newTokens = [[newString componentsSeparatedByString: @","] mutableCopy];
+		[_textField setText: @""];
 		
         for (int ii = [newTokens count] - 1; ii >= 0; ii --) {
             if ([self addRecipientFromText: [newTokens objectAtIndex: ii]])
@@ -222,6 +231,7 @@
 {
 	NSIndexPath * selectedIndexPath = [[_recipientsCollectionView indexPathsForSelectedItems] firstObject];
 	[_recipientsCollectionView deselectItemAtIndexPath:selectedIndexPath animated:NO];
+	[self updateAutocompletionQuery: @""];
 	
 	[self addRecipientFromTextField];
 }
@@ -245,15 +255,21 @@
 
 - (BOOL)addRecipientFromText:(NSString*)text
 {
+	text = [text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	if ([text length] == 0)
+		return NO;
+
     INContact __block * contact = nil;
     [[INDatabaseManager shared] selectModelsOfClassSync:[INContact class] withQuery:@"SELECT * FROM INContact WHERE email = :text OR name = :text" andParameters:@{@"text":text} andCallback:^(NSArray *objects) {
         contact = (INContact *)[objects firstObject];
     }];
 
-    BOOL isEmail = ([text rangeOfString:@"@"].location != NSNotFound);
+	NSRegularExpression * emailRegexp = [NSRegularExpression regularExpressionWithPattern: @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSArray * emails = [emailRegexp matchesInString: text options: 0 range:NSMakeRange(0, [text length])];
     
-    if (isEmail) {
-        [self addRecipientWithName:text andEmail: text];
+    if ([emails count]) {
+		NSString * email = [text substringWithRange: [[emails firstObject] range]];
+        [self addRecipientWithName:email andEmail: email];
         return YES;
 
     } else if (contact) {
@@ -261,7 +277,7 @@
         return YES;
 
     } else {
-        // do nothing. This is invalid input :-(
+        // do nothing. This is invalid input!
         return NO;
     }
 }
@@ -272,16 +288,18 @@
 	if ([email length] == 0)
 		return;
 	
+	name = [name stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	if ([name length] == 0)
+		name = email;
+		
+	[CATransaction begin];
+	[CATransaction setDisableActions: YES];
 	[_recipientsCollectionView performBatchUpdates:^{
 		NSIndexPath * indexPath = [NSIndexPath indexPathForItem:[_recipients count] inSection:0];
 		[_recipients addObject: @{@"name": name, @"email": email}];
-		[CATransaction begin];
-		[CATransaction setDisableActions: YES];
 		[_recipientsCollectionView insertItemsAtIndexPaths: @[indexPath]];
-		[CATransaction commit];
-
-	} completion:^(BOOL finished) {
-	}];
+	} completion:NULL];
+	[CATransaction commit];
     
 	[self propogateConstraintChanges];
 	[self updateAutocompletionQuery: nil];

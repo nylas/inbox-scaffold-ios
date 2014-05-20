@@ -121,7 +121,7 @@
 		[_threadCountLabel setText: @""];
 		
 	NSString * snippet = [_thread snippet];
-	unichar * cleaned = calloc(sizeof(unichar), [snippet length]);
+	unichar * cleaned = calloc([snippet length], sizeof(unichar));
 	int cleanedLength = 0;
 
 	NSCharacterSet * punctuationSet = [NSCharacterSet punctuationCharacterSet];
@@ -148,7 +148,7 @@
 			hasSpace = NO;
 		}
 	}
-	NSString * cleanedString = [[NSString alloc] initWithCharactersNoCopy:cleaned length:cleanedLength freeWhenDone:YES];
+	NSString * cleanedString = [[NSString alloc] initWithCharacters:cleaned length:cleanedLength];
 	[_bodyLabel setText: cleanedString];
 }
 

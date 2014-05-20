@@ -66,6 +66,7 @@
     NSLog(@"SYNC: %@ - %d", path, page);
     
     AFHTTPRequestOperation * op = [[INAPIManager shared] GET:path parameters:@{@"offset":@(page * REQUEST_PAGE_SIZE), @"limit":@(REQUEST_PAGE_SIZE)} success:^(AFHTTPRequestOperation *operation, id models) {
+		NSLog(@"Resposne received");
         if ([models count] >= REQUEST_PAGE_SIZE) {
             // we requested REQUEST_PAGE_SIZE, we got REQUEST_PAGE_SIZE. There must be more!
             [self syncClass: klass page: page + 1 callback: callback];

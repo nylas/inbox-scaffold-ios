@@ -72,7 +72,7 @@
 	UIBarButtonItem * cancel = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed: @"icon_cancel.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(cancelTapped:)];
 	[self.navigationItem setLeftBarButtonItem: cancel];
 
-	UIBarButtonItem * send = [[UIBarButtonItem alloc] initWithTitle: @"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendAfterVerifyTapped:)];
+	UIBarButtonItem * send = [[UIBarButtonItem alloc] initWithTitle: @"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendAfterVerifyingTapped:)];
 	[self.navigationItem setRightBarButtonItem: send];
 }
 
@@ -146,25 +146,48 @@
 	[self.scrollView setFrameHeight: self.view.frame.size.height];
 }
 
-- (IBAction)sendAfterVerifyTapped:(id)sender
+- (IBAction)sendAfterVerifyingTapped:(id)sender
 {
-    BOOL hasSubject = ([[[_subjectView subjectField] text] length] > 0);
-    BOOL hasTo = ([[_toRecipientsView recipients] count] > 0);
-    
-    if (!hasTo) {
-        [[[UIAlertView alloc] initWithTitle:@"No Recipients" message:@"Add one or more recipients before sending your message." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-        return;
-    }
-    
-    if (!hasSubject) {
+	NSMutableArray * checks = [NSMutableArray array];
+	
+	VoidBlock next = ^{
+		VoidBlock check = [checks lastObject];
+		[checks removeLastObject];
+
+		if (check)
+			check();
+		else
+			[self sendTapped: nil];
+	};
+	
+	[checks addObject: ^{
+		if ([[[_subjectView subjectField] text] length] > 0)
+			return next();
+			
         [UIAlertView showWithTitle:@"No Subject" message:@"Send your message without a subject?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Send Anyway"] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
             if (buttonIndex != [alertView cancelButtonIndex])
-                [self sendTapped:nil];
+				return next();
         }];
-        return;
-    }
-    
-    [self sendTapped: sender];
+	}];
+	
+	[checks addObject: ^{
+		if (![_toRecipientsView containsInvalidRecipients])
+			return next();
+
+		[UIAlertView showWithTitle:@"Invalid Recipients" message:@"One or more of the recipients you provided doesn't have a valid email address. If you continue, your message will not be sent to these recipients." cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Send Anyway"] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+			if (buttonIndex != [alertView cancelButtonIndex])
+				return next();
+		}];
+	}];
+		
+	[checks addObject: ^{
+		if ([[_toRecipientsView recipients] count] > 0)
+			return next();
+			
+		[[[UIAlertView alloc] initWithTitle:@"No Recipients" message:@"Add one or more recipients before sending your message." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+	}];
+	
+	next();
 }
 
 - (IBAction)sendTapped:(id)sender
