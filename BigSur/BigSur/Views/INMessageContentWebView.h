@@ -15,6 +15,7 @@
 }
 
 @property (nonatomic, assign) UIEdgeInsets margin;
+@property (nonatomic, strong) UIColor * tintColor;
 
 - (void)setMessageHTML:(NSString*)messageHTML;
 - (float)bodyHeight;

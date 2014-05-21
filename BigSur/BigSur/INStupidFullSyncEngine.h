@@ -10,7 +10,7 @@
 
 @interface INStupidFullSyncEngine : NSObject <INSyncEngine>
 
-@property (nonatomic, assign) BOOL syncInProgress;
+@property (nonatomic, assign) int syncInProgress;
 @property (nonatomic, strong) NSMutableArray * syncOperations;
 
 - (id)initWithConfiguration:(NSDictionary*)config;

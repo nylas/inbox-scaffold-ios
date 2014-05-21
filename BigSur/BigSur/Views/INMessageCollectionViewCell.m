@@ -33,6 +33,8 @@ static NSString * messageJS = nil;
 	[self setBackgroundColor: [UIColor whiteColor]];
 	[self setClipsToBounds: NO];
 	
+	[_bodyWebView setTintColor: [[INThemeManager shared] tintColor]];
+
 	[_fromField setTextColor: [[INThemeManager shared] tintColor]];
 	[_fromField setTextFont: [UIFont boldSystemFontOfSize: 15]];
 	[_fromField setRecipientsClickable: YES];

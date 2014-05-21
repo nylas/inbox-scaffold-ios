@@ -21,6 +21,7 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAndSync) name:INAuthenticationChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAndSync) name:BigSurNamespaceChanged object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAndSync) name:INChangeQueueChangedNotification object:nil];
         [self checkAndSync];
     }
     return self;
@@ -36,9 +37,10 @@
 - (void)checkAndSync
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([[INAPIManager shared] isSignedIn])
+        if ([[INAPIManager shared] isSignedIn]) {
             [self sync];
-        else {
+        
+		} else {
             [_syncOperations makeObjectsPerformSelector: @selector(cancel)];
             [_syncOperations removeAllObjects];
         }
@@ -47,6 +49,9 @@
 
 - (void)sync
 {
+	if (_syncInProgress > 0)
+		return;
+	
     [self syncClass:[INTag class] callback: NULL];
     [self syncClass:[INContact class] callback: NULL];
     [self syncClass:[INThread class] callback: NULL];
@@ -65,6 +70,7 @@
     NSString * path = [NSString stringWithFormat:@"/n/%@/%@", [namespace ID], [klass resourceAPIName]];
     NSLog(@"SYNC: %@ - %d", path, page);
     
+	_syncInProgress += 1;
     AFHTTPRequestOperation * op = [[INAPIManager shared] GET:path parameters:@{@"offset":@(page * REQUEST_PAGE_SIZE), @"limit":@(REQUEST_PAGE_SIZE)} success:^(AFHTTPRequestOperation *operation, id models) {
 		NSLog(@"Resposne received");
         if ([models count] >= REQUEST_PAGE_SIZE) {
@@ -75,13 +81,15 @@
                 callback(nil);
         }
         [_syncOperations removeObject: operation];
-
+		_syncInProgress -= 1;
+		
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // sync interrupted
         if (callback)
             callback(error);
         [_syncOperations removeObject: operation];
-    }];
+		_syncInProgress -= 1;
+	}];
     
     INModelResponseSerializer * serializer = [[INModelResponseSerializer alloc] initWithModelClass: klass];
     [op setResponseSerializer:serializer];

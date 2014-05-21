@@ -91,7 +91,7 @@
 {
     INStupidFullSyncEngine * syncEngine = (INStupidFullSyncEngine*)[[INAPIManager shared] syncEngine];
     [syncEngine syncClass:[INThread class] callback:^(NSError *error) {
-        if ([_refreshControl isRefreshing])
+        if (error && [_refreshControl isRefreshing])
             [[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
         [_refreshControl endRefreshing];
     }];

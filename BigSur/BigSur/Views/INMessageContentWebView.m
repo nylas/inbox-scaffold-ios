@@ -21,6 +21,9 @@ html, body {\
     -webkit-text-size-adjust: auto;\
     word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\
 }\
+a {\
+color:rgb(%d,%d,%d);\
+}\
 div {\
 max-width:100%%;\
 }\
@@ -54,6 +57,9 @@ img {\
 
 - (void)setup
 {
+	if (!_tintColor)
+		[self setTintColor: [UIColor blueColor]];
+
     [self setScalesPageToFit: YES];
 	[self setDataDetectorTypes: UIDataDetectorTypeAll];
 	[[self scrollView] setScrollEnabled: NO];
@@ -72,8 +78,13 @@ img {\
     
     float s = 1.0 / [[UIScreen mainScreen] scale];
     int viewportWidth = self.frame.size.width - (_margin.left + _margin.right);
-
-    NSString * css = [NSString stringWithFormat: messageCSS, (int)(_margin.top * s), (int)(_margin.left * s), (int)(_margin.bottom * s), (int)(_margin.right * s), viewportWidth];
+	
+	const CGFloat * components = CGColorGetComponents([[self tintColor] CGColor]);
+	int tintR = (int)(components[0] * 256);
+	int tintG = (int)(components[1] * 256);
+	int tintB = (int)(components[2] * 256);
+	
+    NSString * css = [NSString stringWithFormat: messageCSS, (int)(_margin.top * s), (int)(_margin.left * s), (int)(_margin.bottom * s), (int)(_margin.right * s), viewportWidth, tintR, tintG, tintB];
     NSString * html = [NSString stringWithFormat: @"<style>%@</style><meta name=\"viewport\" content=\"width=%d\">\n%@", css, viewportWidth, messageHTML];
     [html writeToFile:[@"~/Documents/test_email.html" stringByExpandingTildeInPath] atomically:NO encoding:NSUTF8StringEncoding error:nil];
     
