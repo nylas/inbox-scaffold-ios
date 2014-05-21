@@ -104,7 +104,7 @@ static NSString * messageJS = nil;
 	if ([[self class] cachedHeightForMessage: _message])
 		return;
     
-    float headerHeight = 78;
+    float headerHeight = 82;
     if ([_message isDraft])
         headerHeight += 44;
 

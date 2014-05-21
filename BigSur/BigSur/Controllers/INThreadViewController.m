@@ -39,10 +39,6 @@
 	[[_threadHeaderView layer] setShadowRadius: 1];
 
 	[self update];
-    
-	UIBarButtonItem * archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(archiveTapped:)];
-	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
-	[self.navigationItem setRightBarButtonItems:@[reply, archive] animated:YES];
 }
 
 - (void)update
@@ -62,6 +58,16 @@
     
 	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
 	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
+
+    UIBarButtonItem * archive = nil;
+    if ([_thread hasTagWithID: INTagIDArchive])
+        archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_unarchive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(unarchiveTapped:)];
+    else
+        archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(archiveTapped:)];
+    
+	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
+	[self.navigationItem setRightBarButtonItems:@[reply, archive] animated:YES];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,6 +93,12 @@
 {
 	INArchiveThreadChange * archive = [INArchiveThreadChange operationForModel: _thread];
     [[INAPIManager shared] queueChange: archive];
+}
+
+- (IBAction)unarchiveTapped:(id)sender
+{
+	INUnarchiveThreadChange * unarchive = [INUnarchiveThreadChange operationForModel: _thread];
+    [[INAPIManager shared] queueChange: unarchive];
 }
 
 - (IBAction)deleteDraftTapped:(id)sender
