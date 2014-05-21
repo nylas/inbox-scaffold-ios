@@ -85,9 +85,7 @@
 
 - (IBAction)archiveTapped:(id)sender
 {
-	INAddRemoveTagsChange * archive = [INAddRemoveTagsChange operationForModel: _thread];
-    [[archive tagIDsToAdd] addObject: INTagIDArchive];
-    [[archive tagIDsToRemove] addObject: INTagIDInbox];
+	INArchiveThreadChange * archive = [INArchiveThreadChange operationForModel: _thread];
     [[INAPIManager shared] queueChange: archive];
 }
 

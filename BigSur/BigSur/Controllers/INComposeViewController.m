@@ -193,9 +193,7 @@
 - (IBAction)sendTapped:(id)sender
 {
     INSaveDraftChange * save = [self saveDraft];
-    INAddRemoveTagsChange * send = [INAddRemoveTagsChange operationForModel: _draft];
-    [[send tagIDsToRemove] addObject: @"draft"];
-    [[send tagIDsToAdd] addObject: @"sent"];
+    INSendDraftChange * send = [INSendDraftChange operationForModel: _draft];
     [send addDependency: save];
     [[INAPIManager shared] queueChange: send];
     
