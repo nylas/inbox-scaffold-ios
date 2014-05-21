@@ -10,11 +10,11 @@
 #import "NSObject+AssociatedObjects.h"
 #import "UIButton+AFNetworking.h"
 #import "NSString+FormatConversion.h"
+#import "UIView+FrameAdditions.h"
 #import "INConvenienceCategories.h"
 #import "INThemeManager.h"
 
 #define ASSOCIATED_CACHED_HEIGHT @"cell-message-height"
-#define MESSAGE_HEADER_HEIGHT 76
 
 static NSString * messageCSS = nil;
 static NSString * messageJS = nil;
@@ -52,6 +52,12 @@ static NSString * messageJS = nil;
 	[_headerBorderLayer setBackgroundColor: [[UIColor colorWithWhite:0.8 alpha:1] CGColor]];
 	[[_headerContainerView layer] addSublayer: _headerBorderLayer];
 	
+    CALayer * draftBorderLayer = [CALayer layer];
+	[draftBorderLayer setBackgroundColor: [[UIColor colorWithWhite:0.8 alpha:1] CGColor]];
+    [draftBorderLayer setFrame: CGRectMake(0, 0, 3000, 0.5)];
+	[[_draftOptionsView layer] addSublayer: draftBorderLayer];
+	[[_draftOptionsView layer] setMasksToBounds: YES];
+    
 	[[_fromProfileButton layer] setCornerRadius: 3];
 	[[_fromProfileButton layer] setMasksToBounds:YES];
 }
@@ -61,7 +67,15 @@ static NSString * messageJS = nil;
 	[super layoutSubviews];
 	
 	[[self layer] setShadowPath: CGPathCreateWithRect(self.contentView.bounds, NULL)];
-	[_headerBorderLayer setFrame: CGRectMake(0, _headerContainerView.frame.size.height - 0.5, _headerContainerView.frame.size.width, 0.5)];
+    [_headerBorderLayer setFrame: CGRectMake(0, _headerContainerView.frame.size.height - 0.5, _headerContainerView.frame.size.width, 0.5)];
+    [_bodyWebView setFrameY: [_headerContainerView bottomLeft].y + 10];
+    
+    if ([_draftOptionsView isHidden]) {
+        [_bodyWebView setFrameHeight: self.frame.size.height - _bodyWebView.frame.origin.y];
+    } else {
+        [_bodyWebView setFrameHeight: self.frame.size.height - _bodyWebView.frame.origin.y - (_draftOptionsView.frame.size.height + 5)];
+        [_draftOptionsView setFrameY: [_bodyWebView bottomLeft].y + 5];
+    }
 }
 
 - (void)setMessage:(INMessage *)message
@@ -76,6 +90,8 @@ static NSString * messageJS = nil;
     
     [_bodyWebView setMessageHTML: [_message body]];
     [_bodyWebView setDelegate: self];
+
+    [_draftOptionsView setHidden: ![_message isDraft]];
 }
 
 
@@ -88,7 +104,11 @@ static NSString * messageJS = nil;
 	if ([[self class] cachedHeightForMessage: _message])
 		return;
     
-	[_message associateValue:@([_bodyWebView bodyHeight] + MESSAGE_HEADER_HEIGHT) withKey: ASSOCIATED_CACHED_HEIGHT];
+    float headerHeight = 78;
+    if ([_message isDraft])
+        headerHeight += 44;
+
+	[_message associateValue:@([_bodyWebView bodyHeight] + headerHeight) withKey: ASSOCIATED_CACHED_HEIGHT];
     
 	if (_messageHeightDeterminedBlock)
 		_messageHeightDeterminedBlock(self);

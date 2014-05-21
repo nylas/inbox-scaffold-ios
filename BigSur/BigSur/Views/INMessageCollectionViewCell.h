@@ -23,7 +23,10 @@ typedef void (^ CellBlock)();
 @property (nonatomic, weak) IBOutlet INMessageContentWebView * bodyWebView;
 @property (nonatomic, weak) IBOutlet INRecipientsLabel * fromField;
 @property (nonatomic, weak) IBOutlet INRecipientsLabel * toField;
-@property (weak, nonatomic) IBOutlet UILabel * dateField;
+@property (nonatomic, weak) IBOutlet UILabel * dateField;
+@property (nonatomic, weak) IBOutlet UIButton * draftDeleteButton;
+@property (nonatomic, weak) IBOutlet UIButton * draftEditButton;
+@property (nonatomic, weak) IBOutlet UIView * draftOptionsView;
 @property (nonatomic, weak) IBOutlet UIView * headerContainerView;
 @property (nonatomic, strong) CALayer * headerBorderLayer;
 

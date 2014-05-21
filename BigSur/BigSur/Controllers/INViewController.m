@@ -158,17 +158,8 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
-	
-    if ([thread hasTagWithID:@"draft"]) {
-        // TODO not always last message
-        INMessage * message = [thread currentDraft];
-        INComposeViewController * composeVC = [[INComposeViewController alloc] initWithDraft: message];
-        UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composeVC];
-        [self presentViewController:nav animated:YES completion:NULL];
-    } else {
-        INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: thread];
-        [self.navigationController pushViewController:threadVC animated:YES];
-    }
+    INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: thread];
+    [self.navigationController pushViewController:threadVC animated:YES];
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath

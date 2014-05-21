@@ -125,11 +125,13 @@
 	BOOL hide = NO;
 	int hidden = 0;
 	
+    NSMutableArray * visible = [NSMutableArray array];
+    
 	for (UIButton * b in _buttons) {
 		CGSize size = [[b titleForState: UIControlStateNormal] sizeWithAttributes: @{NSFontAttributeName: [[b titleLabel] font]}];
 		[b setFrame: CGRectMake(x, 0, fminf(self.frame.size.width, size.width), self.frame.size.height)];
 		
-		if (x + [b frame].size.width > self.frame.size.width - 50)
+		if (x + [b frame].size.width > self.frame.size.width)
 			hide = YES;
 		
 		BOOL isFirstItem = (x == 0);
@@ -142,13 +144,27 @@
 		} else {
 			x += [b frame].size.width;
 		}
+        
+        if ([b isHidden] == NO)
+            [visible addObject: b];
 	}
 	
-	NSString * moreLabel = [NSString stringWithFormat: @"%d more...", hidden];
-	[_moreButton setTitle:moreLabel forState:UIControlStateNormal];
-	[_moreButton sizeToFit];
-	[_moreButton setFrameHeight: self.frame.size.height];
-	[_moreButton setFrameX: x];
 	[_moreButton setHidden: (hidden == 0)];
+
+    if ([_moreButton isHidden] == NO) {
+        NSString * moreLabel = [NSString stringWithFormat: @"%d more...", hidden];
+        [_moreButton setTitle:moreLabel forState:UIControlStateNormal];
+        [_moreButton sizeToFit];
+        
+        UIButton * lastButton = [visible lastObject];
+        if (x + [_moreButton frame].size.width > self.frame.size.width) {
+            float maxX = self.frame.size.width - [_moreButton frame].size.width;
+            [lastButton setFrameWidth: lastButton.frame.size.width - (x - maxX)];
+            x = maxX;
+        }
+        
+        [_moreButton setFrameHeight: self.frame.size.height];
+        [_moreButton setFrameX: x];
+    }
 }
 @end

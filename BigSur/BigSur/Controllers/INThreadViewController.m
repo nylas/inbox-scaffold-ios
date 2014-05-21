@@ -19,6 +19,7 @@
 	self = [super init];
 	if (self) {
 		_thread = thread;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update) name:INModelObjectChangedNotification object:_thread];
 	}
 	return self;
 }
@@ -32,13 +33,23 @@
 	_messageProvider = [_thread newMessageProvider];
 	[_messageProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
 	[_messageProvider setDelegate: self];
-	[_messageProvider refresh];
 	
 	[[_threadHeaderView layer] setShadowOffset: CGSizeMake(0, 1)];
 	[[_threadHeaderView layer] setShadowOpacity: 0.1];
 	[[_threadHeaderView layer] setShadowRadius: 1];
-	
-	float headerPadding = _threadSubjectLabel.frame.origin.y;
+
+	[self update];
+    
+	UIBarButtonItem * archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(archiveTapped:)];
+	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
+	[self.navigationItem setRightBarButtonItems:@[reply, archive] animated:YES];
+}
+
+- (void)update
+{
+    [_messageProvider refresh];
+
+    float headerPadding = _threadSubjectLabel.frame.origin.y;
 	
     [_threadSubjectLabel setText: [_thread subject]];
     [_threadSubjectLabel sizeToFit];
@@ -48,13 +59,9 @@
 	[_tagsView setTags: [_thread tags]];
 	[_tagsView setFrameY: [_threadSubjectLabel bottomLeft].y + headerPadding / 2];
     [_threadHeaderView setFrameHeight: [_tagsView bottomLeft].y + headerPadding];
-
+    
 	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
 	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
-	
-	UIBarButtonItem * archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(archiveTapped:)];
-	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
-	[self.navigationItem setRightBarButtonItems:@[reply, archive] animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,6 +71,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 	[self.messageProvider setDelegate: nil];
 }
 
@@ -77,7 +85,24 @@
 
 - (IBAction)archiveTapped:(id)sender
 {
-	
+	INAddRemoveTagsChange * archive = [INAddRemoveTagsChange operationForModel: _thread];
+    [[archive tagIDsToAdd] addObject: INTagIDArchive];
+    [[archive tagIDsToRemove] addObject: INTagIDInbox];
+    [[INAPIManager shared] queueChange: archive];
+}
+
+- (IBAction)deleteDraftTapped:(id)sender
+{
+    INDeleteDraftChange * delete = [INDeleteDraftChange operationForModel: [_thread currentDraft]];
+    [[INAPIManager shared] queueChange: delete];
+}
+
+- (IBAction)editDraftTapped:(id)sender
+{
+    // for now, assume there's only one draft. just find it
+    INComposeViewController * composer = [[INComposeViewController alloc] initWithDraft: [_thread currentDraft]];
+    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composer];
+    [self presentViewController:nav animated:YES completion:NULL];
 }
 
 #pragma Collection View Data Source
@@ -92,6 +117,10 @@
 	INMessageCollectionViewCell * cell = (INMessageCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"message" forIndexPath: indexPath];
 	INMessage * message = [[_messageProvider items] objectAtIndex: [indexPath row]];
 	[cell setMessage: message];
+    [[cell draftDeleteButton] removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
+    [[cell draftDeleteButton] addTarget:self action:@selector(deleteDraftTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [[cell draftEditButton] removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
+    [[cell draftEditButton] addTarget:self action:@selector(editDraftTapped:) forControlEvents:UIControlEventTouchUpInside];
 
 	UICollectionView __weak * __collectionView = collectionView;
 	[cell setMessageHeightDeterminedBlock: ^() {

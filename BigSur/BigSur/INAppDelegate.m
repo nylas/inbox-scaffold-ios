@@ -33,7 +33,8 @@
 	[[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: [UIColor colorWithWhite:0.29 alpha:1], NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:20]}];
 	[[UIProgressView appearance] setTintColor: [[INThemeManager shared] tintColor]];
 	[[UISwitch appearance] setOnTintColor: [[INThemeManager shared] tintColor]];
-    
+    [[UIButton appearance] setTintColor: [[INThemeManager shared] tintColor]];
+
     // load previous app state
     NSArray * namespaces = [[INAPIManager shared] namespaces];
     [self setCurrentNamespace: [namespaces firstObject]];

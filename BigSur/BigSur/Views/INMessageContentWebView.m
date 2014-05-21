@@ -14,8 +14,10 @@ html, body {\
     font-size:0.9em;\
     margin-top:%dpx;\
     margin-left:%dpx;\
+    margin-bottom:%dpx;\
     margin-right:%dpx;\
     border:0;\
+    width:%dpx;\
     -webkit-text-size-adjust: auto;\
     word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\
 }\
@@ -69,10 +71,10 @@ img {\
     _orginalHTML = messageHTML;
     
     float s = 1.0 / [[UIScreen mainScreen] scale];
-    NSString * css = [NSString stringWithFormat: messageCSS, (int)(_margin.top * s), (int)(_margin.left * s), (int)(_margin.bottom * s), (int)(_margin.right * s)];
-
     int viewportWidth = self.frame.size.width - (_margin.left + _margin.right);
-	NSString * html = [NSString stringWithFormat: @"<style>%@</style><meta name=\"viewport\" content=\"width=%d\">\n%@", css, viewportWidth, messageHTML];
+
+    NSString * css = [NSString stringWithFormat: messageCSS, (int)(_margin.top * s), (int)(_margin.left * s), (int)(_margin.bottom * s), (int)(_margin.right * s), viewportWidth];
+    NSString * html = [NSString stringWithFormat: @"<style>%@</style><meta name=\"viewport\" content=\"width=%d\">\n%@", css, viewportWidth, messageHTML];
     [html writeToFile:[@"~/Documents/test_email.html" stringByExpandingTildeInPath] atomically:NO encoding:NSUTF8StringEncoding error:nil];
     
 	[self loadHTMLString:html baseURL:nil];
