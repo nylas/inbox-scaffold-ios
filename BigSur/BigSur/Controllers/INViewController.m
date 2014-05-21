@@ -172,13 +172,10 @@
     INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
 	
     if ([_tag isEqual: [INTag tagWithID: INTagIDDraft]]) {
-        INDeleteDraftChange * delete = [INDeleteDraftChange operationForModel: [thread currentDraft]];
-        [[INAPIManager shared] queueChange: delete];
+		[[thread currentDraft] delete];
 
     } else {
-        INAddRemoveTagsChange * archive = [INAddRemoveTagsChange operationForModel: thread];
-        [[archive tagIDsToAdd] addObject: INTagIDArchive];
-        [[INAPIManager shared] queueChange: archive];
+		[thread archive];
     }
 }
 

@@ -192,11 +192,9 @@
 
 - (IBAction)sendTapped:(id)sender
 {
-    INSaveDraftChange * save = [self saveDraft];
-    INSendDraftChange * send = [INSendDraftChange operationForModel: _draft];
-    [send addDependency: save];
-    [[INAPIManager shared] queueChange: send];
-    
+	[self saveDraft];
+	[_draft send];
+
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -234,17 +232,14 @@
     return delete;
 }
 
-- (INSaveDraftChange *)saveDraft
+- (void)saveDraft
 {
     [_draft setCreatedAt: [NSDate date]];
     [_draft setNamespaceID: [[INAppDelegate current] currentNamespace].ID];
     [_draft setTo: [_toRecipientsView recipients]];
     [_draft setSubject: [[_subjectView subjectField] text]];
     [_draft setBody: [_bodyTextView text]];
-
-    INSaveDraftChange * save = [INSaveDraftChange operationForModel: _draft];
-    [[INAPIManager shared] queueChange: save];
-    return save;
+	[_draft save];
 }
 
 

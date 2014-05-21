@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel * threadSubjectLabel;
 @property (weak, nonatomic) IBOutlet UIView *threadHeaderView;
 @property (weak, nonatomic) IBOutlet INTagsView *tagsView;
+@property (weak, nonatomic) IBOutlet UIView *errorView;
+@property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 
 @property (nonatomic, strong) INThread * thread;
 @property (nonatomic, strong) INModelProvider * messageProvider;

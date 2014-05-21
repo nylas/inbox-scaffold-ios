@@ -91,20 +91,17 @@
 
 - (IBAction)archiveTapped:(id)sender
 {
-	INArchiveThreadChange * archive = [INArchiveThreadChange operationForModel: _thread];
-    [[INAPIManager shared] queueChange: archive];
+	[_thread archive];
 }
 
 - (IBAction)unarchiveTapped:(id)sender
 {
-	INUnarchiveThreadChange * unarchive = [INUnarchiveThreadChange operationForModel: _thread];
-    [[INAPIManager shared] queueChange: unarchive];
+	[_thread unarchive];
 }
 
 - (IBAction)deleteDraftTapped:(id)sender
 {
-    INDeleteDraftChange * delete = [INDeleteDraftChange operationForModel: [_thread currentDraft]];
-    [[INAPIManager shared] queueChange: delete];
+	[[_thread currentDraft] delete];
 }
 
 - (IBAction)editDraftTapped:(id)sender
@@ -163,12 +160,17 @@
 
 - (void)providerDataFetchFailed:(NSError *)error
 {
-	[[[UIAlertView alloc] initWithTitle:@"Error!" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+	if ([[_messageProvider items] count] == 0) {
+		[_errorView setHidden: NO];
+		[_errorLabel setText: [NSString stringWithFormat:@"Sorry, messages could not be loaded. %@", [error localizedDescription]]];
+	}
 }
 
 - (void)providerDataChanged
 {
 	[[self collectionView] reloadData];
+	if ([[_messageProvider items] count] > 0)
+		[_errorView setHidden: YES];
 }
 
 @end

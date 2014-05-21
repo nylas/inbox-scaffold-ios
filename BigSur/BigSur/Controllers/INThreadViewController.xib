@@ -7,6 +7,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="INThreadViewController">
             <connections>
                 <outlet property="collectionView" destination="ahO-7u-cuo" id="wr8-Es-S6g"/>
+                <outlet property="errorLabel" destination="5j6-1I-9F8" id="qfL-xm-jB9"/>
+                <outlet property="errorView" destination="nEy-hw-nJx" id="9os-RR-bir"/>
                 <outlet property="tagsView" destination="YP0-2f-kRQ" id="e5w-NB-dEv"/>
                 <outlet property="threadHeaderView" destination="z6b-0t-Xl8" id="aZW-JK-6Xu"/>
                 <outlet property="threadSubjectLabel" destination="9ou-s0-7qv" id="LGk-3i-bCe"/>
@@ -52,6 +54,20 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" id="nEy-hw-nJx">
+                    <rect key="frame" x="48" y="188" width="225" height="162"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorry, messages could not be loaded." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5j6-1I-9F8">
+                            <rect key="frame" x="0.0" y="36" width="225" height="96"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
