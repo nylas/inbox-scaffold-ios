@@ -16,8 +16,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _attachments = [NSMutableArray array];
-        
         _attachmentsTableView = [[UITableView alloc] initWithFrame: CGRectZero];
         [_attachmentsTableView setScrollEnabled: NO];
         [_attachmentsTableView setSeparatorStyle: UITableViewCellSeparatorStyleNone];
@@ -34,10 +32,17 @@
 
 - (CGSize)intrinsicContentSize
 {
-    if ([_attachments count] == 0)
+	NSArray * attachments = [self.delegate attachmentsForAttachmentsView: self];
+    if ([attachments count] == 0)
         return CGSizeMake(UIViewNoIntrinsicMetric, 0);
     
-    return CGSizeMake(UIViewNoIntrinsicMetric, [_attachments count] * [_attachmentsTableView rowHeight] + 8);
+    return CGSizeMake(UIViewNoIntrinsicMetric, [attachments count] * [_attachmentsTableView rowHeight] + 8);
+}
+
+- (void)setDelegate:(NSObject<INComposeAttachmentsRowViewDelegate> *)delegate
+{
+	_delegate = delegate;
+	[_attachmentsTableView reloadData];
 }
 
 - (void)layoutSubviews
@@ -46,28 +51,21 @@
     [_attachmentsTableView setFrame: CGRectMake(0, 3, self.frame.size.width, 1000)];
 }
 
-- (NSArray*)attachments
-{
-    return [_attachments copy];
-}
-
-- (void)addAttachment:(id)thing
+- (void)animateAttachmentAdditionAtIndex:(NSInteger)index withBlock:(VoidBlock)block
 {
     [self animateAttachmentChange:^{
-        [_attachments insertObject:thing atIndex:0];
+		block();
     } withTableUpdates:^{
-        [_attachmentsTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+        [_attachmentsTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
     }];
 }
 
-- (void)removeAttachmentAtIndex:(int)index
+- (void)animateAttachmentRemovalAtIndex:(NSInteger)index withBlock:(VoidBlock)block
 {
-    NSIndexPath * ip = [NSIndexPath indexPathForItem:index inSection:0];
-
     [self animateAttachmentChange:^{
-        [_attachments removeObjectAtIndex: index];
+		block();
     } withTableUpdates:^{
-        [_attachmentsTableView deleteRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationRight];
+        [_attachmentsTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
     }];
 }
 
@@ -88,7 +86,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_attachments count];
+	NSArray * attachments = [self.delegate attachmentsForAttachmentsView: self];
+    return [attachments count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -96,11 +95,12 @@
     INAttachmentTableViewCell * cell = (INAttachmentTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!cell) cell = [[INAttachmentTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier:@"cell"];
 
-    id attachment = [_attachments objectAtIndex: [indexPath row]];
+	NSArray * attachments = [self.delegate attachmentsForAttachmentsView: self];
+    INAttachment * attachment = [attachments objectAtIndex: [indexPath row]];
     [cell setAttachment: attachment];
     [cell setDeleteCallback: ^{
-        int index = [_attachments indexOfObject: attachment];
-        [self removeAttachmentAtIndex: index];
+        int index = [attachments indexOfObject: attachment];
+		[[self delegate] attachmentsView:self confirmRemoveAttachmentAtIndex: index];
     }];
     
     return cell;

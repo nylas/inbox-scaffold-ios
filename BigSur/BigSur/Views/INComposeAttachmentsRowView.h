@@ -8,13 +8,22 @@
 
 #import "INComposeRowView.h"
 
+@class INComposeAttachmentsRowView;
+
+@protocol INComposeAttachmentsRowViewDelegate <NSObject>
+
+- (NSArray*)attachmentsForAttachmentsView:(INComposeAttachmentsRowView*)view;
+- (void)attachmentsView:(INComposeAttachmentsRowView*)view confirmRemoveAttachmentAtIndex:(NSInteger)index;
+
+@end
+
 @interface INComposeAttachmentsRowView : INComposeRowView <UITableViewDataSource>
 {
-    NSMutableArray * _attachments;
     UITableView * _attachmentsTableView;
 }
+@property (nonatomic, weak) NSObject <INComposeAttachmentsRowViewDelegate>* delegate;
 
-- (NSArray*)attachments;
-- (void)addAttachment:(id)thing;
+- (void)animateAttachmentAdditionAtIndex:(NSInteger)index withBlock:(VoidBlock)block;
+- (void)animateAttachmentRemovalAtIndex:(NSInteger)index withBlock:(VoidBlock)block;
 
 @end

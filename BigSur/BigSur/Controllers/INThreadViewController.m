@@ -33,12 +33,17 @@
 	_messageProvider = [_thread newMessageProvider];
 	[_messageProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
 	[_messageProvider setDelegate: self];
-	
+
 	[[_threadHeaderView layer] setShadowOffset: CGSizeMake(0, 1)];
 	[[_threadHeaderView layer] setShadowOpacity: 0.1];
 	[[_threadHeaderView layer] setShadowRadius: 1];
 
 	[self update];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[_collectionView reloadData];
 }
 
 - (void)update

@@ -55,7 +55,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" id="nEy-hw-nJx">
+                <view hidden="YES" contentMode="scaleToFill" id="nEy-hw-nJx">
                     <rect key="frame" x="48" y="188" width="225" height="162"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>

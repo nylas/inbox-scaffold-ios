@@ -53,7 +53,8 @@
     [[_subjectView subjectField] setText: _draft.subject];
     
     _attachmentsView = [[INComposeAttachmentsRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
-    
+	[_attachmentsView setDelegate: self];
+		
 	_bodyTextView = [[INPlaceholderTextView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
 	[_bodyTextView setPlaceholder: @"Compose a message..."];
 	[_bodyTextView setFont: [UIFont systemFontOfSize: 15]];
@@ -117,34 +118,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)keyboardWillShow:(NSNotification*)notif
-{
-	CGRect keyboardFrame = [[[notif userInfo] objectForKey: UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	[self.scrollView setFrameHeight: self.view.frame.size.height - keyboardFrame.size.height];
-
-    // find our first responder and make it visible
-    NSMutableArray * search = [NSMutableArray array];
-    [search addObjectsFromArray: self.scrollView.subviews];
-    UIView * responder = nil;
-    while ([search count] > 0) {
-        UIView * view = [search lastObject];
-        if ([view isFirstResponder]) {
-            responder = view;
-            break;
-        } else {
-            [search removeLastObject];
-            [search addObjectsFromArray: view.subviews];
-        }
-    }
-
-    if (responder)
-        [self.scrollView scrollRectToVisible: responder.frame animated:YES];
-}
-
-- (void)keyboardWillHide:(NSNotification*)notif
-{
-	[self.scrollView setFrameHeight: self.view.frame.size.height];
-}
 
 - (IBAction)sendAfterVerifyingTapped:(id)sender
 {
@@ -202,7 +175,7 @@
 {
     BOOL hasSubject = ([[[_subjectView subjectField] text] length] > 0);
     BOOL hasBody = ([[_bodyTextView text] length] > 0);
-    BOOL hasAttachments = ([[_attachmentsView attachments] count] > 0);
+    BOOL hasAttachments = ([[_draft attachments] count] > 0);
     
     if (hasSubject || hasBody || hasAttachments) {
         [UIActionSheet showInView:self.view withTitle:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Draft" otherButtonTitles:@[@"Save Draft"] tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
@@ -270,9 +243,29 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [picker dismissViewControllerAnimated: YES completion:^{
-        [_attachmentsView addAttachment: [info objectForKey: UIImagePickerControllerOriginalImage]];
+		UIImage * image = [info objectForKey: UIImagePickerControllerOriginalImage];
+		[_attachmentsView animateAttachmentAdditionAtIndex:0 withBlock:^{
+			INAttachment * attachment = [[INAttachment alloc] initWithImage: image inNamespace: [_draft namespace]];
+			[_draft addAttachment: attachment atIndex: 0];
+			[attachment upload];
+		}];
+
         [self arrangeContentViews];
     }];
+}
+
+#pragma mark Attachments View Delegate
+
+- (NSArray*)attachmentsForAttachmentsView:(INComposeAttachmentsRowView*)view
+{
+	return [_draft attachments];
+}
+
+- (void)attachmentsView:(INComposeAttachmentsRowView*)view confirmRemoveAttachmentAtIndex:(NSInteger)index
+{
+	[view animateAttachmentRemovalAtIndex:index withBlock:^{
+		[_draft removeAttachmentAtIndex: index];
+	}];
 }
 
 #pragma mark Collecting Touches beneath Body
@@ -289,6 +282,38 @@
 - (void)focusBodyTextView:(UITapGestureRecognizer*)recognizer
 {
 	[_bodyTextView becomeFirstResponder];
+}
+
+#pragma mark Showing and Hiding Keyboard
+
+
+- (void)keyboardWillShow:(NSNotification*)notif
+{
+	CGRect keyboardFrame = [[[notif userInfo] objectForKey: UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	[self.scrollView setFrameHeight: self.view.frame.size.height - keyboardFrame.size.height];
+	
+    // find our first responder and make it visible
+    NSMutableArray * search = [NSMutableArray array];
+    [search addObjectsFromArray: self.scrollView.subviews];
+    UIView * responder = nil;
+    while ([search count] > 0) {
+        UIView * view = [search lastObject];
+        if ([view isFirstResponder]) {
+            responder = view;
+            break;
+        } else {
+            [search removeLastObject];
+            [search addObjectsFromArray: view.subviews];
+        }
+    }
+	
+    if (responder)
+        [self.scrollView scrollRectToVisible: responder.frame animated:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notif
+{
+	[self.scrollView setFrameHeight: self.view.frame.size.height];
 }
 
 @end

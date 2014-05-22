@@ -48,11 +48,37 @@
     [super setSelected:selected animated:animated];
 }
 
-- (void)setAttachment:(id)attachment
+- (void)setAttachment:(INAttachment*)attachment
 {
-    if ([attachment isKindOfClass: [UIImage class]]) {
-        [[self imageView] setImage: attachment];
-    }
+	[[self imageView] setImage: [attachment localPreview]];
+	
+	INUploadAttachmentChange * task = [attachment uploadTask];
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	if (task) {
+		[[self progressView] setHidden: NO];
+		[[self progressView] setProgress: [task percentComplete]];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProgress:) name:INModelChangeUploadProgressNotification object:task];
+	} else {
+		[[self progressView] setHidden: YES];
+	}
+}
+
+- (void)updateProgress:(NSNotification*)notif
+{
+	INUploadAttachmentChange * task = [notif object];
+	[[self progressView] setHidden: ([task percentComplete] >= 1.0)];
+	[[self progressView] setProgress: [task percentComplete]];
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+- (void)prepareForReuse
+{
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	[super prepareForReuse];
 }
 
 - (void)triggerDeleteCallback:(id)sender
