@@ -93,7 +93,7 @@ static NSString * messageJS = nil;
     [_bodyWebView setMessageHTML: [_message body]];
     [_bodyWebView setDelegate: self];
 
-    [_draftOptionsView setHidden: ![_message isDraft]];
+    [_draftOptionsView setHidden: ![_message isKindOfClass: [INDraft class]]];
 }
 
 
@@ -107,7 +107,7 @@ static NSString * messageJS = nil;
 		return;
     
     float headerHeight = 82;
-    if ([_message isDraft])
+    if ([_message isKindOfClass: [INDraft class]])
         headerHeight += 44;
 
 	[_message associateValue:@([_bodyWebView bodyHeight] + headerHeight) withKey: ASSOCIATED_CACHED_HEIGHT];

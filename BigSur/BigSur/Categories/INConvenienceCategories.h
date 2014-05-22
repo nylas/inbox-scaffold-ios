@@ -11,6 +11,7 @@
 @interface NSString (INConvenienceCategories)
 
 + (NSString *)stringForMessageDate:(NSDate*)date;
++ (NSString *)stringByCleaningWhitespaceInString:(NSString*)snippet;
 
 @end
 

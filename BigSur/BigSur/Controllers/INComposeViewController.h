@@ -18,7 +18,7 @@
     
 }
 
-@property (nonatomic, strong) INMessage * draft;
+@property (nonatomic, strong) INDraft * draft;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) NSMutableArray *scrollViewRows;

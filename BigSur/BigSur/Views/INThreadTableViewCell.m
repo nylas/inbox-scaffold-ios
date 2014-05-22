@@ -2,42 +2,27 @@
 //  INThreadTableViewCell.m
 //  BigSur
 //
-//  Created by Ben Gotow on 5/1/14.
+//  Created by Ben Gotow on 5/22/14.
 //  Copyright (c) 2014 Inbox. All rights reserved.
 //
 
 #import "INThreadTableViewCell.h"
-#import "NSString+FormatConversion.h"
 #import "UIView+FrameAdditions.h"
-#import "UIImageView+AFNetworking.h"
 #import "INConvenienceCategories.h"
 #import "INThemeManager.h"
 
-#define INSETS UIEdgeInsetsMake(8, 10, 8, 10)
-
 @implementation INThreadTableViewCell
 
-- (id)initWithReuseIdentifier:(NSString*)identifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-	if (self) {
-		_participantsLabel = [[INRecipientsLabel alloc] initWithFrame: CGRectZero];
-		[_participantsLabel setTextColor: [UIColor colorWithWhite:0.2 alpha:1]];
-		[_participantsLabel setTextFont: [UIFont systemFontOfSize: 13]];
-		[self addSubview: _participantsLabel];
-		
+    self = [super initWithStyle:style reuseIdentifier: reuseIdentifier];
+    if (self) {
 		_unreadDot = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 14, 14)];
 		[_unreadDot setBackgroundColor: [[INThemeManager shared] tintColor]];
 		[[_unreadDot layer] setCornerRadius: _unreadDot.frame.size.width / 2];
 		[self addSubview: _unreadDot];
-		
-		_dateLabel = [[UILabel alloc] initWithFrame: CGRectZero];
-		[_dateLabel setFont: [UIFont systemFontOfSize: 13]];
-		[_dateLabel setTextColor: [UIColor grayColor]];
-		[_dateLabel setTextAlignment: NSTextAlignmentRight];
-		[self addSubview: _dateLabel];
-		
-		_threadCountLabel = [[UILabel alloc] initWithFrame: CGRectZero];
+	
+        _threadCountLabel = [[UILabel alloc] initWithFrame: CGRectZero];
 		[_threadCountLabel setFont: [UIFont systemFontOfSize: 13]];
 		[_threadCountLabel setTextColor: [UIColor grayColor]];
 		[_threadCountLabel setTextAlignment: NSTextAlignmentCenter];
@@ -45,56 +30,42 @@
 		[[_threadCountLabel layer] setCornerRadius: 3];
 		[[_threadCountLabel layer] setBorderColor: [[UIColor colorWithWhite:0.7 alpha:1] CGColor]];
 		[self addSubview: _threadCountLabel];
-		
-		_bodyLabel = [[UILabel alloc] initWithFrame: CGRectZero];
-		[_bodyLabel setLineBreakMode: NSLineBreakByWordWrapping];
-		_subjectLabel = [self textLabel];
-		[_subjectLabel setFont: [UIFont boldSystemFontOfSize: 15]];
-		[_subjectLabel setContentMode: UIViewContentModeCenter];
-		
-		[_bodyLabel setTextColor: [UIColor grayColor]];
-		[_bodyLabel setFont: [UIFont systemFontOfSize: 13]];
-		[_bodyLabel setNumberOfLines: 2];
-		[self addSubview: _bodyLabel];
-	}
-	return self;
+    }
+    return self;
+}
+
+- (float)textLeftInset
+{
+    return 40;
 }
 
 - (void)layoutSubviews
 {
-	CGRect f = self.frame;
-	
-	[super layoutSubviews];
-	
-	[_dateLabel sizeToFit];
-	[_dateLabel setFrameOrigin: CGPointMake(f.size.width - INSETS.right - _dateLabel.frame.size.width, INSETS.top)];
-	
-	float textX = 40;
-	float textW = f.size.width - textX - INSETS.right;
-	
-	if ([[_threadCountLabel text] length]){
-		CGSize s = [[_threadCountLabel text] sizeWithAttributes: @{NSFontAttributeName: [_threadCountLabel font]}];
-		s.width += 8;
-		s.height += 4;
-		[_threadCountLabel setFrame: CGRectMake(f.size.width - INSETS.right - s.width, (f.size.height - s.height) / 2, s.width, s.height)];
-		[_threadCountLabel setHidden: NO];
-		textW -= s.width + INSETS.right;
-
-	} else {
-		[_threadCountLabel setHidden: YES];
-	}
-	
-	[_participantsLabel setFrame: CGRectMake(textX, INSETS.top, _dateLabel.frame.origin.x - textX, 16)];
-	[_subjectLabel setFrame: CGRectMake(textX, [_participantsLabel bottomRight].y, textW, 20)];
-	[_unreadDot setFrameCenter: CGPointMake(20, _subjectLabel.center.y)];
-	[_bodyLabel setFrame: CGRectMake(textX, [_subjectLabel bottomRight].y, textW, 35)];
-	[_bodyLabel sizeToFit];
+    CGRect f = self.frame;
+    
+    [super layoutSubviews];
+    
+    float textW = [self.subjectLabel frame].size.width;
+    
+    if ([[_threadCountLabel text] length]){
+        CGSize s = [[_threadCountLabel text] sizeWithAttributes: @{NSFontAttributeName: [_threadCountLabel font]}];
+        s.width += 8;
+        s.height += 4;
+        [_threadCountLabel setFrame: CGRectMake(f.size.width - INSETS.right - s.width, (f.size.height - s.height) / 2, s.width, s.height)];
+        [_threadCountLabel setHidden: NO];
+        
+        textW -= s.width + INSETS.right;
+        [self.subjectLabel setFrameWidth: textW];
+        [self.bodyLabel setFrameSize: CGSizeMake(textW, 1000)];
+        [self.bodyLabel sizeToFit];
+        
+    } else {
+        [_threadCountLabel setHidden: YES];
+    }
+    
+    [_unreadDot setFrameCenter: CGPointMake(20, self.subjectLabel.center.y)];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-}
 
 - (void)setThread:(INThread *)thread
 {
@@ -108,48 +79,18 @@
 		otherEmail = recipient[@"email"];
 		break;
 	}
-
+    
 	BOOL includeMe = (([[_thread messageIDs] count] > 1) || ([[_thread participants] count] > 2));
-	[_participantsLabel setPrefixString: @"" andRecipients:[_thread participants] includeMe: includeMe];
-	[_dateLabel setText: [NSString stringForMessageDate: [_thread lastMessageDate]]];
-	[_subjectLabel setText: [_thread subject]];
+	[self.participantsLabel setPrefixString: @"" andRecipients:[_thread participants] includeMe: includeMe];
+	[self.dateLabel setText: [NSString stringForMessageDate: [_thread lastMessageDate]]];
+	[self.subjectLabel setText: [_thread subject]];
+    [self.bodyLabel setText: [NSString stringByCleaningWhitespaceInString: [_thread snippet]]];
     [_unreadDot setHidden: (![_thread hasTagWithID: INTagIDUnread])];
     
 	if ([[_thread messageIDs] count] > 1)
 		[_threadCountLabel setText: [NSString stringWithFormat:@"%d", [[_thread messageIDs] count]]];
 	else
 		[_threadCountLabel setText: @""];
-		
-	NSString * snippet = [_thread snippet];
-	unichar * cleaned = calloc([snippet length], sizeof(unichar));
-	int cleanedLength = 0;
-
-	NSCharacterSet * punctuationSet = [NSCharacterSet punctuationCharacterSet];
-	NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-	
-	BOOL hasSpace = YES;
-	for (int ii = 0; ii < [snippet length]; ii ++) {
-		unichar c = [snippet characterAtIndex: ii];
-		BOOL isWhitespace = [whitespaceSet characterIsMember: c];
-		
-		if (isWhitespace) {
-			// If this character is whitespace, only add it to our string if we don't
-			// already have a whitespace character.
-			if (!hasSpace)
-				cleaned[cleanedLength++] = ' ';
-			hasSpace = YES;
-		} else {
-			// If this character is punctuation and our trailing character is a whitespace
-			// character, place the punctutation where the whitespace is. Otherwise just
-			// append the character.
-			if (hasSpace && [punctuationSet characterIsMember: c])
-				cleanedLength --;
-			cleaned[cleanedLength++] = c;
-			hasSpace = NO;
-		}
-	}
-	NSString * cleanedString = [[NSString alloc] initWithCharacters:cleaned length:cleanedLength];
-	[_bodyLabel setText: cleanedString];
 }
 
 @end

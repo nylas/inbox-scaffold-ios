@@ -11,6 +11,11 @@
 #import "INAppDelegate.h"
 #import "UIImage+BlurEffects.h"
 
+#define BUILT_IN_TAGS @[INTagIDInbox, INTagIDFlagged, INTagIDSent, INTagIDArchive]
+
+static NSString * INSidebarItemTypeDrafts = @"drafts";
+static NSString * INSidebarItemTypeTag = @"tag";
+static NSString * INSidebarItemTypeNamespace = @"namespace";
 
 @implementation INSidebarViewController
 
@@ -66,45 +71,75 @@
     }];
 }
 
+#pragma mark Showing Content
+
+- (void)switchToDrafts
+{
+    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+    INModelProvider * provider = [namespace newDraftsProvider];
+    
+    [[[INAppDelegate current] mainViewController] setProvider: provider andTitle:@"Drafts"];
+}
+
+- (void)switchToTag:(INTag*)tag
+{
+    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+    INThreadProvider * provider = [namespace newThreadProvider];
+	[provider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
+	[provider setItemFilterPredicate: [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]];
+	[provider setItemRange: NSMakeRange(0, 20)];
+    
+    [[[INAppDelegate current] mainViewController] setProvider: provider andTitle:[tag name]];
+}
+
 #pragma mark Table View
 
-- (NSArray *)displayedTags
+- (NSArray *)tableSectionData
 {
-    NSMutableArray * tags = [NSMutableArray array];
-	[tags addObject: [INTag tagWithID: INTagIDInbox]];
-	[tags addObject: [INTag tagWithID: INTagIDFlagged]];
-	[tags addObject: [INTag tagWithID: INTagIDDraft]];
-	[tags addObject: [INTag tagWithID: INTagIDSent]];
-	[tags addObject: [INTag tagWithID: INTagIDArchive]];
-    
-    for (INTag * tag in [_tagProvider items]) {
-        if ([[tags valueForKey: @"ID"] containsObject: [tag ID]])
-            continue;
-        [tags addObject: tag];
+    if (!_tableSectionData) {
+        NSMutableArray * namespaces = [NSMutableArray array];
+        for (INNamespace * namespace in [[INAPIManager shared] namespaces])
+            [namespaces addObject: @{@"type": INSidebarItemTypeNamespace, @"name": [namespace emailAddress], @"namespace": namespace}];
+        
+        NSMutableArray * builtin = [NSMutableArray array];
+        for (NSString * ID in BUILT_IN_TAGS) {
+            INTag * tag = [INTag tagWithID: ID];
+            [builtin addObject: @{@"type": INSidebarItemTypeTag, @"name": [tag name], @"tag": tag}];
+        }
+        [builtin addObject: @{@"type": INSidebarItemTypeDrafts, @"name": @"Drafts"}];
+        
+        NSMutableArray * usertags = [NSMutableArray array];
+        for (INTag * tag in [_tagProvider items]) {
+            if ([BUILT_IN_TAGS containsObject: [tag ID]])
+                continue;
+            [usertags addObject: @{@"type": INSidebarItemTypeTag, @"name": [tag ID], @"tag": tag}];
+        }
+        
+        _tableSectionData =  @[@{@"label":@"ACCOUNTS", @"items": namespaces},
+                             @{@"label": @"", @"items": builtin},
+                             @{@"label": @"TAGS", @"items": usertags}];
     }
-    
-    return tags;
+
+    return _tableSectionData;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return [[self tableSectionData] count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
-    if (section == 0)
-        return [[[INAPIManager shared] namespaces] count];
-    else
-        return [[self displayedTags] count];
+    NSDictionary * section = [[self tableSectionData] objectAtIndex: sectionIndex];
+    return [section[@"items"] count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionIndex
 {
     return 36;
 }
 
-- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionIndex
 {
     UIView * v = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 300, 36)];
 	[v setBackgroundColor: [_tableView backgroundColor]];
@@ -113,34 +148,41 @@
 	[[v layer] setShadowOpacity: 0.2];
 	[[v layer] setShadowRadius: 4];
     UILabel * l = [[UILabel alloc] initWithFrame: CGRectMake(8, 12, 300, 24)];
-    [l setText: (section == 0) ? @"ACCOUNTS" : @"TAGS"];
-	[l setFont: [UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
+	[l setFont: [UIFont fontWithName:@"HelveticaNeue" size:14]];
 	[l setTextColor: [UIColor colorWithRed:112.0/255.0 green:114.0/255.0 blue:116.0/255.0 alpha:1]];
     [v addSubview: l];
+    
+    NSDictionary * section = [[self tableSectionData] objectAtIndex: sectionIndex];
+    [l setText: section[@"label"]];
+
     return v;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath section] == 0) {
-        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier: @"sidebarcell"];
-        INNamespace * namespace = [[[INAPIManager shared] namespaces] objectAtIndex: [indexPath row]];
-        [[cell textLabel] setText: [namespace emailAddress]];
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier: @"sidebarcell"];
+    NSDictionary * section = [[self tableSectionData] objectAtIndex: [indexPath section]];
+    NSDictionary * item = [section[@"items"] objectAtIndex: [indexPath row]];
+    
+    [[cell textLabel] setText: item[@"name"]];
+
+    if (item[@"type"] == INSidebarItemTypeNamespace) {
         [[cell detailTextLabel] setText: @""];
-        
-		if ([namespace isEqual: [[INAppDelegate current] currentNamespace]])
+		if ([item[@"namespace"] isEqual: [[INAppDelegate current] currentNamespace]])
 			[[cell imageView] setImage: [UIImage imageNamed: @"sidebar_account_on.png"]];
 		else
 			[[cell imageView] setImage: [UIImage imageNamed: @"sidebar_account_off.png"]];
 
-        return cell;
-
-    } else {
-        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier: @"sidebarcell"];
-        INTag * tag = [[self displayedTags] objectAtIndex: [indexPath row]];
+        
+    } else if (item[@"type"] == INSidebarItemTypeDrafts){
+        [[cell imageView] setImage: [UIImage imageNamed:@"sidebar_icon_draft.png"]];
+        
+        
+    } else if (item[@"type"] == INSidebarItemTypeTag){
+        INTag * tag = item[@"tag"];
         INNamespace * namespace = [[INAppDelegate current] currentNamespace];
         
-        BOOL hasNoUnread = ([[tag ID] isEqualToString: INTagIDDraft] || [[tag ID] isEqualToString: INTagIDArchive] || [[tag ID] isEqualToString: INTagIDSent]);
+        BOOL hasNoUnread = ([[tag ID] isEqualToString: INTagIDArchive] || [[tag ID] isEqualToString: INTagIDSent]);
         if (!hasNoUnread) {
             NSPredicate * predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
                 [NSComparisonPredicate predicateWithFormat: @"namespaceID = %@", namespace.ID],
@@ -164,40 +206,47 @@
 			UIGraphicsEndImageContext();
 			[[cell imageView] setImage: image];
 		}
-			
-        [[cell textLabel] setText: [tag name]];
-        return cell;
     }
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ([indexPath section] == 0) {
+    NSDictionary * section = [[self tableSectionData] objectAtIndex: [indexPath section]];
+    NSDictionary * item = [section[@"items"] objectAtIndex: [indexPath row]];
+
+    _tableViewSelectedItemName = item[@"name"];
+
+    if (item[@"type"] == INSidebarItemTypeNamespace) {
 		[tableView deselectRowAtIndexPath: indexPath animated: NO];
+		[[INAppDelegate current] setCurrentNamespace: item[@"namespace"]];
+        [self switchToTag: [INTag tagWithID: INTagIDInbox]];
+
+    } else if (item[@"type"] == INSidebarItemTypeTag){
+        [self switchToTag: item[@"tag"]];
 		
-		INNamespace * namespace = [[[INAPIManager shared] namespaces] objectAtIndex: [indexPath row]];
-		[[INAppDelegate current] setCurrentNamespace: namespace];
-		[[[INAppDelegate current] mainViewController] setTag: [INTag tagWithID: INTagIDInbox]];
-		
-	} else {
-        INTag * tag = [[self displayedTags] objectAtIndex: [indexPath row]];
-		[[[INAppDelegate current] mainViewController] setTag: tag];
-	}
-	
+    } else if (item[@"type"] == INSidebarItemTypeDrafts){
+        [self switchToDrafts];
+    }
+    
 	[[[INAppDelegate current] slidingViewController] closeSlider:YES completion:NULL];
 }
 
-- (void)providerDataChanged
+- (void)providerDataChanged:(INModelProvider*)provider
 {
-	INTag * tag = [[[INAppDelegate current] mainViewController] tag];
-	NSInteger index = [[[self displayedTags] valueForKey: @"ID"] indexOfObject: [tag ID]];
-
-	NSIndexPath * ip = nil;
-	if (index != NSNotFound)
-		ip = [NSIndexPath indexPathForRow:index inSection:1];
-
+    _tableSectionData = nil;
 	[_tableView reloadData];
-	[_tableView selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionNone];
+
+    for (int s = 0; s < [[self tableSectionData] count]; s++) {
+        NSArray * items = [[[self tableSectionData] objectAtIndex: s] objectForKey:@"items"];
+        for (int r = 0; r < [items count]; r ++) {
+            if ([[items objectAtIndex: r][@"name"] isEqualToString: _tableViewSelectedItemName]) {
+                [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow: r inSection: s] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                return;
+            }
+        }
+    }
 }
 
 @end

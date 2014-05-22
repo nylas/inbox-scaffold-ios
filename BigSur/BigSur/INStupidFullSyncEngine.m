@@ -21,7 +21,6 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAndSync) name:INAuthenticationChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAndSync) name:BigSurNamespaceChanged object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAndSync) name:INChangeQueueChangedNotification object:nil];
         [self checkAndSync];
     }
     return self;
@@ -55,6 +54,7 @@
     [self syncClass:[INTag class] callback: NULL];
     [self syncClass:[INContact class] callback: NULL];
     [self syncClass:[INThread class] callback: NULL];
+    [self syncClass:[INDraft class] callback: NULL];
 }
 
 - (void)syncClass:(Class)klass callback:(ErrorBlock)callback
@@ -72,7 +72,6 @@
     
 	_syncInProgress += 1;
     AFHTTPRequestOperation * op = [[INAPIManager shared] GET:path parameters:@{@"offset":@(page * REQUEST_PAGE_SIZE), @"limit":@(REQUEST_PAGE_SIZE)} success:^(AFHTTPRequestOperation *operation, id models) {
-		NSLog(@"Resposne received");
         if ([models count] >= REQUEST_PAGE_SIZE) {
             // we requested REQUEST_PAGE_SIZE, we got REQUEST_PAGE_SIZE. There must be more!
             [self syncClass: klass page: page + 1 callback: callback];

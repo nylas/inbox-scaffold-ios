@@ -50,7 +50,7 @@
 
 #pragma Provider Delegate
 
-- (void)providerDataAltered:(INModelProviderChangeSet *)changeSet
+- (void)provider:(INModelProvider*)provider dataAltered:(INModelProviderChangeSet *)changeSet
 {
 	[_tableView beginUpdates];
 	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeRemove] withRowAnimation:UITableViewRowAnimationTop];
@@ -59,12 +59,12 @@
 	[_tableView endUpdates];
 }
 
-- (void)providerDataFetchFailed:(NSError *)error
+- (void)provider:(INModelProvider*)provider dataFetchFailed:(NSError *)error
 {
 	[[[UIAlertView alloc] initWithTitle:@"Error!" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
 }
 
-- (void)providerDataChanged
+- (void)providerDataChanged:(INModelProvider*)provider
 {
 	[_tableView reloadData];
 }

@@ -20,6 +20,40 @@
 		return [NSString stringWithDate:date format:@"MMM d, YYYY"];
 }
 
++ (NSString *)stringByCleaningWhitespaceInString:(NSString*)snippet
+{
+	unichar * cleaned = calloc([snippet length], sizeof(unichar));
+	int cleanedLength = 0;
+    
+	NSCharacterSet * punctuationSet = [NSCharacterSet punctuationCharacterSet];
+	NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+	
+	BOOL hasSpace = YES;
+	for (int ii = 0; ii < [snippet length]; ii ++) {
+		unichar c = [snippet characterAtIndex: ii];
+		BOOL isWhitespace = [whitespaceSet characterIsMember: c];
+		
+		if (isWhitespace) {
+			// If this character is whitespace, only add it to our string if we don't
+			// already have a whitespace character.
+			if (!hasSpace)
+				cleaned[cleanedLength++] = ' ';
+			hasSpace = YES;
+		} else {
+			// If this character is punctuation and our trailing character is a whitespace
+			// character, place the punctutation where the whitespace is. Otherwise just
+			// append the character.
+			if (hasSpace && [punctuationSet characterIsMember: c])
+				cleanedLength --;
+			cleaned[cleanedLength++] = c;
+			hasSpace = NO;
+		}
+	}
+	return [[NSString alloc] initWithCharacters:cleaned length:cleanedLength];
+}
+
+
+
 @end
 
 @implementation NSURL (INConvenienceCategories)

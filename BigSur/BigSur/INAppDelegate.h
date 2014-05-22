@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JSSlidingViewController.h"
 #import "INSidebarViewController.h"
-#import "INViewController.h"
+#import "INMailViewController.h"
 
 static NSString * BigSurNamespaceChanged = @"BigSurNamespaceChanged";
 
@@ -19,7 +19,7 @@ static NSString * BigSurNamespaceChanged = @"BigSurNamespaceChanged";
 
 @property (strong, nonatomic) JSSlidingViewController * slidingViewController;
 @property (strong, nonatomic) INSidebarViewController * sidebarViewController;
-@property (strong, nonatomic) INViewController * mainViewController;
+@property (strong, nonatomic) INMailViewController * mainViewController;
 
 @property (strong, nonatomic) UIWindow * window;
 @property (strong, nonatomic) INNamespace * currentNamespace;

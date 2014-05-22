@@ -17,7 +17,7 @@
 @implementation INComposeViewController
 
 
-- (id)initWithDraft:(INMessage*)draft
+- (id)initWithDraft:(INDraft*)draft
 {
     self = [super init];
 	if (self) {
@@ -165,7 +165,8 @@
 
 - (IBAction)sendTapped:(id)sender
 {
-	[self saveDraft];
+	[self applyChangesToDraft];
+    [_draft save];
 	[_draft send];
 
     [self dismissViewControllerAnimated:YES completion:NULL];
@@ -179,13 +180,14 @@
     
     if (hasSubject || hasBody || hasAttachments) {
         [UIActionSheet showInView:self.view withTitle:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Draft" otherButtonTitles:@[@"Save Draft"] tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
-            if (buttonIndex == [actionSheet cancelButtonIndex])
+            if (buttonIndex == [actionSheet cancelButtonIndex]) {
                 return;
-            else if (buttonIndex == [actionSheet destructiveButtonIndex])
-                [self deleteDraft];
-            else
-                [self saveDraft];
-
+            } else if (buttonIndex == [actionSheet destructiveButtonIndex]) {
+                [_draft delete];
+            } else {
+                [self applyChangesToDraft];
+                [_draft save];
+            }
             [self dismissViewControllerAnimated:YES completion:NULL];
         }];
     } else {
@@ -198,23 +200,14 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (INDeleteDraftChange *)deleteDraft
-{
-    INDeleteDraftChange * delete = [INDeleteDraftChange operationForModel: _draft];
-    [[INAPIManager shared] queueChange: delete];
-    return delete;
-}
-
-- (void)saveDraft
+- (void)applyChangesToDraft
 {
     [_draft setCreatedAt: [NSDate date]];
     [_draft setNamespaceID: [[INAppDelegate current] currentNamespace].ID];
     [_draft setTo: [_toRecipientsView recipients]];
     [_draft setSubject: [[_subjectView subjectField] text]];
     [_draft setBody: [_bodyTextView text]];
-	[_draft save];
 }
-
 
 - (IBAction)addToRecipientTapped:(id)sender
 {

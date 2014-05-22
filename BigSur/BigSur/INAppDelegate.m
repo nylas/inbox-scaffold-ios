@@ -7,7 +7,7 @@
 //
 
 #import "INAppDelegate.h"
-#import "INViewController.h"
+#import "INMailViewController.h"
 #import "INThemeManager.h"
 #import "INAuthViewController.h"
 #import "INStupidFullSyncEngine.h"
@@ -50,8 +50,7 @@
     _sidebarViewController = [[INSidebarViewController alloc] init];
     
     // initialze content view controllers
-	_mainViewController = [[INViewController alloc] init];
-	[_mainViewController setTag: [INTag tagWithID: INTagIDInbox]];
+	_mainViewController = [[INMailViewController alloc] init];
 	
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: _mainViewController];
 	[[nav navigationBar] setTranslucent: NO];

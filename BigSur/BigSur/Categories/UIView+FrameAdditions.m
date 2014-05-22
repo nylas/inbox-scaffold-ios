@@ -117,4 +117,12 @@
     return CGPointMake([self frame].origin.x, [self frame].origin.y + [self frame].size.height);
 }
 
+- (id)viewAncestorOfClass:(Class)klass
+{
+    if ([[self superview] class] == klass)
+        return [self superview];
+    else
+        return [[self superview] viewAncestorOfClass: klass];
+}
+
 @end

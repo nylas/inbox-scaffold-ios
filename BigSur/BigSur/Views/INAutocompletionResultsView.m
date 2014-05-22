@@ -47,7 +47,7 @@
 
 #pragma mark Autocompletion
 
-- (void)providerDataChanged
+- (void)providerDataChanged:(INModelProvider*)provider
 {
 	[_tableView reloadData];
 	
@@ -62,12 +62,12 @@
 	[_tableView setScrollEnabled: (height < resultsHeight)];
 }
 
-- (void)providerDataFetchCompleted
+- (void)providerDataFetchCompleted:(INModelProvider*)provider
 {
 	
 }
 
-- (void)providerDataFetchFailed:(NSError *)error
+- (void)provider:(INModelProvider*)provider dataFetchFailed:(NSError *)error
 {
 	
 }

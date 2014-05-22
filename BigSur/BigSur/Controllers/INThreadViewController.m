@@ -29,10 +29,14 @@
     [super viewDidLoad];
 	
 	[_collectionView registerNib:[UINib nibWithNibName:@"INMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"message"];
-	
+
 	_messageProvider = [_thread newMessageProvider];
 	[_messageProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
 	[_messageProvider setDelegate: self];
+
+    _draftProvider = [_thread newDraftProvider];
+    [_draftProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
+	[_draftProvider setDelegate: self];
 
 	[[_threadHeaderView layer] setShadowOffset: CGSizeMake(0, 1)];
 	[[_threadHeaderView layer] setShadowOpacity: 0.1];
@@ -61,8 +65,8 @@
 	[_tagsView setFrameY: [_threadSubjectLabel bottomLeft].y + headerPadding / 2];
     [_threadHeaderView setFrameHeight: [_tagsView bottomLeft].y + headerPadding];
     
-	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
-	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 0, 0)];
+	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 10, 0)];
+	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 10, 0)];
 
     UIBarButtonItem * archive = nil;
     if ([_thread hasTagWithID: INTagIDArchive])
@@ -88,7 +92,7 @@
 
 - (IBAction)replyTapped:(id)sender
 {
-    INMessage * reply = [[INMessage alloc] initAsDraftIn:[_thread namespace] inReplyTo:_thread];
+    INDraft * reply = [[INDraft alloc] initInNamespace:[_thread namespace] inReplyTo:_thread];
 	INComposeViewController * composer = [[INComposeViewController alloc] initWithDraft: reply];
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composer];
 	[self presentViewController: nav animated:YES completion:NULL];
@@ -106,28 +110,52 @@
 
 - (IBAction)deleteDraftTapped:(id)sender
 {
-	[[_thread currentDraft] delete];
+    UICollectionViewCell * cell = [sender viewAncestorOfClass: [UICollectionViewCell class]];
+    NSIndexPath * ip = [_collectionView indexPathForCell: cell];
+    INDraft * draft = [_drafts objectAtIndex: [ip row]];
+
+    [draft delete];
 }
 
 - (IBAction)editDraftTapped:(id)sender
 {
-    // for now, assume there's only one draft. just find it
-    INComposeViewController * composer = [[INComposeViewController alloc] initWithDraft: [_thread currentDraft]];
+    UICollectionViewCell * cell = [sender viewAncestorOfClass: [UICollectionViewCell class]];
+    NSIndexPath * ip = [_collectionView indexPathForCell: cell];
+    INDraft * draft = [_drafts objectAtIndex: [ip row]];
+
+    INComposeViewController * composer = [[INComposeViewController alloc] initWithDraft: draft];
     UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composer];
     [self presentViewController:nav animated:YES completion:NULL];
 }
 
 #pragma Collection View Data Source
 
+- (INMessage *)messageForIndexPath:(NSIndexPath*)indexPath
+{
+    if ([indexPath section] == 0)
+        return [_drafts objectAtIndex: [indexPath row]];
+    else
+        return [_messages objectAtIndex: [indexPath row]];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 2;
+}
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return [[_messageProvider items] count];
+    if (section == 0)
+        return [_drafts count];
+    else
+        return [_messages count];
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	INMessageCollectionViewCell * cell = (INMessageCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"message" forIndexPath: indexPath];
-	INMessage * message = [[_messageProvider items] objectAtIndex: [indexPath row]];
+    INMessage * message = [self messageForIndexPath: indexPath];
+
 	[cell setMessage: message];
     [[cell draftDeleteButton] removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [[cell draftDeleteButton] addTarget:self action:@selector(deleteDraftTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -144,7 +172,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	INMessage * message = [[_messageProvider items] objectAtIndex: [indexPath row]];
+    INMessage * message = [self messageForIndexPath: indexPath];
 	float height = [INMessageCollectionViewCell cachedHeightForMessage: message];
 	if (height == 0)
 		height = 100;
@@ -152,29 +180,52 @@
 	return CGSizeMake(300, height);
 }
 
-#pragma Provider Delegate
-
-- (void)providerDataAltered:(INModelProviderChangeSet *)changeSet
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-	[_collectionView performBatchUpdates:^{
-		[_collectionView deleteItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeRemove]];
-		[_collectionView insertItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeAdd]];
-	} completion: NULL];
-	[_collectionView reloadItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeUpdate]];
+    if ([((section == 0) ? _drafts : _messages) count] == 0)
+        return UIEdgeInsetsMake(0, 0, 0, 0);
+    return UIEdgeInsetsMake(10, 10, 0, 10);
 }
 
-- (void)providerDataFetchFailed:(NSError *)error
+#pragma Provider Delegate
+
+- (void)provider:(INModelProvider*)provider dataAltered:(INModelProviderChangeSet *)changeSet
 {
-	if ([[_messageProvider items] count] == 0) {
+    int __block section = 0;
+    
+	[_collectionView performBatchUpdates:^{
+        if (provider == _draftProvider) {
+            _drafts = [provider items];
+            section = 0;
+        }
+        if (provider == _messageProvider) {
+            _messages = [provider items];
+            section = 1;
+        }
+        [_collectionView deleteItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeRemove assumingSection:section]];
+		[_collectionView insertItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeAdd assumingSection:section]];
+	} completion: NULL];
+	[_collectionView reloadItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeUpdate assumingSection:section]];
+}
+
+- (void)provider:(INModelProvider*)provider dataFetchFailed:(NSError *)error
+{
+	if ([_messages count] == 0) {
 		[_errorView setHidden: NO];
 		[_errorLabel setText: [NSString stringWithFormat:@"Sorry, messages could not be loaded. %@", [error localizedDescription]]];
 	}
 }
 
-- (void)providerDataChanged
+- (void)providerDataChanged:(INModelProvider*)provider
 {
+    if (provider == _draftProvider)
+        _drafts = [provider items];
+    if (provider == _messageProvider)
+        _messages = [provider items];
+
 	[[self collectionView] reloadData];
-	if ([[_messageProvider items] count] > 0)
+    
+	if (([_messages count] > 0) || ([_drafts count] > 0))
 		[_errorView setHidden: YES];
 }
 

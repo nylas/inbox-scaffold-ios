@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface INSidebarViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate>
+{
+    NSArray * _tableSectionData;
+    NSString * _tableViewSelectedItemName;
+}
 
 @property (nonatomic, weak) IBOutlet UITableView * tableView;
-
 @property (nonatomic, strong) INModelProvider * tagProvider;
 
 - (void)refresh;

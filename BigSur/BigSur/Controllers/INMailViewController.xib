@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="INViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="INMailViewController">
             <connections>
                 <outlet property="searchBar" destination="IGF-lN-4sx" id="6Qc-fV-IfT"/>
                 <outlet property="tableView" destination="bhV-ms-bbz" id="3qM-h3-bq6"/>

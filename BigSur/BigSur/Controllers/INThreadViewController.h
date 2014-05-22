@@ -18,8 +18,12 @@
 @property (weak, nonatomic) IBOutlet UIView *errorView;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 
-@property (nonatomic, strong) INThread * thread;
 @property (nonatomic, strong) INModelProvider * messageProvider;
+@property (nonatomic, strong) INModelProvider * draftProvider;
+
+@property (nonatomic, strong) INThread * thread;
+@property (nonatomic, strong) NSArray * messages;
+@property (nonatomic, strong) NSArray * drafts;
 
 - (id)initWithThread:(INThread*)thread;
 

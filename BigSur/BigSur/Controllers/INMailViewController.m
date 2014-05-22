@@ -6,24 +6,25 @@
 //  Copyright (c) 2014 Inbox. All rights reserved.
 //
 
-#import "INViewController.h"
+#import "INMailViewController.h"
 #import "INThreadViewController.h"
 #import "INContactsViewController.h"
 #import "INComposeViewController.h"
-#import "INThreadTableViewCell.h"
+#import "INMailItemTableViewCell.h"
 #import "UIView+FrameAdditions.h"
 #import "INThemeManager.h"
 #import "INAppDelegate.h"
 #import "INStupidFullSyncEngine.h"
+#import "INThreadTableViewCell.h"
+#import "INMessageTableViewCell.h"
 
-@implementation INViewController
+@implementation INMailViewController
 
 - (id)init
 {
 	self = [super init];
 	if (self) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareThreadProvider) name:BigSurNamespaceChanged object:nil];
-        [self prepareThreadProvider];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentNamespaceChanged:) name:BigSurNamespaceChanged object:nil];
 	}
 	return self;
 }
@@ -36,50 +37,62 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+    
     _titleView = [[INInboxNavTitleView alloc] initWithFrame: CGRectZero];
     [self.navigationItem setTitleView: _titleView];
 
 	_refreshControl = [[UIRefreshControl alloc] init];
 	[_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+
 	[_tableView addSubview: _refreshControl];
+    [_tableView registerClass:[INThreadTableViewCell class] forCellReuseIdentifier:@"INThreadTableViewCell"];
+    [_tableView registerClass:[INMessageTableViewCell class] forCellReuseIdentifier:@"INMessageTableViewCell"];
 	[_tableView setSeparatorInset: UIEdgeInsetsMake(0, 0, 0, 0)];
     
 	UIBarButtonItem * compose = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"icon_compose.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(composeTapped:)];
 	[self.navigationItem setRightBarButtonItem: compose];
 }
 
-- (void)prepareThreadProvider
+- (void)currentNamespaceChanged:(NSNotification*)notif
 {
     INNamespace * namespace = [[INAppDelegate current] currentNamespace];
-	
-	INThreadProvider * provider = [namespace newThreadProvider];
-	[provider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
-	[provider setDelegate:self];
-	[provider setItemFilterPredicate: _threadProvider.itemFilterPredicate];
-	[provider setItemRange: NSMakeRange(0, 20)];
-	[provider refresh];
-	
-	_threadProvider = provider;
+	[_provider setNamespaceID: [namespace ID]];
+    [_provider refresh];
 }
 
-- (void)setTag:(INTag*)tag
+- (void)setProvider:(INModelProvider*)provider
 {
-	_tag = tag;
-	
-	[_threadProvider setItemFilterPredicate: [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]];
-    [_threadProvider refresh];
-
-	[self setTitle: [tag name]];
-    [_titleView setTitle: [self title] andUnreadCount: NSNotFound];
+    _provider = provider;
+    [_provider setDelegate: self];
+    [_provider refresh];
+    
+    if ([provider isKindOfClass:[INThreadProvider class]]) {
+        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
+            [_titleView setTitle: [self title] andUnreadCount: count];
+        }];
+    }
 }
 
+- (void)setProvider:(INModelProvider *)provider andTitle:(NSString*)title
+{
+    [self setProvider: provider];
+
+    [self setTitle: title];
+    [_titleView setTitle: title andUnreadCount: 0];
+
+    if ([provider isKindOfClass:[INThreadProvider class]]) {
+        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
+            [_titleView setTitle: title andUnreadCount: count];
+        }];
+    }
+}
 
 #pragma Actions
 
 - (IBAction)composeTapped:(id)sender
 {
     INNamespace * namespace = [[INAppDelegate current] currentNamespace];
-    INMessage * draft = [[INMessage alloc] initAsDraftIn: namespace];
+    INDraft * draft = [[INDraft alloc] initInNamespace: namespace];
 	INComposeViewController * compose = [[INComposeViewController alloc] initWithDraft: draft];
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: compose];
 	[self presentViewController:nav animated:YES completion:NULL];
@@ -97,15 +110,18 @@
     }];
 }
 
-- (void)providerDataChanged
+- (void)providerDataChanged:(id)provider
 {
 	[_tableView reloadData];
-    [_threadProvider countUnreadItemsWithCallback:^(long count) {
-        [_titleView setTitle: [self title] andUnreadCount: count];
-    }];
+
+    if ([provider isKindOfClass:[INThreadProvider class]]) {
+        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
+            [_titleView setTitle: [self title] andUnreadCount: count];
+        }];
+    }
 }
 
-- (void)providerDataAltered:(INModelProviderChangeSet *)changeSet
+- (void)provider:(id)provider dataAltered:(INModelProviderChangeSet *)changeSet
 {
 	[_tableView beginUpdates];
 	[_tableView deleteRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeRemove] withRowAnimation:UITableViewRowAnimationLeft];
@@ -113,9 +129,11 @@
 	[_tableView endUpdates];
 	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeUpdate] withRowAnimation:UITableViewRowAnimationLeft];
 
-    [_threadProvider countUnreadItemsWithCallback:^(long count) {
-        [_titleView setTitle: [self title] andUnreadCount: count];
-    }];
+    if ([provider isKindOfClass:[INThreadProvider class]]) {
+        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
+            [_titleView setTitle: [self title] andUnreadCount: count];
+        }];
+    }
 }
 
 #pragma mark Search
@@ -128,7 +146,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
 	NSPredicate * predicate = [NSComparisonPredicate predicateWithFormat:@"subject CONTAINS[cd] %@", searchText];
-	[_threadProvider setItemFilterPredicate:predicate];
+	[_provider setItemFilterPredicate:predicate];
 }
 
 #pragma mark Table View Data Source
@@ -140,43 +158,48 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [[_threadProvider items] count];
+	return [[_provider items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	INThreadTableViewCell * cell = (INThreadTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];
-	if (!cell) cell = [[INThreadTableViewCell alloc] initWithReuseIdentifier:@"cell"];
+	INModelObject * model = [[_provider items] objectAtIndex:[indexPath row]];
 
-	INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
-	[cell setThread: thread];
-	return cell;
+    if ([model isKindOfClass: [INThread class]]) {
+        INThreadTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"INThreadTableViewCell" forIndexPath:indexPath];
+        [cell setThread: (INThread*)model];
+        return cell;
+        
+    } else if ([model isKindOfClass: [INMessage class]]) {
+        INMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"INMessageTableViewCell" forIndexPath:indexPath];
+        [cell setMessage: (INMessage*)model];
+        return cell;
+    }
+    
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
-    INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: thread];
-    [self.navigationController pushViewController:threadVC animated:YES];
+	INModelObject * model = [[_provider items] objectAtIndex:[indexPath row]];
+    
+    if ([model isKindOfClass: [INThread class]]) {
+        INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: (INThread*)model];
+        [self.navigationController pushViewController:threadVC animated:YES];
+    }
+
+    if ([model isKindOfClass: [INDraft class]]) {
+        INComposeViewController * composeVC = [[INComposeViewController alloc] initWithDraft: (INDraft*)model];
+        UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composeVC];
+        [self.navigationController presentViewController:nav animated:YES completion:NULL];
+    }
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    INThread * thread = [[_threadProvider items] objectAtIndex:[indexPath row]];
-	
-    if ([_tag isEqual: [INTag tagWithID: INTagIDDraft]]) {
-		[[thread currentDraft] delete];
-
-    } else {
-		[thread archive];
-    }
 }
 
 - (void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
@@ -191,10 +214,24 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([_tag isEqual: [INTag tagWithID: INTagIDDraft]])
-        return @"Delete Draft";
-    else
+    INModelObject * model = [[_provider items] objectAtIndex:[indexPath row]];
+    if ([model isKindOfClass: [INThread class]])
         return @"Archive";
+    
+    if ([model isKindOfClass: [INDraft class]])
+        return @"Delete Draft";
+    
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    INModelObject * model = [[_provider items] objectAtIndex:[indexPath row]];
+    if ([model isKindOfClass: [INThread class]])
+        [(INThread*)model archive];
+    
+    if ([model isKindOfClass: [INDraft class]])
+        [(INDraft*)model delete];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

@@ -15,5 +15,6 @@
 - (CGPoint)topRight;
 - (CGPoint)bottomRight;
 - (CGPoint)bottomLeft;
+- (id)viewAncestorOfClass:(Class)klass;
 
 @end

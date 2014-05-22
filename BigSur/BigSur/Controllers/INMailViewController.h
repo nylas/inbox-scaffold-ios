@@ -10,9 +10,9 @@
 #import "INRootViewController.h"
 #import "INInboxNavTitleView.h"
 
-@interface INViewController : INRootViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate, UISearchBarDelegate>
+
+@interface INMailViewController : INRootViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate, UISearchBarDelegate>
 {
-	INThreadProvider * _threadProvider;
 	float _scrollViewPrevOffset;
 }
 
@@ -21,6 +21,9 @@
 @property (strong, nonatomic) IBOutlet UIRefreshControl * refreshControl;
 @property (strong, nonatomic) IBOutlet INInboxNavTitleView * titleView;
 
-@property (strong, nonatomic) INTag * tag;
+@property (strong, nonatomic) INModelProvider * provider;
+
+- (void)setProvider:(INModelProvider*)provider;
+- (void)setProvider:(INModelProvider *)provider andTitle:(NSString*)title;
 
 @end
