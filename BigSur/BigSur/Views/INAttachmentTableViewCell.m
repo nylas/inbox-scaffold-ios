@@ -52,12 +52,12 @@
 {
 	[[self imageView] setImage: [attachment localPreview]];
 	
-	INUploadAttachmentChange * task = [attachment uploadTask];
+	INUploadAttachmentTask * task = [attachment uploadTask];
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	if (task) {
 		[[self progressView] setHidden: NO];
 		[[self progressView] setProgress: [task percentComplete]];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProgress:) name:INModelChangeUploadProgressNotification object:task];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProgress:) name:INTaskProgressNotification object:task];
 	} else {
 		[[self progressView] setHidden: YES];
 	}
@@ -65,7 +65,7 @@
 
 - (void)updateProgress:(NSNotification*)notif
 {
-	INUploadAttachmentChange * task = [notif object];
+	INUploadAttachmentTask * task = [notif object];
 	[[self progressView] setHidden: ([task percentComplete] >= 1.0)];
 	[[self progressView] setProgress: [task percentComplete]];
 }

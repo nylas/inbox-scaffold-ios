@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface INChangeQueueViewController : UITableViewController <UITableViewDataSource>
+@interface INTaskQueueViewController : UITableViewController <UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UISwitch *suspendedSwitch;
 
 @end

@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 Inbox. All rights reserved.
 //
 
-#import "INChangeQueueViewController.h"
+#import "INTaskQueueViewController.h"
 
-@implementation INChangeQueueViewController
+@implementation INTaskQueueViewController
 
 
 - (void)viewDidLoad
 {
-    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(update) name:INChangeQueueChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(update) name:INTaskQueueChangedNotification object:nil];
     [super viewDidLoad];
     [self update];
 }
@@ -31,33 +31,33 @@
 - (void)update
 {
     [self.tableView reloadData];
-    [_suspendedSwitch setOn: ![[INAPIManager shared] changeQueueSuspended]];
+    [_suspendedSwitch setOn: ![[INAPIManager shared] taskQueueSuspended]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[INAPIManager shared] changeQueue] count];
+    return [[[INAPIManager shared] taskQueue] count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    INModelChange * change = [[[INAPIManager shared] changeQueue] objectAtIndex: [indexPath row]];
+    INAPITask * change = [[[INAPIManager shared] taskQueue] objectAtIndex: [indexPath row]];
     CGRect bounding = [[change description] boundingRectWithSize:CGSizeMake(300, INT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} context:nil];
     return bounding.size.height + 10;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    INModelChange * change = [[[INAPIManager shared] changeQueue] objectAtIndex: [indexPath row]];
+    INAPITask * change = [[[INAPIManager shared] taskQueue] objectAtIndex: [indexPath row]];
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier: @"cell"];
     UITextView * text = (UITextView*)[cell viewWithTag: 1];
     [text setText: [change description]];
     return cell;
 }
 
-- (IBAction)changeQueueSuspendedToggled:(id)sender
+- (IBAction)taskQueueSuspendedToggled:(id)sender
 {
-    [[INAPIManager shared] setChangeQueueSuspended: ![sender isOn]];
+    [[INAPIManager shared] setTaskQueueSuspended: ![sender isOn]];
 }
 
 @end

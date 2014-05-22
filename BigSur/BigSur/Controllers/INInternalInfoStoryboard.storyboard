@@ -188,10 +188,10 @@
             </objects>
             <point key="canvasLocation" x="1791" y="-127"/>
         </scene>
-        <!--Change Queue View Controller - Change Queue-->
+        <!--Task Queue View Controller - Change Queue-->
         <scene sceneID="i1w-33-iny">
             <objects>
-                <tableViewController id="TKa-h7-pr7" customClass="INChangeQueueViewController" sceneMemberID="viewController">
+                <tableViewController id="TKa-h7-pr7" customClass="INTaskQueueViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="121" sectionHeaderHeight="22" sectionFooterHeight="22" id="9Jq-9o-Zr8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -236,7 +236,7 @@
                                 <rect key="frame" x="255" y="6" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="changeQueueSuspendedToggled:" destination="TKa-h7-pr7" eventType="valueChanged" id="ewM-cE-NtS"/>
+                                    <action selector="taskQueueSuspendedToggled:" destination="TKa-h7-pr7" eventType="valueChanged" id="0xM-Xv-qng"/>
                                 </connections>
                             </switch>
                         </barButtonItem>

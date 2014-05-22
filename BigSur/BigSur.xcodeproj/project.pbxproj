@@ -43,7 +43,7 @@
 		43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A051922F8370069116A /* INSidebarTableViewCell.m */; };
 		438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */; };
 		438BEA0C192AC16500E5C67D /* INInternalInfoStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */; };
-		438BEA0F192AC41100E5C67D /* INChangeQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA0E192AC41100E5C67D /* INChangeQueueViewController.m */; };
+		438BEA0F192AC41100E5C67D /* INTaskQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */; };
 		438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA12192AC4B300E5C67D /* INLogViewController.m */; };
 		438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA15192AC9A700E5C67D /* INDismissSegue.m */; };
 		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
@@ -129,8 +129,8 @@
 		438BEA031926C9F500E5C67D /* INStupidFullSyncEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INStupidFullSyncEngine.h; sourceTree = "<group>"; };
 		438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INStupidFullSyncEngine.m; sourceTree = "<group>"; };
 		438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = INInternalInfoStoryboard.storyboard; sourceTree = "<group>"; };
-		438BEA0D192AC41100E5C67D /* INChangeQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INChangeQueueViewController.h; sourceTree = "<group>"; };
-		438BEA0E192AC41100E5C67D /* INChangeQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INChangeQueueViewController.m; sourceTree = "<group>"; };
+		438BEA0D192AC41100E5C67D /* INTaskQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTaskQueueViewController.h; sourceTree = "<group>"; };
+		438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INTaskQueueViewController.m; sourceTree = "<group>"; };
 		438BEA11192AC4B300E5C67D /* INLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INLogViewController.h; sourceTree = "<group>"; };
 		438BEA12192AC4B300E5C67D /* INLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INLogViewController.m; sourceTree = "<group>"; };
 		438BEA14192AC9A700E5C67D /* INDismissSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDismissSegue.h; sourceTree = "<group>"; };
@@ -280,8 +280,8 @@
 				438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */,
 				438BEA14192AC9A700E5C67D /* INDismissSegue.h */,
 				438BEA15192AC9A700E5C67D /* INDismissSegue.m */,
-				438BEA0D192AC41100E5C67D /* INChangeQueueViewController.h */,
-				438BEA0E192AC41100E5C67D /* INChangeQueueViewController.m */,
+				438BEA0D192AC41100E5C67D /* INTaskQueueViewController.h */,
+				438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */,
 				438BEA11192AC4B300E5C67D /* INLogViewController.h */,
 				438BEA12192AC4B300E5C67D /* INLogViewController.m */,
 			);
@@ -675,7 +675,7 @@
 				43A14751192E86AF001AF02F /* INDraftsViewController.m in Sources */,
 				4342322F1923F84E002AE05D /* INTagsView.m in Sources */,
 				43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */,
-				438BEA0F192AC41100E5C67D /* INChangeQueueViewController.m in Sources */,
+				438BEA0F192AC41100E5C67D /* INTaskQueueViewController.m in Sources */,
 				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
 				438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */,
 				43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */,
