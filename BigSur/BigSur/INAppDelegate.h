@@ -26,4 +26,9 @@ static NSString * BigSurNamespaceChanged = @"BigSurNamespaceChanged";
 
 + (INAppDelegate*)current;
 
+#pragma mark Showing Content
+
+- (void)showDrafts;
+- (void)showThreadsWithTag:(INTag*)tag;
+
 @end

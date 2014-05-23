@@ -60,8 +60,12 @@
 	[_bodyTextView setFont: [UIFont systemFontOfSize: 15]];
 	[_bodyTextView setTextContainerInset: UIEdgeInsetsMake(5,4,5,4)];
 	[_bodyTextView setScrollEnabled: NO];
-    [_bodyTextView setText: [_draft body]];
     
+    if ([_draft body])
+        [_bodyTextView setText: [_draft body]];
+    else
+        [_bodyTextView setText: @"\n\nSent from Inbox"];
+
     [self arrangeContentViews];
     
 	// listen for taps on the scroll view beneath the text view to activate the text view
@@ -107,8 +111,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    if ([[_toRecipientsView recipients] count] > 0)
+    if ([[_toRecipientsView recipients] count] > 0) {
+        [_bodyTextView setSelectedRange: NSMakeRange(0, 0)];
         [_bodyTextView becomeFirstResponder];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

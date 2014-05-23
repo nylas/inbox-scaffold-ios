@@ -60,33 +60,6 @@
     [_provider refresh];
 }
 
-- (void)setProvider:(INModelProvider*)provider
-{
-    _provider = provider;
-    [_provider setDelegate: self];
-    [_provider refresh];
-    
-    if ([provider isKindOfClass:[INThreadProvider class]]) {
-        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
-            [_titleView setTitle: [self title] andUnreadCount: count];
-        }];
-    }
-}
-
-- (void)setProvider:(INModelProvider *)provider andTitle:(NSString*)title
-{
-    [self setProvider: provider];
-
-    [self setTitle: title];
-    [_titleView setTitle: title andUnreadCount: 0];
-
-    if ([provider isKindOfClass:[INThreadProvider class]]) {
-        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
-            [_titleView setTitle: title andUnreadCount: count];
-        }];
-    }
-}
-
 #pragma Actions
 
 - (IBAction)composeTapped:(id)sender
@@ -110,6 +83,34 @@
     }];
 }
 
+
+- (void)setProvider:(INModelProvider*)provider
+{
+    _provider = provider;
+    [_provider setDelegate: self];
+    [_provider refresh];
+    
+    if ([provider isKindOfClass:[INThreadProvider class]]) {
+        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
+            [_titleView setTitle: [self title] andUnreadCount: count];
+        }];
+    }
+}
+
+- (void)setProvider:(INModelProvider *)provider andTitle:(NSString*)title
+{
+    [self setProvider: provider];
+    
+    [self setTitle: title];
+    [_titleView setTitle: title andUnreadCount: 0];
+    
+    if ([provider isKindOfClass:[INThreadProvider class]]) {
+        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
+            [_titleView setTitle: title andUnreadCount: count];
+        }];
+    }
+}
+
 - (void)providerDataChanged:(id)provider
 {
 	[_tableView reloadData];
@@ -127,7 +128,7 @@
 	[_tableView deleteRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeRemove] withRowAnimation:UITableViewRowAnimationLeft];
 	[_tableView insertRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeAdd] withRowAnimation:UITableViewRowAnimationTop];
 	[_tableView endUpdates];
-	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeUpdate] withRowAnimation:UITableViewRowAnimationLeft];
+	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeUpdate] withRowAnimation:UITableViewRowAnimationNone];
 
     if ([provider isKindOfClass:[INThreadProvider class]]) {
         [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
@@ -236,11 +237,11 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-	if (scrollView.contentOffset.y > _scrollViewPrevOffset)
-		if ([_searchBar isFirstResponder])
-			[_searchBar resignFirstResponder];
-			
-	_scrollViewPrevOffset = scrollView.contentOffset.y;
+    BOOL isShowingAll = ([[_provider items] count] < [_provider itemRange].length);
+    BOOL isNearBottom = (scrollView.contentOffset.y > (scrollView.contentSize.height - scrollView.frame.size.height) - 100);
+
+    if (!isShowingAll && isNearBottom)
+        [_provider extendItemRange: 40];
 }
 
 @end

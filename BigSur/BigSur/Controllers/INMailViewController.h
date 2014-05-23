@@ -12,9 +12,6 @@
 
 
 @interface INMailViewController : INRootViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate, UISearchBarDelegate>
-{
-	float _scrollViewPrevOffset;
-}
 
 @property (weak, nonatomic) IBOutlet UITableView * tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -22,6 +19,12 @@
 @property (strong, nonatomic) IBOutlet INInboxNavTitleView * titleView;
 
 @property (strong, nonatomic) INModelProvider * provider;
+
+#pragma Actions
+
+- (IBAction)composeTapped:(id)sender;
+
+#pragma Refreshing & Thread Ppovider
 
 - (void)setProvider:(INModelProvider*)provider;
 - (void)setProvider:(INModelProvider *)provider andTitle:(NSString*)title;

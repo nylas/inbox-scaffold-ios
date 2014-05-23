@@ -7,7 +7,6 @@
 //
 
 #import "INMessageCollectionViewCell.h"
-#import "NSObject+AssociatedObjects.h"
 #import "UIButton+AFNetworking.h"
 #import "NSString+FormatConversion.h"
 #import "UIView+FrameAdditions.h"
@@ -19,11 +18,21 @@
 static NSString * messageCSS = nil;
 static NSString * messageJS = nil;
 
+static NSMutableDictionary * cachedMessageHeights;
+
+
 @implementation INMessageCollectionViewCell
 
 + (float)cachedHeightForMessage:(INMessage*)message
 {
-	return [[message associatedValueForKey: ASSOCIATED_CACHED_HEIGHT] floatValue];
+    return [[cachedMessageHeights objectForKey: [[message body] md5Value]] floatValue];
+}
+
++ (void)setCachedHeight:(float)height forMessage:(INMessage*)message
+{
+    if (!cachedMessageHeights)
+        cachedMessageHeights = [NSMutableDictionary dictionary];
+    [cachedMessageHeights setObject:@(height) forKey: [[message body] md5Value]];
 }
 
 - (void)awakeFromNib
@@ -33,8 +42,6 @@ static NSString * messageJS = nil;
 	[self setBackgroundColor: [UIColor whiteColor]];
 	[self setClipsToBounds: NO];
 
-	[self createWebView];
-    
 	[_fromField setTextColor: [[INThemeManager shared] tintColor]];
 	[_fromField setTextFont: [UIFont boldSystemFontOfSize: 15]];
 	[_fromField setRecipientsClickable: YES];
@@ -43,6 +50,8 @@ static NSString * messageJS = nil;
 	[_toField setTextFont: [UIFont systemFontOfSize: 14]];
 	[_toField setRecipientsClickable: NO];
 
+    [_bodyView setTintColor: [[INThemeManager shared] tintColor]];
+    
 	[[self layer] setCornerRadius: 2];
 	[[self layer] setShadowRadius: 1];
 	[[self layer] setShadowOffset: CGSizeMake(0, 1)];
@@ -64,18 +73,6 @@ static NSString * messageJS = nil;
 	[[_fromProfileButton layer] setMasksToBounds:YES];
 }
 
-- (void)createWebView
-{
-    [_bodyWebView removeFromSuperview];
-    [_bodyWebView setDelegate: nil];
-    
-    _bodyWebView = [[INMessageContentWebView alloc] initWithFrame: CGRectMake(_headerContainerView.frame.origin.x, 0, _headerContainerView.frame.size.width, 10)];
-    [_bodyWebView setDelegate: self];
-    [_bodyWebView setDataDetectorTypes: UIDataDetectorTypeAll];
-	[_bodyWebView setTintColor: [[INThemeManager shared] tintColor]];
-    [self addSubview: _bodyWebView];
-}
-
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
@@ -84,13 +81,13 @@ static NSString * messageJS = nil;
     
 	[[self layer] setShadowPath: CGPathCreateWithRect(self.contentView.bounds, NULL)];
     [_headerBorderLayer setFrame: CGRectMake(0, _headerContainerView.frame.size.height - 0.5, contentWidth, 0.5)];
-    [_bodyWebView setFrameY: [_headerContainerView bottomLeft].y + 10];
+    [_bodyView setFrameY: [_headerContainerView bottomLeft].y + 10];
 
     if ([_draftOptionsView isHidden]) {
-        [_bodyWebView setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyWebView.frame.origin.y)];
+        [_bodyView setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyView.frame.origin.y)];
     } else {
-        [_bodyWebView setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyWebView.frame.origin.y - (_draftOptionsView.frame.size.height + 5))];
-        [_draftOptionsView setFrameY: [_bodyWebView bottomLeft].y + 5];
+        [_bodyView setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyView.frame.origin.y - (_draftOptionsView.frame.size.height + 5))];
+        [_draftOptionsView setFrameY: [_bodyView bottomLeft].y + 5];
     }
 }
 
@@ -99,55 +96,37 @@ static NSString * messageJS = nil;
     BOOL newMessage = (message != _message);
     
 	_message = message;
-	
-	NSString * email = [[_message.from firstObject] objectForKey: @"email"];
-	NSURL * profileURL = [NSURL URLForGravatar: email];
     
-    if (![_fromProfileButtonCurrentURL isEqual: profileURL]) {
-        [_fromProfileButton setImageForState:UIControlStateNormal withURL:profileURL placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
-        _fromProfileButtonCurrentURL = profileURL;
+    if (newMessage) {
+        NSString * email = [[_message.from firstObject] objectForKey: @"email"];
+        [_fromProfileButton setImageForState:UIControlStateNormal withURL:[NSURL URLForGravatar: email] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
+        [_bodyView clearContent];
     }
     
 	[_fromField setPrefixString: @"" andRecipients: [message from] includeMe: YES];
 	[_toField setPrefixString:@"To: " andRecipients: [message to] includeMe: YES];
 	[_dateField setText: [NSString stringForMessageDate: [_message date]]];
-    
-    if (newMessage)
-        [self createWebView];
 
-    [_bodyWebView setMessageHTML: [_message body]];
-    [_bodyWebView setDelegate: self];
-
+    [_bodyView setContent: [message body]];
     [_draftOptionsView setHidden: ![_message isKindOfClass: [INDraft class]]];
 }
 
 
-- (void)webViewDidStartLoad:(UIWebView *)webView
+- (void)messageContentViewSizeDetermined:(CGSize)size
 {
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-	if ([[self class] cachedHeightForMessage: _message])
-		return;
+    float height = 0;
     
-    float headerHeight = 82;
+    height += 82;
+    height += size.height;
     if ([_message isKindOfClass: [INDraft class]])
-        headerHeight += 44;
-
-	[_message associateValue:@([_bodyWebView bodyHeight] + headerHeight) withKey: ASSOCIATED_CACHED_HEIGHT];
+        height += 44;
     
-	if (_messageHeightDeterminedBlock)
-		_messageHeightDeterminedBlock(self);
-}
+	if (![[self class] cachedHeightForMessage: _message]) {
+        [[self class] setCachedHeight:height forMessage:_message];
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-	if ((navigationType == UIWebViewNavigationTypeOther) || (navigationType == UIWebViewNavigationTypeReload))
-		return YES;
-    
-	[[UIApplication sharedApplication] openURL: [request URL]];
-	return NO;
+        if (_messageHeightDeterminedBlock)
+            _messageHeightDeterminedBlock(self);
+    }
 }
 
 @end

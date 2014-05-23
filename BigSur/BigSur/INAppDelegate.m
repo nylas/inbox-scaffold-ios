@@ -64,6 +64,8 @@
 	self.window.rootViewController = _slidingViewController;
 	[self.window makeKeyAndVisible];
 
+    [self showThreadsWithTag: [INTag tagWithID: INTagIDInbox]];
+
     // monitor inbox for notifications that we need to authenticate or that
     // our access to namespaces (email accounts) has changed.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxCheckAuthentication:) name:INAuthenticationChangedNotification object:nil];
@@ -71,12 +73,6 @@
     [self inboxCheckAuthentication: nil];
     
 	return YES;
-}
-
-- (void)setCurrentNamespace:(INNamespace *)namespace
-{
-	_currentNamespace = namespace;
-	[[NSNotificationCenter defaultCenter] postNotificationName:BigSurNamespaceChanged object:nil];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -117,6 +113,8 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 }
 
+#pragma mark Updates from Inbox Framework
+
 - (void)inboxCheckAuthentication:(NSNotification*)notification
 {
     if ([[INAPIManager shared] isSignedIn]) {
@@ -133,5 +131,37 @@
         [self setCurrentNamespace: [[[INAPIManager shared] namespaces] firstObject]];
     }
 }
+
+
+#pragma mark Showing Content
+
+- (void)setCurrentNamespace:(INNamespace *)namespace
+{
+	_currentNamespace = namespace;
+	[[NSNotificationCenter defaultCenter] postNotificationName:BigSurNamespaceChanged object:nil];
+    [self showThreadsWithTag: [INTag tagWithID: INTagIDInbox]];
+}
+
+- (void)showDrafts
+{
+    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+    INModelProvider * provider = [namespace newDraftsProvider];
+    
+    [_mainViewController setProvider: provider andTitle:@"Drafts"];
+    [_sidebarViewController selectItemWithName: @"Drafts"];
+}
+
+- (void)showThreadsWithTag:(INTag*)tag
+{
+    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+    INThreadProvider * provider = [namespace newThreadProvider];
+	[provider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
+	[provider setItemFilterPredicate: [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]];
+	[provider setItemRange: NSMakeRange(0, 20)];
+    
+    [_mainViewController setProvider: provider andTitle:[tag name]];
+    [_sidebarViewController selectItemWithName: [tag name]];
+}
+
 
 @end

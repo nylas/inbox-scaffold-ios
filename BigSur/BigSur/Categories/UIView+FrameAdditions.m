@@ -119,7 +119,7 @@
 
 - (id)viewAncestorOfClass:(Class)klass
 {
-    if ([[self superview] class] == klass)
+    if ([[self superview] isKindOfClass: klass])
         return [self superview];
     else
         return [[self superview] viewAncestorOfClass: klass];

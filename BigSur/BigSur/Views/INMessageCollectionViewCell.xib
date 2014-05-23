@@ -69,11 +69,20 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.96507290040000004" blue="0.90048471809999997" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <view contentMode="scaleToFill" id="Om9-Fh-cnn" customClass="INMessageContentView">
+                        <rect key="frame" x="8" y="73" width="284" height="36"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="delegate" destination="cAG-3b-0RX" id="stn-Oi-QuG"/>
+                        </connections>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <size key="customSize" width="300" height="155"/>
             <connections>
+                <outlet property="bodyView" destination="Om9-Fh-cnn" id="GpU-aO-Wf3"/>
                 <outlet property="dateField" destination="rqM-0m-3ts" id="QmD-Gg-K5h"/>
                 <outlet property="draftDeleteButton" destination="48T-gk-1RY" id="We1-G0-Fdb"/>
                 <outlet property="draftEditButton" destination="9Vx-Nl-Ncg" id="0Xa-Zd-Yj1"/>

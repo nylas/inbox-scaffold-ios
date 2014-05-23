@@ -203,12 +203,11 @@
         [_collectionView deleteItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeRemove assumingSection:section]];
 		[_collectionView insertItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeAdd assumingSection:section]];
 	} completion: NULL];
-//	[_collectionView reloadItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeUpdate assumingSection:section]];
 }
 
 - (void)provider:(INModelProvider*)provider dataFetchFailed:(NSError *)error
 {
-	if ([_messages count] == 0) {
+	if (([_messages count] == 0) && ([_drafts count] == 0)) {
 		[_errorView setHidden: NO];
 		[_errorLabel setText: [NSString stringWithFormat:@"Sorry, messages could not be loaded. %@", [error localizedDescription]]];
 	}

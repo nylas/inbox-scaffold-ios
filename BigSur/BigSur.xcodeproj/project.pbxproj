@@ -36,6 +36,7 @@
 		4342322F1923F84E002AE05D /* INTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4342322E1923F84E002AE05D /* INTagsView.m */; };
 		435764AD192530BB00E6B340 /* INAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435764AB192530BB00E6B340 /* INAuthViewController.m */; };
 		435764AE192530BB00E6B340 /* INAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 435764AC192530BB00E6B340 /* INAuthViewController.xib */; };
+		435BB0CF192FF51F00BEE4AE /* INMessageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */; };
 		438159FB1922E6D70069116A /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159F81922E6D70069116A /* JSSlidingViewController.m */; };
 		438159FF1922E7580069116A /* INSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159FD1922E7580069116A /* INSidebarViewController.m */; };
 		43815A001922E7580069116A /* INSidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 438159FE1922E7580069116A /* INSidebarViewController.xib */; };
@@ -47,8 +48,6 @@
 		438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA12192AC4B300E5C67D /* INLogViewController.m */; };
 		438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA15192AC9A700E5C67D /* INDismissSegue.m */; };
 		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
-		43A14751192E86AF001AF02F /* INDraftsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1474F192E86AF001AF02F /* INDraftsViewController.m */; };
-		43A14752192E86AF001AF02F /* INDraftsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43A14750192E86AF001AF02F /* INDraftsViewController.xib */; };
 		43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */; };
 		43A1475E192E8A29001AF02F /* INThreadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */; };
 		43A9684B191C087400F24844 /* Inbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A9684A191C087400F24844 /* Inbox.framework */; };
@@ -82,7 +81,6 @@
 		43F22AD119071C5200A032D1 /* INMailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43F22ACC19071C5200A032D1 /* INMailViewController.xib */; };
 		43F788DA1919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F788D91919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m */; };
 		43F788E01919991F00B6E0E5 /* INDeleteDetectingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F788DF1919991F00B6E0E5 /* INDeleteDetectingTextField.m */; };
-		43FBF37F191AE3C100C05AFC /* INMessageContentWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43FBF37E191AE3C100C05AFC /* INMessageContentWebView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +115,8 @@
 		435764AA192530BB00E6B340 /* INAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAuthViewController.h; sourceTree = "<group>"; };
 		435764AB192530BB00E6B340 /* INAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAuthViewController.m; sourceTree = "<group>"; };
 		435764AC192530BB00E6B340 /* INAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INAuthViewController.xib; sourceTree = "<group>"; };
+		435BB0CD192FF51F00BEE4AE /* INMessageContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageContentView.h; sourceTree = "<group>"; };
+		435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageContentView.m; sourceTree = "<group>"; };
 		438159F71922E6D70069116A /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
 		438159F81922E6D70069116A /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
 		438159FC1922E7580069116A /* INSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarViewController.h; sourceTree = "<group>"; };
@@ -137,9 +137,6 @@
 		438BEA15192AC9A700E5C67D /* INDismissSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDismissSegue.m; sourceTree = "<group>"; };
 		439283BF191450AA00926291 /* INRecipientsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INRecipientsLabel.h; path = BigSur/Views/INRecipientsLabel.h; sourceTree = SOURCE_ROOT; };
 		439283C0191450AA00926291 /* INRecipientsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INRecipientsLabel.m; path = BigSur/Views/INRecipientsLabel.m; sourceTree = SOURCE_ROOT; };
-		43A1474E192E86AF001AF02F /* INDraftsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDraftsViewController.h; sourceTree = "<group>"; };
-		43A1474F192E86AF001AF02F /* INDraftsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDraftsViewController.m; sourceTree = "<group>"; };
-		43A14750192E86AF001AF02F /* INDraftsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INDraftsViewController.xib; sourceTree = "<group>"; };
 		43A14759192E8A1A001AF02F /* INMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageTableViewCell.h; sourceTree = "<group>"; };
 		43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageTableViewCell.m; sourceTree = "<group>"; };
 		43A1475C192E8A29001AF02F /* INThreadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadTableViewCell.h; sourceTree = "<group>"; };
@@ -198,8 +195,6 @@
 		43F788D91919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INComposeRecipientCollectionViewCell.m; sourceTree = "<group>"; };
 		43F788DE1919991F00B6E0E5 /* INDeleteDetectingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDeleteDetectingTextField.h; sourceTree = "<group>"; };
 		43F788DF1919991F00B6E0E5 /* INDeleteDetectingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDeleteDetectingTextField.m; sourceTree = "<group>"; };
-		43FBF37D191AE3C100C05AFC /* INMessageContentWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INMessageContentWebView.h; path = BigSur/Views/INMessageContentWebView.h; sourceTree = SOURCE_ROOT; };
-		43FBF37E191AE3C100C05AFC /* INMessageContentWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INMessageContentWebView.m; path = BigSur/Views/INMessageContentWebView.m; sourceTree = SOURCE_ROOT; };
 		43FF1216191AF18F0043E2E6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		43FF1218191AF19C0043E2E6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		43FF121A191AF1A00043E2E6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -257,6 +252,31 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		435BB0CC192FE4C000BEE4AE /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				43F788DE1919991F00B6E0E5 /* INDeleteDetectingTextField.h */,
+				43F788DF1919991F00B6E0E5 /* INDeleteDetectingTextField.m */,
+				43AE9BC319185ACF005D70C0 /* INComposeRowView.h */,
+				43AE9BC419185ACF005D70C0 /* INComposeRowView.m */,
+				43AE9BBD191841DE005D70C0 /* INComposeRecipientRowView.h */,
+				43AE9BBE191841DE005D70C0 /* INComposeRecipientRowView.m */,
+				4319792F191D938300523C8B /* INAttachmentTableViewCell.h */,
+				43197930191D938300523C8B /* INAttachmentTableViewCell.m */,
+				4319792C191D8A0100523C8B /* INComposeAttachmentsRowView.h */,
+				4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */,
+				43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */,
+				43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */,
+				43F788D81919902100B6E0E5 /* INComposeRecipientCollectionViewCell.h */,
+				43F788D91919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m */,
+				43AE9BC619185C46005D70C0 /* INComposeSubjectRowView.h */,
+				43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */,
+				43AE9BC019185999005D70C0 /* INLeftJustifiedFlowLayout.h */,
+				43AE9BC119185999005D70C0 /* INLeftJustifiedFlowLayout.m */,
+			);
+			name = Composer;
+			sourceTree = "<group>";
+		};
 		438159F31922E6D70069116A /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,8 +319,6 @@
 				43815A051922F8370069116A /* INSidebarTableViewCell.m */,
 				43AE9BC919186DD1005D70C0 /* INPlaceholderTextView.h */,
 				43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */,
-				43F788DE1919991F00B6E0E5 /* INDeleteDetectingTextField.h */,
-				43F788DF1919991F00B6E0E5 /* INDeleteDetectingTextField.m */,
 				43AAF54C1912E985000FA5AF /* INMailItemTableViewCell.h */,
 				43AAF54D1912E985000FA5AF /* INMailItemTableViewCell.m */,
 				43A14759192E8A1A001AF02F /* INMessageTableViewCell.h */,
@@ -309,27 +327,12 @@
 				43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */,
 				439283BF191450AA00926291 /* INRecipientsLabel.h */,
 				439283C0191450AA00926291 /* INRecipientsLabel.m */,
-				43AE9BC319185ACF005D70C0 /* INComposeRowView.h */,
-				43AE9BC419185ACF005D70C0 /* INComposeRowView.m */,
-				43AE9BBD191841DE005D70C0 /* INComposeRecipientRowView.h */,
-				43AE9BBE191841DE005D70C0 /* INComposeRecipientRowView.m */,
-				4319792F191D938300523C8B /* INAttachmentTableViewCell.h */,
-				43197930191D938300523C8B /* INAttachmentTableViewCell.m */,
-				4319792C191D8A0100523C8B /* INComposeAttachmentsRowView.h */,
-				4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */,
-				43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */,
-				43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */,
-				43F788D81919902100B6E0E5 /* INComposeRecipientCollectionViewCell.h */,
-				43F788D91919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m */,
-				43AE9BC619185C46005D70C0 /* INComposeSubjectRowView.h */,
-				43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */,
-				43AE9BC019185999005D70C0 /* INLeftJustifiedFlowLayout.h */,
-				43AE9BC119185999005D70C0 /* INLeftJustifiedFlowLayout.m */,
 				43AAF5471912D607000FA5AF /* INMessageCollectionViewCell.h */,
 				43AAF5481912D607000FA5AF /* INMessageCollectionViewCell.m */,
 				43AAF54A1912D614000FA5AF /* INMessageCollectionViewCell.xib */,
-				43FBF37D191AE3C100C05AFC /* INMessageContentWebView.h */,
-				43FBF37E191AE3C100C05AFC /* INMessageContentWebView.m */,
+				435BB0CD192FF51F00BEE4AE /* INMessageContentView.h */,
+				435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */,
+				435BB0CC192FE4C000BEE4AE /* Composer */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -430,9 +433,6 @@
 				43F22ACA19071C5200A032D1 /* INMailViewController.h */,
 				43F22ACB19071C5200A032D1 /* INMailViewController.m */,
 				43F22ACC19071C5200A032D1 /* INMailViewController.xib */,
-				43A1474E192E86AF001AF02F /* INDraftsViewController.h */,
-				43A1474F192E86AF001AF02F /* INDraftsViewController.m */,
-				43A14750192E86AF001AF02F /* INDraftsViewController.xib */,
 				435764AA192530BB00E6B340 /* INAuthViewController.h */,
 				435764AB192530BB00E6B340 /* INAuthViewController.m */,
 				435764AC192530BB00E6B340 /* INAuthViewController.xib */,
@@ -545,7 +545,6 @@
 			files = (
 				438BEA0C192AC16500E5C67D /* INInternalInfoStoryboard.storyboard in Resources */,
 				43AAF54B1912D614000FA5AF /* INMessageCollectionViewCell.xib in Resources */,
-				43A14752192E86AF001AF02F /* INDraftsViewController.xib in Resources */,
 				43F22A8E19071A1100A032D1 /* Images.xcassets in Resources */,
 				43AE9B761918045C005D70C0 /* INContactsViewController.xib in Resources */,
 				435764AE192530BB00E6B340 /* INAuthViewController.xib in Resources */,
@@ -654,7 +653,6 @@
 				43F788E01919991F00B6E0E5 /* INDeleteDetectingTextField.m in Sources */,
 				431A54A0192C0C5A00AE0719 /* UIImage+BlurEffects.m in Sources */,
 				433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */,
-				43FBF37F191AE3C100C05AFC /* INMessageContentWebView.m in Sources */,
 				43AE9BC519185ACF005D70C0 /* INComposeRowView.m in Sources */,
 				43AE9B7A191833AF005D70C0 /* INComposeViewController.m in Sources */,
 				43F788DA1919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m in Sources */,
@@ -672,10 +670,10 @@
 				43AE9BCB19186DD1005D70C0 /* INPlaceholderTextView.m in Sources */,
 				43AAF5511912EB72000FA5AF /* UIView+FrameAdditions.m in Sources */,
 				43F22A8619071A1100A032D1 /* INAppDelegate.m in Sources */,
-				43A14751192E86AF001AF02F /* INDraftsViewController.m in Sources */,
 				4342322F1923F84E002AE05D /* INTagsView.m in Sources */,
 				43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */,
 				438BEA0F192AC41100E5C67D /* INTaskQueueViewController.m in Sources */,
+				435BB0CF192FF51F00BEE4AE /* INMessageContentView.m in Sources */,
 				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
 				438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */,
 				43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */,

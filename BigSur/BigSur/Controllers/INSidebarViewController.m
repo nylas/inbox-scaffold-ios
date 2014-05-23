@@ -41,11 +41,6 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
 	[_tableView setAllowsSelection: YES];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
 - (void)refresh
 {
     if (![[_tagProvider namespaceID] isEqualToString: [[[INAppDelegate current] currentNamespace] ID]]) {
@@ -71,28 +66,22 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
     }];
 }
 
-#pragma mark Showing Content
-
-- (void)switchToDrafts
-{
-    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
-    INModelProvider * provider = [namespace newDraftsProvider];
-    
-    [[[INAppDelegate current] mainViewController] setProvider: provider andTitle:@"Drafts"];
-}
-
-- (void)switchToTag:(INTag*)tag
-{
-    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
-    INThreadProvider * provider = [namespace newThreadProvider];
-	[provider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
-	[provider setItemFilterPredicate: [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]];
-	[provider setItemRange: NSMakeRange(0, 20)];
-    
-    [[[INAppDelegate current] mainViewController] setProvider: provider andTitle:[tag name]];
-}
-
 #pragma mark Table View
+
+- (void)selectItemWithName:(NSString*)name
+{
+    _tableViewSelectedItemName = name;
+    
+    for (int s = 0; s < [[self tableSectionData] count]; s++) {
+        NSArray * items = [[[self tableSectionData] objectAtIndex: s] objectForKey:@"items"];
+        for (int r = 0; r < [items count]; r ++) {
+            if ([[items objectAtIndex: r][@"name"] isEqualToString: _tableViewSelectedItemName]) {
+                [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow: r inSection: s] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                return;
+            }
+        }
+    }
+}
 
 - (NSArray *)tableSectionData
 {
@@ -221,32 +210,25 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
     if (item[@"type"] == INSidebarItemTypeNamespace) {
 		[tableView deselectRowAtIndexPath: indexPath animated: NO];
 		[[INAppDelegate current] setCurrentNamespace: item[@"namespace"]];
-        [self switchToTag: [INTag tagWithID: INTagIDInbox]];
 
     } else if (item[@"type"] == INSidebarItemTypeTag){
-        [self switchToTag: item[@"tag"]];
+        [[INAppDelegate current] showThreadsWithTag: item[@"tag"]];
 		
     } else if (item[@"type"] == INSidebarItemTypeDrafts){
-        [self switchToDrafts];
+        [[INAppDelegate current] showDrafts];
     }
     
 	[[[INAppDelegate current] slidingViewController] closeSlider:YES completion:NULL];
 }
+
+#pragma mark Tag Provider
 
 - (void)providerDataChanged:(INModelProvider*)provider
 {
     _tableSectionData = nil;
 	[_tableView reloadData];
 
-    for (int s = 0; s < [[self tableSectionData] count]; s++) {
-        NSArray * items = [[[self tableSectionData] objectAtIndex: s] objectForKey:@"items"];
-        for (int r = 0; r < [items count]; r ++) {
-            if ([[items objectAtIndex: r][@"name"] isEqualToString: _tableViewSelectedItemName]) {
-                [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow: r inSection: s] animated:NO scrollPosition:UITableViewScrollPositionNone];
-                return;
-            }
-        }
-    }
+    [self selectItemWithName: _tableViewSelectedItemName];
 }
 
 @end
