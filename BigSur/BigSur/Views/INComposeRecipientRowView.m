@@ -116,14 +116,14 @@
 
 - (void)selectRecipient:(id)recipient
 {
-	int index = [_recipients indexOfObjectIdenticalTo: recipient];
+	NSUInteger index = [_recipients indexOfObjectIdenticalTo: recipient];
 	[_recipientsCollectionView deselectItemAtIndexPath:[[_recipientsCollectionView indexPathsForSelectedItems] firstObject] animated:NO];
 	[_recipientsCollectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
 }
 
 - (void)deleteRecipient:(id)recipient
 {
-	int index = [_recipients indexOfObjectIdenticalTo: recipient];
+	NSUInteger index = [_recipients indexOfObjectIdenticalTo: recipient];
 	[_recipients removeObjectAtIndex: index];
 	[_recipientsCollectionView deleteItemsAtIndexPaths: @[[NSIndexPath indexPathForItem:index inSection:0]]];
 	[self propogateConstraintChanges];
@@ -204,7 +204,7 @@
 		NSMutableArray * newTokens = [[newString componentsSeparatedByString: @","] mutableCopy];
 		[_textField setText: @""];
 		
-        for (int ii = [newTokens count] - 1; ii >= 0; ii --) {
+        for (int ii = (int)[newTokens count] - 1; ii >= 0; ii --) {
             if ([self addRecipientFromText: [newTokens objectAtIndex: ii]])
                 [newTokens removeObjectAtIndex: ii];
         }

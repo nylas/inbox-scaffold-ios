@@ -88,7 +88,7 @@
     [_unreadDot setHidden: (![_thread hasTagWithID: INTagIDUnread])];
     
 	if ([[_thread messageIDs] count] > 1)
-		[_threadCountLabel setText: [NSString stringWithFormat:@"%d", [[_thread messageIDs] count]]];
+		[_threadCountLabel setText: [NSString stringWithFormat:@"%d", (int)[[_thread messageIDs] count]]];
 	else
 		[_threadCountLabel setText: @""];
 }

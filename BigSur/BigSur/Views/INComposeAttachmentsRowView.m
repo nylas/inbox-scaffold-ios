@@ -99,7 +99,7 @@
     INAttachment * attachment = [attachments objectAtIndex: [indexPath row]];
     [cell setAttachment: attachment];
     [cell setDeleteCallback: ^{
-        int index = [attachments indexOfObject: attachment];
+        NSUInteger index = [attachments indexOfObject: attachment];
 		[[self delegate] attachmentsView:self confirmRemoveAttachmentAtIndex: index];
     }];
     

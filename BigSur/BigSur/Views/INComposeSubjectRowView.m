@@ -54,8 +54,8 @@
     if (([newText rangeOfString: @"\n"].location != NSNotFound) || ([newText rangeOfString: @"\t"].location != NSNotFound)) {
 
         NSArray * siblings = [[self superview] subviews];
-        int ii = [siblings indexOfObject: self];
-        for (int x = ii; x < [siblings count]; x++){
+        NSUInteger ii = [siblings indexOfObject: self];
+        for (NSUInteger x = ii; x < [siblings count]; x++){
             UIView * v = [siblings objectAtIndex: x];
             if ([v canBecomeFirstResponder]) {
                 [v becomeFirstResponder];
