@@ -32,9 +32,9 @@ static NSString * messageJS = nil;
 	
 	[self setBackgroundColor: [UIColor whiteColor]];
 	[self setClipsToBounds: NO];
-	
-	[_bodyWebView setTintColor: [[INThemeManager shared] tintColor]];
 
+	[self createWebView];
+    
 	[_fromField setTextColor: [[INThemeManager shared] tintColor]];
 	[_fromField setTextFont: [UIFont boldSystemFontOfSize: 15]];
 	[_fromField setRecipientsClickable: YES];
@@ -64,32 +64,57 @@ static NSString * messageJS = nil;
 	[[_fromProfileButton layer] setMasksToBounds:YES];
 }
 
+- (void)createWebView
+{
+    [_bodyWebView removeFromSuperview];
+    [_bodyWebView setDelegate: nil];
+    
+    _bodyWebView = [[INMessageContentWebView alloc] initWithFrame: CGRectMake(_headerContainerView.frame.origin.x, 0, _headerContainerView.frame.size.width, 10)];
+    [_bodyWebView setDelegate: self];
+    [_bodyWebView setDataDetectorTypes: UIDataDetectorTypeAll];
+	[_bodyWebView setTintColor: [[INThemeManager shared] tintColor]];
+    [self addSubview: _bodyWebView];
+}
+
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
 	
-	[[self layer] setShadowPath: CGPathCreateWithRect(self.contentView.bounds, NULL)];
-    [_headerBorderLayer setFrame: CGRectMake(0, _headerContainerView.frame.size.height - 0.5, _headerContainerView.frame.size.width, 0.5)];
-    [_bodyWebView setFrameY: [_headerContainerView bottomLeft].y + 10];
+    float contentWidth = _headerContainerView.frame.size.width;
     
+	[[self layer] setShadowPath: CGPathCreateWithRect(self.contentView.bounds, NULL)];
+    [_headerBorderLayer setFrame: CGRectMake(0, _headerContainerView.frame.size.height - 0.5, contentWidth, 0.5)];
+    [_bodyWebView setFrameY: [_headerContainerView bottomLeft].y + 10];
+
     if ([_draftOptionsView isHidden]) {
-        [_bodyWebView setFrameHeight: self.frame.size.height - _bodyWebView.frame.origin.y];
+        [_bodyWebView setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyWebView.frame.origin.y)];
     } else {
-        [_bodyWebView setFrameHeight: self.frame.size.height - _bodyWebView.frame.origin.y - (_draftOptionsView.frame.size.height + 5)];
+        [_bodyWebView setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyWebView.frame.origin.y - (_draftOptionsView.frame.size.height + 5))];
         [_draftOptionsView setFrameY: [_bodyWebView bottomLeft].y + 5];
     }
 }
 
 - (void)setMessage:(INMessage *)message
 {
+    BOOL newMessage = (message != _message);
+    
 	_message = message;
 	
 	NSString * email = [[_message.from firstObject] objectForKey: @"email"];
-	[_fromProfileButton setImageForState:UIControlStateNormal withURL:[NSURL URLForGravatar: email] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
+	NSURL * profileURL = [NSURL URLForGravatar: email];
+    
+    if (![_fromProfileButtonCurrentURL isEqual: profileURL]) {
+        [_fromProfileButton setImageForState:UIControlStateNormal withURL:profileURL placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
+        _fromProfileButtonCurrentURL = profileURL;
+    }
+    
 	[_fromField setPrefixString: @"" andRecipients: [message from] includeMe: YES];
 	[_toField setPrefixString:@"To: " andRecipients: [message to] includeMe: YES];
 	[_dateField setText: [NSString stringForMessageDate: [_message date]]];
     
+    if (newMessage)
+        [self createWebView];
+
     [_bodyWebView setMessageHTML: [_message body]];
     [_bodyWebView setDelegate: self];
 

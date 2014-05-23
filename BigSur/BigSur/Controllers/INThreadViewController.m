@@ -19,7 +19,6 @@
 	self = [super init];
 	if (self) {
 		_thread = thread;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update) name:INModelObjectChangedNotification object:_thread];
 	}
 	return self;
 }
@@ -86,7 +85,6 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver: self];
 	[self.messageProvider setDelegate: nil];
 }
 
@@ -205,7 +203,7 @@
         [_collectionView deleteItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeRemove assumingSection:section]];
 		[_collectionView insertItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeAdd assumingSection:section]];
 	} completion: NULL];
-	[_collectionView reloadItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeUpdate assumingSection:section]];
+//	[_collectionView reloadItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeUpdate assumingSection:section]];
 }
 
 - (void)provider:(INModelProvider*)provider dataFetchFailed:(NSError *)error

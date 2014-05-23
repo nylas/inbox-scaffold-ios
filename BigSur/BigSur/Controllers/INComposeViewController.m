@@ -106,11 +106,15 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    if ([[_toRecipientsView recipients] count] > 0)
+        [_bodyTextView becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
+    [_bodyTextView resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -138,6 +142,16 @@
 			return next();
 			
         [UIAlertView showWithTitle:@"No Subject" message:@"Send your message without a subject?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Send Anyway"] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex != [alertView cancelButtonIndex])
+				return next();
+        }];
+	}];
+	
+	[checks addObject: ^{
+		if ([[_bodyTextView text] length] > 0)
+			return next();
+        
+        [UIAlertView showWithTitle:@"No Message Body" message:@"Send your message without any contents?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Send Anyway"] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
             if (buttonIndex != [alertView cancelButtonIndex])
 				return next();
         }];

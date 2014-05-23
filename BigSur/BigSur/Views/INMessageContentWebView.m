@@ -74,21 +74,27 @@ img {\
 
 - (void)setMessageHTML:(NSString*)messageHTML
 {
+    if ([_orginalHTML isEqualToString: messageHTML])
+        return;
+    
     _orginalHTML = messageHTML;
-    
-    float s = 1.0 / [[UIScreen mainScreen] scale];
-    int viewportWidth = self.frame.size.width - (_margin.left + _margin.right);
-	
-	const CGFloat * components = CGColorGetComponents([[self tintColor] CGColor]);
-	int tintR = (int)(components[0] * 256);
-	int tintG = (int)(components[1] * 256);
-	int tintB = (int)(components[2] * 256);
-	
-    NSString * css = [NSString stringWithFormat: messageCSS, (int)(_margin.top * s), (int)(_margin.left * s), (int)(_margin.bottom * s), (int)(_margin.right * s), viewportWidth, tintR, tintG, tintB];
-    NSString * html = [NSString stringWithFormat: @"<style>%@</style><meta name=\"viewport\" content=\"width=%d\">\n%@", css, viewportWidth, messageHTML];
-    [html writeToFile:[@"~/Documents/test_email.html" stringByExpandingTildeInPath] atomically:NO encoding:NSUTF8StringEncoding error:nil];
-    
-	[self loadHTMLString:html baseURL:nil];
+
+    [self loadHTMLString:@"" baseURL:nil];
+
+    if ([messageHTML length] > 0){
+        float s = 1.0 / [[UIScreen mainScreen] scale];
+        int viewportWidth = self.frame.size.width - (_margin.left + _margin.right);
+        
+        const CGFloat * components = CGColorGetComponents([[self tintColor] CGColor]);
+        int tintR = (int)(components[0] * 256);
+        int tintG = (int)(components[1] * 256);
+        int tintB = (int)(components[2] * 256);
+        
+        NSString * css = [NSString stringWithFormat: messageCSS, (int)(_margin.top * s), (int)(_margin.left * s), (int)(_margin.bottom * s), (int)(_margin.right * s), viewportWidth, tintR, tintG, tintB];
+        NSString * html = [NSString stringWithFormat: @"<style>%@</style><meta name=\"viewport\" content=\"width=%d\">\n%@", css, viewportWidth, messageHTML];
+        [html writeToFile:[@"~/Documents/test_email.html" stringByExpandingTildeInPath] atomically:NO encoding:NSUTF8StringEncoding error:nil];
+        [self loadHTMLString:html baseURL:nil];
+    }
 }
 
 - (void)setFrame:(CGRect)frame

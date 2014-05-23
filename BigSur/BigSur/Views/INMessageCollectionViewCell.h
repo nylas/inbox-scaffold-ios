@@ -20,7 +20,9 @@ typedef void (^ CellBlock)();
 @property (nonatomic, strong) CellBlock messageHeightDeterminedBlock;
 
 @property (nonatomic, weak) IBOutlet UIButton * fromProfileButton;
-@property (nonatomic, weak) IBOutlet INMessageContentWebView * bodyWebView;
+@property (nonatomic, strong) NSURL * fromProfileButtonCurrentURL;
+
+@property (nonatomic, strong) INMessageContentWebView * bodyWebView;
 @property (nonatomic, weak) IBOutlet INRecipientsLabel * fromField;
 @property (nonatomic, weak) IBOutlet INRecipientsLabel * toField;
 @property (nonatomic, weak) IBOutlet UILabel * dateField;
