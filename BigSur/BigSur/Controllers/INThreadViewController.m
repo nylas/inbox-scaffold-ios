@@ -154,16 +154,16 @@
 	INMessageCollectionViewCell * cell = (INMessageCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"message" forIndexPath: indexPath];
     INMessage * message = [self messageForIndexPath: indexPath];
 
+	UICollectionView __weak * __collectionView = collectionView;
+	[cell setMessageHeightDeterminedBlock: ^() {
+		[[__collectionView collectionViewLayout] invalidateLayout];
+	}];
+	
 	[cell setMessage: message];
     [[cell draftDeleteButton] removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [[cell draftDeleteButton] addTarget:self action:@selector(deleteDraftTapped:) forControlEvents:UIControlEventTouchUpInside];
     [[cell draftEditButton] removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [[cell draftEditButton] addTarget:self action:@selector(editDraftTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-	UICollectionView __weak * __collectionView = collectionView;
-	[cell setMessageHeightDeterminedBlock: ^() {
-		[[__collectionView collectionViewLayout] invalidateLayout];
-	}];
 
 	return cell;
 }

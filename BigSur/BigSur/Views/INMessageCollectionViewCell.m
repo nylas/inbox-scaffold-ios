@@ -124,9 +124,16 @@ static NSMutableDictionary * cachedMessageHeights;
 	if (![[self class] cachedHeightForMessage: _message]) {
         [[self class] setCachedHeight:height forMessage:_message];
 
-        if (_messageHeightDeterminedBlock)
-            _messageHeightDeterminedBlock(self);
-    }
+		// make sure we defer the update to our parent. They might choose to
+		// invalidate a collection view layout or make other changes, and we sometimes
+		// determine height synchronously, which would mean invalidateLayout right
+		// in the middle of cellForIndexPath:, which produces really weird results.
+		// soulution: debounce this block, bro!
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (_messageHeightDeterminedBlock)
+				_messageHeightDeterminedBlock(self);
+		});
+	}
 }
 
 @end
