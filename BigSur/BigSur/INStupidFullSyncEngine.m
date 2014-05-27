@@ -78,7 +78,7 @@
             [self syncClass: klass page: page + 1 callback: callback];
         } else {
             if (callback)
-                callback(nil);
+                callback(YES, nil);
         }
         [_syncOperations removeObject: operation];
 		_syncInProgress -= 1;
@@ -86,7 +86,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // sync interrupted
         if (callback)
-            callback(error);
+            callback(NO, error);
         [_syncOperations removeObject: operation];
 		_syncInProgress -= 1;
 	}];

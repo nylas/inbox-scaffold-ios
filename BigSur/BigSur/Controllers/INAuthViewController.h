@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface INAuthViewController : UIViewController
+@interface INAuthViewController : UIViewController <UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 
