@@ -11,7 +11,7 @@
 #import "INAppDelegate.h"
 #import "UIImage+BlurEffects.h"
 
-#define BUILT_IN_TAGS @[INTagIDInbox, INTagIDFlagged, INTagIDSent, INTagIDArchive]
+#define BUILT_IN_TAGS @[INTagIDInbox, INTagIDStarred, INTagIDSent, INTagIDArchive]
 
 static NSString * INSidebarItemTypeDrafts = @"drafts";
 static NSString * INSidebarItemTypeTag = @"tag";
@@ -50,10 +50,10 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
     [_tagProvider refresh];
 }
 
-- (IBAction)signOutTapped:(id)sender
+- (IBAction)unauthenticateTapped:(id)sender
 {
 	[[[INAppDelegate current] slidingViewController] closeSlider:YES completion:^{
-        [[INAPIManager shared] signOut];
+        [[INAPIManager shared] unauthenticate];
     }];
 }
 

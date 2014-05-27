@@ -46,7 +46,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="signOutTapped:" destination="-1" eventType="touchUpInside" id="RL0-sq-7kN"/>
+                        <action selector="unauthenticateTapped:" destination="-1" eventType="touchUpInside" id="xht-JX-gF2"/>
                     </connections>
                 </button>
             </subviews>

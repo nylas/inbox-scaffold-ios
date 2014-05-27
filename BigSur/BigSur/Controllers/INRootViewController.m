@@ -8,6 +8,7 @@
 
 #import "INRootViewController.h"
 #import "JSSlidingViewController.h"
+#import "INAppDelegate.h"
 
 @implementation INRootViewController
 
@@ -24,6 +25,16 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[[[INAppDelegate current] slidingViewController] setLocked:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[[[INAppDelegate current] slidingViewController] setLocked:YES];
 }
 
 - (JSSlidingViewController*)parentSlidingViewController

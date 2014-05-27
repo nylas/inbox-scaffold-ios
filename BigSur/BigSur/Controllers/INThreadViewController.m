@@ -203,6 +203,8 @@
         [_collectionView deleteItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeRemove assumingSection:section]];
 		[_collectionView insertItemsAtIndexPaths: [changeSet indexPathsFor: INModelProviderChangeAdd assumingSection:section]];
 	} completion: NULL];
+
+	[_errorView setHidden: (([_messages count] > 0) || ([_drafts count] > 0))];
 }
 
 - (void)provider:(INModelProvider*)provider dataFetchFailed:(NSError *)error
@@ -222,8 +224,7 @@
 
 	[[self collectionView] reloadData];
     
-	if (([_messages count] > 0) || ([_drafts count] > 0))
-		[_errorView setHidden: YES];
+	[_errorView setHidden: (([_messages count] > 0) || ([_drafts count] > 0))];
 }
 
 @end

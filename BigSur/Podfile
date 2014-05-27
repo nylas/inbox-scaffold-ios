@@ -6,6 +6,7 @@ target "BigSur" do
 	pod 'FMDB'
 	pod 'AFNetworking'
 	pod 'NSDate+TimeAgo'
+	pod 'MBProgressHUD'
 	pod 'UIActionSheet+Blocks'
     pod 'UIAlertView+Blocks'
 end

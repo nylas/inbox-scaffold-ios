@@ -36,7 +36,7 @@
 - (void)checkAndSync
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([[INAPIManager shared] isSignedIn]) {
+        if ([[INAPIManager shared] isAuthenticated]) {
             [self sync];
         
 		} else {

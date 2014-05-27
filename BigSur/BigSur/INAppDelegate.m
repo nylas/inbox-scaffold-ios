@@ -21,9 +21,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // locally save our own console output
     _runtimeLogPath = [@"~/Documents/console.log" stringByExpandingTildeInPath];
 #if !DEBUG
+    // locally save our own console output. This prevents it from appearing in the Xcode debugger console,
+	// but allows the app to display it's own log in the INLogViewController.
     [[NSFileManager defaultManager] removeItemAtPath:_runtimeLogPath error:NULL];
     freopen([_runtimeLogPath cStringUsingEncoding:NSASCIIStringEncoding], "a+", stderr);
 #endif
@@ -102,6 +103,11 @@
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+	return [[INAPIManager shared] handleURL: url];
+}
+
 - (void)slidingViewControllerWillOpen:(JSSlidingViewController *)viewController
 {
     [_sidebarViewController refresh];
@@ -117,7 +123,7 @@
 
 - (void)inboxCheckAuthentication:(NSNotification*)notification
 {
-    if ([[INAPIManager shared] isSignedIn]) {
+    if ([[INAPIManager shared] isAuthenticated]) {
         // we're good.
     } else {
         INAuthViewController * auth = [[INAuthViewController alloc] init];

@@ -28,8 +28,11 @@
     [addresses addObjectsFromArray: [_message to]];
 	[self.participantsLabel setPrefixString: @"" andRecipients:addresses includeMe: YES];
 	[self.dateLabel setText: [NSString stringForMessageDate: [_message date]]];
-	[self.subjectLabel setText: [_message subject]];
     [self.bodyLabel setText: [NSString stringByCleaningWhitespaceInString: [_message body]]];
+	if ([[_message subject] length] > 0)
+		[self.subjectLabel setText: [_message subject]];
+	else
+		[self.subjectLabel setText: @"(no subject)"];
 }
 
 @end

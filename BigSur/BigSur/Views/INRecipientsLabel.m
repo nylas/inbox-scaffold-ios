@@ -38,6 +38,9 @@
 
 - (void)setPrefixString:(NSString*)prefix andRecipients:(NSArray*)recipients includeMe:(BOOL)includeMe
 {
+	if ([recipients count] == 0)
+		recipients = @[@{@"name":@"(No Recipients)", @"email":@""}];
+
 	NSArray * youAddresses = [[INAPIManager shared] namespaceEmailAddresses];
 	
 	[_buttons makeObjectsPerformSelector: @selector(removeFromSuperview)];

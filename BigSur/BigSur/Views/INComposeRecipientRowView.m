@@ -10,6 +10,7 @@
 #import "INLeftJustifiedFlowLayout.h"
 #import "INComposeRecipientCollectionViewCell.h"
 #import "UIView+FrameAdditions.h"
+#import "INConvenienceCategories.h"
 #import "INAppDelegate.h"
 
 
@@ -264,12 +265,10 @@
         contact = (INContact *)[objects firstObject];
     }];
 
-	NSRegularExpression * emailRegexp = [NSRegularExpression regularExpressionWithPattern: @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSArray * emails = [emailRegexp matchesInString: text options: 0 range:NSMakeRange(0, [text length])];
+	NSArray * emails = [text arrayOfValidEmailAddresses];
     
     if ([emails count]) {
-		NSString * email = [text substringWithRange: [[emails firstObject] range]];
-        [self addRecipientWithName:email andEmail: email];
+        [self addRecipientWithName:[emails firstObject] andEmail: [emails firstObject]];
         return YES;
 
     } else if (contact) {

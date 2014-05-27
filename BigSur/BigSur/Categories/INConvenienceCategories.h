@@ -13,6 +13,8 @@
 + (NSString *)stringForMessageDate:(NSDate*)date;
 + (NSString *)stringByCleaningWhitespaceInString:(NSString*)snippet;
 
+- (NSArray *)arrayOfValidEmailAddresses;
+
 @end
 
 @interface NSURL (INConvenienceCategories)

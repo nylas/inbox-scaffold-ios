@@ -52,7 +52,18 @@
 	return [[NSString alloc] initWithCharacters:cleaned length:cleanedLength];
 }
 
+- (NSArray *)arrayOfValidEmailAddresses
+{
+	NSRegularExpression * regex = [NSRegularExpression regularExpressionWithPattern: @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" options:NSRegularExpressionCaseInsensitive error:nil];
+	NSArray * matches = [regex matchesInString:self options: 0 range:NSMakeRange(0, [self length])];
+	NSMutableArray * results = [NSMutableArray array];
 
+	for (NSTextCheckingResult * match in matches) {
+		NSString * email = [self substringWithRange: [match range]];
+		[results addObject: email];
+	}
+	return results;
+}
 
 @end
 

@@ -53,6 +53,16 @@
 	[self.navigationItem setRightBarButtonItem: compose];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear: animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear: animated];
+}
+
 - (void)currentNamespaceChanged:(NSNotification*)notif
 {
     INNamespace * namespace = [[INAppDelegate current] currentNamespace];

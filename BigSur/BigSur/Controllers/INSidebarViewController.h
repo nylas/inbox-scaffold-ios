@@ -20,7 +20,7 @@
 - (void)refresh;
 - (void)selectItemWithName:(NSString*)name;
 
-- (IBAction)signOutTapped:(id)sender;
+- (IBAction)unauthenticateTapped:(id)sender;
 - (IBAction)syncStatusTapped:(id)sender;
 
 @end
