@@ -10,7 +10,8 @@
 #import "INMailViewController.h"
 #import "INThemeManager.h"
 #import "INAuthViewController.h"
-#import "INStupidFullSyncEngine.h"
+#import "INDeltaSyncEngine.h"
+#import "INThreadViewController.h"
 
 @implementation INAppDelegate
 
@@ -44,7 +45,7 @@
     // have data loaded for each of the displayed by INModelProviders (which would be
     // be preferred if our app only ever loaded a specific view of attachments, or
     // something like that...)
-    INStupidFullSyncEngine * engine = [[INStupidFullSyncEngine alloc] initWithConfiguration: @{}];
+    INDeltaSyncEngine * engine = [[INDeltaSyncEngine alloc] initWithConfiguration: @{}];
     [[INAPIManager shared] setSyncEngine: engine];
     
     // initialize the sidebar controller
@@ -72,6 +73,18 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxCheckAuthentication:) name:INAuthenticationChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxNamespacesChanged:) name:INNamespacesChangedNotification object:nil];
     [self inboxCheckAuthentication: nil];
+    
+    // background fetch? Sign me up! Let's fetch new mail every five minutes at minimum
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:5 * 60.0];
+    
+    NSDictionary * notifUserInfo = nil;
+    if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey])
+        notifUserInfo = [launchOptions[UIApplicationLaunchOptionsLocalNotificationKey] userInfo];
+    if (launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey])
+        notifUserInfo = [launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] userInfo];
+
+    if (notifUserInfo)
+        [self showViewForNotification: notifUserInfo];
     
 	return YES;
 }
@@ -103,6 +116,49 @@
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    // only perform the action associated with this noitification if we're being brought to the foreground
+    // by the user swiping the notification or otherwise triggering it's action.
+    if ([application applicationState] != UIApplicationStateActive) {
+        [self showViewForNotification: userInfo];
+    }
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    // only perform the action associated with this noitification if we're being brought to the foreground
+    // by the user swiping the notification or otherwise triggering it's action.
+    if ([application applicationState] != UIApplicationStateActive) {
+        [self showViewForNotification: [notification userInfo]];
+    }
+}
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
+{
+    INDeltaSyncEngine * engine = (INDeltaSyncEngine*)[[INAPIManager shared] syncEngine];
+    BOOL __block calledCompletionHandler = NO;
+    
+    [engine syncWithCallback:^(BOOL success, NSError *error) {
+        if (calledCompletionHandler) return;
+        calledCompletionHandler = YES;
+        if (error)
+            completionHandler(UIBackgroundFetchResultFailed);
+        else
+            completionHandler(UIBackgroundFetchResultNewData);
+    }];
+    
+    // IMPORTANT. We only have 30 seconds to fetch data or our application will be terminated.
+    // If 30 seconds pass and our sync is still in progress for some reason, return with the "failed"
+    // state so we don't get terminated. Who knows what happened to our sync - who cares. We
+    // want to avoid being killed here.
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(29.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (!calledCompletionHandler)
+            calledCompletionHandler = YES;
+        completionHandler(UIBackgroundFetchResultFailed);
+    });
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
 	return [[INAPIManager shared] handleURL: url];
@@ -126,8 +182,12 @@
     if ([[INAPIManager shared] isAuthenticated]) {
         // we're good.
     } else {
-        INAuthViewController * auth = [[INAuthViewController alloc] init];
-        [_slidingViewController presentViewController:auth animated:YES completion:NULL];
+//        INAuthViewController * auth = [[INAuthViewController alloc] init];
+//        [_slidingViewController presentViewController:auth animated:YES completion:NULL];
+        
+        [[INAPIManager shared] authenticateWithAuthToken:@"bla" andCompletionBlock:^(BOOL success, NSError *error) {
+            
+        }];
     }
 }
 
@@ -167,6 +227,16 @@
     
     [_mainViewController setProvider: provider andTitle:[tag name]];
     [_sidebarViewController selectItemWithName: [tag name]];
+}
+    
+- (void)showViewForNotification:(NSDictionary*)userInfo
+{
+    if (userInfo[@"thread_id"]) {
+        INThread * thread = [INThread instanceWithID:userInfo[@"thread_id"] inNamespaceID:userInfo[@"namespace_id"]];
+        INThreadViewController * vc = [[INThreadViewController alloc] initWithThread: thread];
+        [[_mainViewController navigationController] popToRootViewControllerAnimated: NO];
+        [[_mainViewController navigationController] pushViewController:vc animated:NO];
+    }
 }
 
 

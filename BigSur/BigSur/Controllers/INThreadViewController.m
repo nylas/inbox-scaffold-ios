@@ -41,8 +41,14 @@
 	[[_threadHeaderView layer] setShadowOpacity: 0.1];
 	[[_threadHeaderView layer] setShadowRadius: 1];
 
-	[self update];
-}
+    if ([_thread isDataAvailable] == NO) {
+        [_thread reload:^(BOOL success, NSError *error) {
+            [self update];
+        }];
+    } else {
+        [self update];
+    }
+    }
 
 - (void)viewWillAppear:(BOOL)animated
 {

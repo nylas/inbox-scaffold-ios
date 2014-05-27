@@ -33,7 +33,9 @@
     if (!_textFont)
 		_textFont = [UIFont systemFontOfSize: 14];
 	_moreButton = [UIButton buttonWithType: UIButtonTypeCustom];
+
 	[self addSubview: _moreButton];
+    [self setBackgroundColor: [UIColor clearColor]];
 }
 
 - (void)setPrefixString:(NSString*)prefix andRecipients:(NSArray*)recipients includeMe:(BOOL)includeMe

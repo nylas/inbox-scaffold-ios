@@ -14,7 +14,7 @@
 #import "UIView+FrameAdditions.h"
 #import "INThemeManager.h"
 #import "INAppDelegate.h"
-#import "INStupidFullSyncEngine.h"
+#import "INDeltaSyncEngine.h"
 #import "INThreadTableViewCell.h"
 #import "INMessageTableViewCell.h"
 
@@ -85,8 +85,8 @@
 
 - (void)refresh
 {
-    INStupidFullSyncEngine * syncEngine = (INStupidFullSyncEngine*)[[INAPIManager shared] syncEngine];
-    [syncEngine syncClass:[INThread class] callback:^(BOOL success, NSError *error) {
+    INDeltaSyncEngine * syncEngine = (INDeltaSyncEngine*)[[INAPIManager shared] syncEngine];
+    [syncEngine syncWithCallback: ^(BOOL success, NSError *error) {
         if (!success && [_refreshControl isRefreshing])
             [[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
         [_refreshControl endRefreshing];
