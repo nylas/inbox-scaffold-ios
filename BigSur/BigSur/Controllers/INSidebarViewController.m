@@ -10,6 +10,7 @@
 #import "INSidebarTableViewCell.h"
 #import "INAppDelegate.h"
 #import "UIImage+BlurEffects.h"
+#import "UIView+FrameAdditions.h"
 
 #define BUILT_IN_TAGS @[INTagIDInbox, INTagIDStarred, INTagIDSent, INTagIDArchive]
 
@@ -175,7 +176,7 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
         if (!hasNoUnread) {
             NSPredicate * predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
                 [NSComparisonPredicate predicateWithFormat: @"namespaceID = %@", namespace.ID],
-                [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = 'unread'"],
+                [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", INTagIDUnread],
                 [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]
             ]];
             [[INDatabaseManager shared] countModelsOfClass:[INThread class] matching: predicate withCallback:^(long count) {

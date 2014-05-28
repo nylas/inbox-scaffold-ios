@@ -14,7 +14,6 @@
 @property (nonatomic, strong) NSDate * syncDate;
 @property (nonatomic, strong) NSTimer * syncTimer;
 
-@property (nonatomic, assign) int unreadCount;
 @property (nonatomic, strong) UILocalNotification * unreadNotification;
 
 - (id)initWithConfiguration:(NSDictionary*)config;

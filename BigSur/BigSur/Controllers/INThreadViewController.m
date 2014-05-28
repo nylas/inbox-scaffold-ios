@@ -55,6 +55,13 @@
 	[_collectionView reloadData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    // Only mark the thread as read if messages actaully loaded and displayed
+    if ([_messages count] > 0) {
+        [_thread markAsRead];
+    }
+}
 - (void)update
 {
     [_messageProvider refresh];

@@ -55,18 +55,16 @@
     // update our unread thread count
     NSPredicate * unread = [NSComparisonPredicate predicateWithFormat:@"ANY tagIDs = %@", INTagIDUnread];
     NSPredicate * inbox = [NSComparisonPredicate predicateWithFormat:@"ANY tagIDs = %@", INTagIDInbox];
-    NSPredicate * unreadAndInbox = [NSCompoundPredicate andPredicateWithSubpredicates: @[inbox]];
+    NSPredicate * unreadAndInbox = [NSCompoundPredicate andPredicateWithSubpredicates: @[inbox, unread]];
     
     [[INDatabaseManager shared] countModelsOfClass:[INThread class] matching:unreadAndInbox withCallback:^(long count) {
-        if (_unreadCount == count) {
+        if ([[UIApplication sharedApplication] applicationIconBadgeNumber] == count) {
             if (callback)
                 callback();
             return;
         }
         
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber: _unreadCount];
-
-        _unreadCount = count;
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber: count];
         if (_unreadNotification)
             [[UIApplication sharedApplication] cancelLocalNotification: _unreadNotification];
 
@@ -76,12 +74,12 @@
             return;
         }
         
-        if (_unreadCount > 1) {
+        if (count > 1) {
             // You have 12 unread messages.
             _unreadNotification = [UILocalNotification new];
             [_unreadNotification setSoundName: @"notif-unread-sound.aiff"];
             [_unreadNotification setAlertAction: @"View"];
-            [_unreadNotification setAlertBody: [NSString stringWithFormat: @"You have %d unread messages.", _unreadCount]];
+            [_unreadNotification setAlertBody: [NSString stringWithFormat: @"You have %d unread messages.", (int)count]];
             [[UIApplication sharedApplication] presentLocalNotificationNow: _unreadNotification];
             if (callback)
                 callback();
@@ -272,7 +270,28 @@
 
 - (void)trimLocalCacheForNamespace:(INNamespace*)namespace
 {
-    // TODO: Eliminate threads older than 4 months from the local cache
+    NSPredicate * timestampPredicate = nil;
+    
+    NSTimeInterval maxMessageAge = [[NSDate dateWithTimeIntervalSinceNow: -60 * 60 * 24] timeIntervalSince1970];
+    NSTimeInterval maxThreadAge = [[NSDate dateWithTimeIntervalSinceNow: -4 * 31 * (60 * 60 * 24)] timeIntervalSince1970];
+    
+    // Q: "Do we really have to inflate the objects just to delete them??"
+    // A: Yes - it's easier this way, because some objects have more complicated deletion routines
+    // (threads delete their tags from the tags table, etc.) and the objects may want to run code in
+    // willUnpersist:. The one drawback of this approach is that if someone were viewing one of these
+    // messages or threads onscreen, they would see it get blown away. We may want to address that someday.
+    
+    // Eliminate threads older than 4 months
+    timestampPredicate = [NSComparisonPredicate predicateWithFormat:@"lastMessageDate < %d", (int)maxThreadAge];
+    [[INDatabaseManager shared] selectModelsOfClass:[INThread class] matching:timestampPredicate sortedBy:nil limit:0 offset:0 withCallback:^(NSArray * threads) {
+        [[INDatabaseManager shared] unpersistModels: threads];
+    }];
+    
+    // Eliminate messages older than 2 months
+    timestampPredicate = [NSComparisonPredicate predicateWithFormat:@"date < %d", (int)maxMessageAge];
+    [[INDatabaseManager shared] selectModelsOfClass:[INMessage class] matching:timestampPredicate sortedBy:nil limit:0 offset:0 withCallback:^(NSArray * messages) {
+        [[INDatabaseManager shared] unpersistModels: messages];
+    }];
 }
 
 - (BOOL)hasSyncedNamespace:(INNamespace*)namespace
