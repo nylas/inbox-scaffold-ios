@@ -29,7 +29,7 @@
 			<string>inbox</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>in-12312312</string>
+				<string>in-635m56004j8u66vxzxwe0tcdy</string>
 			</array>
 		</dict>
 	</array>
@@ -38,7 +38,7 @@
 	<key>INAPIPath</key>
 	<string>http://localhost:5555/</string>
 	<key>INAppID</key>
-	<string>12312312</string>
+	<string>635m56004j8u66vxzxwe0tcdy</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>
