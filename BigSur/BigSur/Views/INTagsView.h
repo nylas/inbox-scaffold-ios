@@ -15,6 +15,11 @@
 
 @property (nonatomic, assign) NSTextAlignment alignment;
 
+/* Set the tags that are displayed in the view. 
+
+ @param tags An array of INTag objects.
+*/
+
 - (void)setTags:(NSArray*)tags;
 
 @end

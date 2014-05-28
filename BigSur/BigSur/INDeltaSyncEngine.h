@@ -16,7 +16,20 @@
 
 @property (nonatomic, strong) UILocalNotification * unreadNotification;
 
+/* Creates a new instance of the sync engine with the desired configuration.
+
+ @param configuration Currenty unused.
+ @return A configured sync engine instance
+*/
 - (id)initWithConfiguration:(NSDictionary*)config;
+
+/* Start a sync, and call the callback when sync has completely 
+ finished or failed with an error.
+ 
+ @param callback A block to invoke when the sync has finished or has failed.
+ If a sync is already in progress or there is no current namespace,
+the callback is called immediately with success=NO, error=nil.
+*/
 - (void)syncWithCallback:(ErrorBlock)callback;
 
 @end
