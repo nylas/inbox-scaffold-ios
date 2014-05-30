@@ -59,6 +59,11 @@
     [[INAPIManager shared] retryTasks];
 }
 
+- (void)syncWithCallback:(ErrorBlock)callback
+{
+    [self syncClass:[INThread class] callback:callback];
+}
+
 - (void)syncClass:(Class)klass callback:(ErrorBlock)callback
 {
     [self syncClass:klass page: 0 callback:callback];

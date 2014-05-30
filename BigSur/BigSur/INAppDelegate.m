@@ -10,6 +10,7 @@
 #import "INMailViewController.h"
 #import "INThemeManager.h"
 #import "INAuthViewController.h"
+#import "INStupidFullSyncEngine.h"
 #import "INDeltaSyncEngine.h"
 #import "INThreadViewController.h"
 
@@ -45,7 +46,7 @@
     // have data loaded for each of the displayed by INModelProviders (which would be
     // be preferred if our app only ever loaded a specific view of attachments, or
     // something like that...)
-    INDeltaSyncEngine * engine = [[INDeltaSyncEngine alloc] initWithConfiguration: @{}];
+    INStupidFullSyncEngine * engine = [[INStupidFullSyncEngine alloc] initWithConfiguration: @{}];
     [[INAPIManager shared] setSyncEngine: engine];
     
     // initialize the sidebar controller

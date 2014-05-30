@@ -17,6 +17,7 @@
 - (BOOL)providesCompleteCacheOf:(Class)klass;
 
 - (void)sync;
+- (void)syncWithCallback:(ErrorBlock)callback;
 - (void)syncClass:(Class)klass callback:(ErrorBlock)callback;
 
 @end

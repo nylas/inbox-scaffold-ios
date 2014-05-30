@@ -37,6 +37,10 @@
 - (void)update
 {
     NSString * text = [NSString stringWithContentsOfFile:[[INAppDelegate current] runtimeLogPath] encoding:NSUTF8StringEncoding error:nil];
+#if DEBUG
+text = @"The app log is printed to the system console for DEBUG builds.";
+#endif
+    
     if ([text length] > MAX_CHARS)
         text = [text substringFromIndex: [text length] - MAX_CHARS];
     [_appLog setText: text];
