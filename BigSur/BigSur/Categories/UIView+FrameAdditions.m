@@ -23,96 +23,69 @@
 
 @implementation UIView (FrameAdditions)
 
-- (void)setFrameY:(float)y
+- (void)in_setFrameY:(float)y
 {
     CGRect frame = [self frame];
     frame.origin.y = y;
     [self setFrame: frame];
 }
 
-- (void)setFrameX:(float)x
+- (void)in_setFrameX:(float)x
 {
     CGRect frame = [self frame];
     frame.origin.x = x;
     [self setFrame: frame];
 }
 
-- (void)shiftFrame:(CGPoint)offset
+- (void)in_shiftFrame:(CGPoint)offset
 {
     CGRect frame = [self frame];
     [self setFrame: CGRectMake(frame.origin.x + offset.x, frame.origin.y + offset.y, frame.size.width, frame.size.height)];
 }
 
-- (void)shiftFrameUsingTransform:(CGPoint)offset
-{
-    CGAffineTransform t = [self transform];
-    t = CGAffineTransformTranslate(t,offset.x, offset.y);
-    [self setTransform: t];
-}
-
-- (void)setFrameOrigin:(CGPoint)origin
+- (void)in_setFrameOrigin:(CGPoint)origin
 {
     CGRect frame = [self frame];
     [self setFrame: CGRectMake(origin.x, origin.y, frame.size.width, frame.size.height)];
 }
 
-- (void)setFrameSize:(CGSize)size
+- (void)in_setFrameSize:(CGSize)size
 {
     CGRect frame = [self frame];
     [self setFrame: CGRectMake(frame.origin.x, frame.origin.y, size.width, size.height)];
 }
 
-- (void)setFrameCenter:(CGPoint)p
+- (void)in_setFrameCenter:(CGPoint)p
 {
     CGRect frame = [self frame];
     [self setFrame: CGRectMake(p.x - frame.size.width / 2, p.y - frame.size.height / 2, frame.size.width, frame.size.height)];
 }
 
-- (void)setFrameWidth:(float)w
+- (void)in_setFrameWidth:(float)w
 {    
     CGRect frame = [self frame];
     frame.size.width = w;
     [self setFrame: frame];
 }
 
-- (void)setFrameHeight:(float)h
+- (void)in_setFrameHeight:(float)h
 {    
     CGRect frame = [self frame];
     frame.size.height = h;
     [self setFrame: frame];
 }
 
-- (void)setFrameSizeAndRemainCentered:(CGSize)desired
-{
-    CGRect current = [self frame];
-    CGRect fixed = CGRectMake(current.origin.x - (desired.width - current.size.width) / 2,
-        current.origin.y - (desired.height - current.size.height) / 2, desired.width, desired.height);
-        
-    [self setFrame: fixed];
-}
-
-- (void)multiplyFrameBy:(float)t
-{
-    CGRect f = [self frame];
-    f.origin.x *= t;
-    f.origin.y *= t;
-    f.size.width *= t;
-    f.size.height *= t;
-    
-    [self setFrame:f];
-}
-
-- (CGPoint)topRight
+- (CGPoint)in_topRight
 {
     return CGPointMake([self frame].origin.x + [self frame].size.width, [self frame].origin.y);
 }
 
-- (CGPoint)bottomRight
+- (CGPoint)in_bottomRight
 {
     return CGPointMake([self frame].origin.x + [self frame].size.width, [self frame].origin.y + [self frame].size.height);
 }
 
-- (CGPoint)bottomLeft
+- (CGPoint)in_bottomLeft
 {
     return CGPointMake([self frame].origin.x, [self frame].origin.y + [self frame].size.height);
 }

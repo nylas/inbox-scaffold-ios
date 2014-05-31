@@ -12,6 +12,8 @@
 #import "UIView+FrameAdditions.h"
 #import "NSObject+AssociatedObjects.h"
 
+#define SECTION_INSET 10
+
 @implementation INThreadViewController
 
 - (id)initWithThread:(INThread*)thread
@@ -40,19 +42,17 @@
 	[[_threadHeaderView layer] setShadowOffset: CGSizeMake(0, 1)];
 	[[_threadHeaderView layer] setShadowOpacity: 0.1];
 	[[_threadHeaderView layer] setShadowRadius: 1];
+}
 
-    if ([_thread isDataAvailable] == NO) {
+- (void)viewWillAppear:(BOOL)animated
+{
+	if ([_thread isDataAvailable] == NO) {
         [_thread reload:^(BOOL success, NSError *error) {
             [self update];
         }];
     } else {
         [self update];
     }
-    }
-
-- (void)viewWillAppear:(BOOL)animated
-{
-	[_collectionView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -70,15 +70,15 @@
 	
     [_threadSubjectLabel setText: [_thread subject]];
     [_threadSubjectLabel sizeToFit];
-	[_threadSubjectLabel setFrameWidth: _threadSubjectLabel.frame.size.width + 1]; // fix for rounding error
+	[_threadSubjectLabel in_setFrameWidth: _threadSubjectLabel.frame.size.width + 1]; // fix for rounding error
     
 	[_tagsView setAlignment: NSTextAlignmentRight];
 	[_tagsView setTags: [_thread tags]];
-	[_tagsView setFrameY: [_threadSubjectLabel bottomLeft].y + headerPadding / 2];
-    [_threadHeaderView setFrameHeight: [_tagsView bottomLeft].y + headerPadding];
+	[_tagsView in_setFrameY: [_threadSubjectLabel in_bottomLeft].y + headerPadding / 2];
+    [_threadHeaderView in_setFrameHeight: [_tagsView in_bottomLeft].y + headerPadding];
     
-	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 10, 0)];
-	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, 10, 0)];
+	[_collectionView setContentInset: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, SECTION_INSET, 0)];
+	[_collectionView setScrollIndicatorInsets: UIEdgeInsetsMake(_threadHeaderView.frame.size.height, 0, SECTION_INSET, 0)];
 
     UIBarButtonItem * archive = nil;
     if ([_thread hasTagWithID: INTagIDArchive])
@@ -87,7 +87,7 @@
         archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(archiveTapped:)];
     
 	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
-	[self.navigationItem setRightBarButtonItems:@[reply, archive] animated:YES];
+	[self.navigationItem setRightBarButtonItems:@[reply, archive] animated:NO];
 
 }
 
@@ -106,6 +106,8 @@
     INDraft * reply = [[INDraft alloc] initInNamespace:[_thread namespace] inReplyTo:_thread];
 	INComposeViewController * composer = [[INComposeViewController alloc] initWithDraft: reply];
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composer];
+	[nav setModalPresentationStyle: UIModalPresentationFormSheet];
+	[nav setModalTransitionStyle: UIModalTransitionStyleCoverVertical];
 	[self presentViewController: nav animated:YES completion:NULL];
 }
 
@@ -136,6 +138,8 @@
 
     INComposeViewController * composer = [[INComposeViewController alloc] initWithDraft: draft];
     UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composer];
+	[nav setModalPresentationStyle: UIModalPresentationFormSheet];
+	[nav setModalTransitionStyle: UIModalTransitionStyleCoverVertical];
     [self presentViewController:nav animated:YES completion:NULL];
 }
 
@@ -188,14 +192,14 @@
 	if (height == 0)
 		height = 100;
 		
-	return CGSizeMake(300, height);
+	return CGSizeMake(_collectionView.frame.size.width - SECTION_INSET * 2, height);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     if ([((section == 0) ? _drafts : _messages) count] == 0)
         return UIEdgeInsetsMake(0, 0, 0, 0);
-    return UIEdgeInsetsMake(10, 10, 0, 10);
+    return UIEdgeInsetsMake(SECTION_INSET, SECTION_INSET, 0, SECTION_INSET);
 }
 
 #pragma Provider Delegate

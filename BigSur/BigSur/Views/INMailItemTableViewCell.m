@@ -57,14 +57,14 @@
 	[super layoutSubviews];
 	
 	[_dateLabel sizeToFit];
-	[_dateLabel setFrameOrigin: CGPointMake(f.size.width - INSETS.right - _dateLabel.frame.size.width, INSETS.top)];
+	[_dateLabel in_setFrameOrigin: CGPointMake(f.size.width - INSETS.right - _dateLabel.frame.size.width, INSETS.top)];
 	
 	float textX = [self textLeftInset];
 	float textW = f.size.width - textX - INSETS.right;
 		
 	[_participantsLabel setFrame: CGRectMake(textX, INSETS.top, _dateLabel.frame.origin.x - textX, 16)];
-	[_subjectLabel setFrame: CGRectMake(textX, [_participantsLabel bottomRight].y, textW, 20)];
-	[_bodyLabel setFrame: CGRectMake(textX, [_subjectLabel bottomRight].y, textW, 35)];
+	[_subjectLabel setFrame: CGRectMake(textX, [_participantsLabel in_bottomRight].y, textW, 20)];
+	[_bodyLabel setFrame: CGRectMake(textX, [_subjectLabel in_bottomRight].y, textW, 35)];
 	[_bodyLabel sizeToFit];
 }
 

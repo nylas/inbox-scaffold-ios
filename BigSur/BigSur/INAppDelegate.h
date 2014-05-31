@@ -10,14 +10,16 @@
 #import "JSSlidingViewController.h"
 #import "INSidebarViewController.h"
 #import "INMailViewController.h"
+#import "INSplitViewController.h"
 
 static NSString * BigSurNamespaceChanged = @"BigSurNamespaceChanged";
 
-@interface INAppDelegate : UIResponder <UIApplicationDelegate, JSSlidingViewControllerDelegate>
+@interface INAppDelegate : UIResponder <UIApplicationDelegate, JSSlidingViewControllerDelegate, UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) NSString * runtimeLogPath;
 
-@property (strong, nonatomic) JSSlidingViewController * slidingViewController;
+@property (strong, nonatomic) JSSlidingViewController * slidingViewController; // iPhone
+@property (strong, nonatomic) INSplitViewController * splitViewController; // iPad
 @property (strong, nonatomic) INSidebarViewController * sidebarViewController;
 @property (strong, nonatomic) INMailViewController * mainViewController;
 

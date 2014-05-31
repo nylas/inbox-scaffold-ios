@@ -39,6 +39,7 @@
 		435764AD192530BB00E6B340 /* INAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435764AB192530BB00E6B340 /* INAuthViewController.m */; };
 		435764AE192530BB00E6B340 /* INAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 435764AC192530BB00E6B340 /* INAuthViewController.xib */; };
 		435BB0CF192FF51F00BEE4AE /* INMessageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */; };
+		436BB2651938FA33004BA79B /* INSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 436BB2641938FA33004BA79B /* INSplitViewController.m */; };
 		438159FB1922E6D70069116A /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159F81922E6D70069116A /* JSSlidingViewController.m */; };
 		438159FF1922E7580069116A /* INSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159FD1922E7580069116A /* INSidebarViewController.m */; };
 		43815A001922E7580069116A /* INSidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 438159FE1922E7580069116A /* INSidebarViewController.xib */; };
@@ -122,6 +123,8 @@
 		435764AC192530BB00E6B340 /* INAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INAuthViewController.xib; sourceTree = "<group>"; };
 		435BB0CD192FF51F00BEE4AE /* INMessageContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageContentView.h; sourceTree = "<group>"; };
 		435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageContentView.m; sourceTree = "<group>"; };
+		436BB2631938FA33004BA79B /* INSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INSplitViewController.h; path = Controllers/INSplitViewController.h; sourceTree = "<group>"; };
+		436BB2641938FA33004BA79B /* INSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INSplitViewController.m; path = Controllers/INSplitViewController.m; sourceTree = "<group>"; };
 		438159F71922E6D70069116A /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
 		438159F81922E6D70069116A /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
 		438159FC1922E7580069116A /* INSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarViewController.h; sourceTree = "<group>"; };
@@ -396,6 +399,8 @@
 			children = (
 				43F22A8419071A1100A032D1 /* INAppDelegate.h */,
 				43F22A8519071A1100A032D1 /* INAppDelegate.m */,
+				436BB2631938FA33004BA79B /* INSplitViewController.h */,
+				436BB2641938FA33004BA79B /* INSplitViewController.m */,
 				43DB20EF192145F100DCFA4A /* INThemeManager.h */,
 				43DB20F0192145F100DCFA4A /* INThemeManager.m */,
 				438BEA031926C9F500E5C67D /* INStupidFullSyncEngine.h */,
@@ -525,7 +530,7 @@
 						TestTargetID = 43F22A7119071A1100A032D1;
 					};
 					43F22A7119071A1100A032D1 = {
-						DevelopmentTeam = WJVER9Q8YQ;
+						DevelopmentTeam = X9RJ36K9D4;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -689,6 +694,7 @@
 				43AE9B751918045C005D70C0 /* INContactsViewController.m in Sources */,
 				43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */,
 				43AE9BC219185999005D70C0 /* INLeftJustifiedFlowLayout.m in Sources */,
+				436BB2651938FA33004BA79B /* INSplitViewController.m in Sources */,
 				43F22A8219071A1100A032D1 /* main.m in Sources */,
 				434B896C1935090000A2AD33 /* INDeltaSyncEngine.m in Sources */,
 				43AE9BC819185C46005D70C0 /* INComposeSubjectRowView.m in Sources */,
@@ -885,6 +891,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -909,10 +916,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../InboxFramework/**",

@@ -54,17 +54,26 @@
     
     // initialze content view controllers
 	_mainViewController = [[INMailViewController alloc] init];
-	
-	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: _mainViewController];
-	[[nav navigationBar] setTranslucent: NO];
-	
-    // initialize the controller that manages the sliding of the sidebar tray
-    _slidingViewController = [[JSSlidingViewController alloc] initWithFrontViewController: nav backViewController: _sidebarViewController];
-    _slidingViewController.useBouncyAnimations = NO;
-    _slidingViewController.delegate = self;
-    
+
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = _slidingViewController;
+
+	if ([[[UIDevice currentDevice] model] hasPrefix: @"iPad"]) {
+		_splitViewController = [[INSplitViewController alloc] init];
+		_splitViewController.viewControllers = @[_sidebarViewController, _mainViewController];
+		[_splitViewController.view setBackgroundColor: [_sidebarViewController.view backgroundColor]];
+		self.window.rootViewController = _splitViewController;
+		
+	} else {
+		// wrap the main view in a navigation controller
+		UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: _mainViewController];
+		[[nav navigationBar] setTranslucent: NO];
+
+		// initialize the controller that manages the sliding of the sidebar tray
+		_slidingViewController = [[JSSlidingViewController alloc] initWithFrontViewController: nav backViewController: _sidebarViewController];
+		_slidingViewController.useBouncyAnimations = NO;
+		_slidingViewController.delegate = self;
+		self.window.rootViewController = _slidingViewController;
+	}
 	[self.window makeKeyAndVisible];
 
     [self showThreadsWithTag: [INTag tagWithID: INTagIDInbox]];

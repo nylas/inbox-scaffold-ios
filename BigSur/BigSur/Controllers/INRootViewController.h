@@ -10,4 +10,7 @@
 
 @interface INRootViewController : UIViewController
 
+- (void)smartPushViewController:(UIViewController*)vc animated:(BOOL)animated;
+- (void)smartPresentViewController:(UIViewController*)vc animated:(BOOL)animated;
+
 @end

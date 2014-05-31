@@ -42,6 +42,11 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
 	[_tableView setAllowsSelection: YES];
 }
 
+- (UINavigationItem*)navigationItem
+{
+	return nil;
+}
+
 - (void)refresh
 {
     if (![[_tagProvider namespaceID] isEqualToString: [[[INAppDelegate current] currentNamespace] ID]]) {
@@ -53,18 +58,26 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
 
 - (IBAction)unauthenticateTapped:(id)sender
 {
-	[[[INAppDelegate current] slidingViewController] closeSlider:YES completion:^{
+	[self afterSettlingViewState:^{
         [[INAPIManager shared] unauthenticate];
     }];
 }
 
 - (IBAction)syncStatusTapped:(id)sender
 {
-	[[[INAppDelegate current] slidingViewController] closeSlider:YES completion:^{
+	[self afterSettlingViewState:^{
         UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"INInternalInfoStoryboard" bundle:nil];
         [self.parentViewController presentViewController:[storyboard instantiateInitialViewController] animated:YES completion:NULL];
-
     }];
+}
+
+- (void)afterSettlingViewState:(VoidBlock)block
+{
+	if ([[INAppDelegate current] slidingViewController]) {
+		[[[INAppDelegate current] slidingViewController] closeSlider:YES completion: block];
+	} else {
+		block();
+	}
 }
 
 #pragma mark Table View

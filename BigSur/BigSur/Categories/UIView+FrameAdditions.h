@@ -1,20 +1,17 @@
 
 @interface UIView (FrameAdditions)
 
-- (void)setFrameY:(float)y;
-- (void)setFrameX:(float)x;
-- (void)shiftFrame:(CGPoint)offset;
-- (void)shiftFrameUsingTransform:(CGPoint)offset;
-- (void)setFrameOrigin:(CGPoint)origin;
-- (void)setFrameSize:(CGSize)size;
-- (void)setFrameCenter:(CGPoint)p;
-- (void)setFrameWidth:(float)w;
-- (void)setFrameHeight:(float)h;
-- (void)setFrameSizeAndRemainCentered:(CGSize)desired;
-- (void)multiplyFrameBy:(float)t;
-- (CGPoint)topRight;
-- (CGPoint)bottomRight;
-- (CGPoint)bottomLeft;
+- (void)in_setFrameY:(float)y;
+- (void)in_setFrameX:(float)x;
+- (void)in_shiftFrame:(CGPoint)offset;
+- (void)in_setFrameOrigin:(CGPoint)origin;
+- (void)in_setFrameSize:(CGSize)size;
+- (void)in_setFrameCenter:(CGPoint)p;
+- (void)in_setFrameWidth:(float)w;
+- (void)in_setFrameHeight:(float)h;
+- (CGPoint)in_topRight;
+- (CGPoint)in_bottomRight;
+- (CGPoint)in_bottomLeft;
 - (id)viewAncestorOfClass:(Class)klass;
 
 @end

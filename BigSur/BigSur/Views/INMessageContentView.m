@@ -7,6 +7,7 @@
 //
 
 #import "INMessageContentView.h"
+#import "UIView+FrameAdditions.h"
 
 static NSString * messageCSS = @"\
 html, body {\
@@ -57,6 +58,7 @@ height:auto;\
 
 - (void)setup
 {
+	[self setClipsToBounds: YES];
     if (!_tintColor)
         [self setTintColor: [UIColor blueColor]];
 }
@@ -70,9 +72,9 @@ height:auto;\
 
 - (void)setFrame:(CGRect)frame
 {
-    BOOL viewportSizeChange = (frame.size.width != self.frame.size.width);
+    BOOL viewportWidthChange = (frame.size.width != self.frame.size.width);
     [super setFrame: frame];
-    if (viewportSizeChange)
+    if (viewportWidthChange)
         [self setContent: _content];
 }
 
@@ -106,7 +108,11 @@ height:auto;\
     _textView = nil;
     
     if (!_webView) {
-        _webView = [[UIWebView alloc] initWithFrame: self.bounds];
+		/* Note: It's important the web view has a small initial height because it always
+		reports it's rendered content size to be at least it's height. We'll make it the
+		appropriate size once it's content loads. This height must be > 0 or it won't load 
+		at all. */
+        _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0, 0, self.frame.size.width, 5)];
         [_webView setDelegate: self];
         [_webView setTintColor: _tintColor];
         [_webView setScalesPageToFit: YES];
@@ -125,10 +131,12 @@ height:auto;\
     int tintG = (int)(components[1] * 256);
     int tintB = (int)(components[2] * 256);
     
+	
     NSString * css = [NSString stringWithFormat: messageCSS, (int)(_contentMargin.top * s), (int)(_contentMargin.left * s), (int)(_contentMargin.bottom * s), (int)(_contentMargin.right * s), viewportWidth, tintR, tintG, tintB];
     NSString * html = [NSString stringWithFormat: @"<style>%@</style><meta name=\"viewport\" content=\"width=%d\">\n%@", css, viewportWidth, content];
     [html writeToFile:[@"~/Documents/test_email.html" stringByExpandingTildeInPath] atomically:NO encoding:NSUTF8StringEncoding error:nil];
-
+	
+	[_webView setAlpha: 0.01];
     [_webView loadHTMLString:html baseURL:nil];
 }
 
@@ -159,8 +167,13 @@ height:auto;\
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    if ([self.delegate respondsToSelector: @selector(messageContentViewSizeDetermined:)])
-        [self.delegate messageContentViewSizeDetermined: _webView.scrollView.contentSize];
+	CGSize s = _webView.scrollView.contentSize;
+	[_webView in_setFrameHeight: s.height];
+	[_webView setAlpha: 1];
+
+    if ([self.delegate respondsToSelector: @selector(messageContentViewSizeDetermined:)]) {
+        [self.delegate messageContentViewSizeDetermined: s];
+	}
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType

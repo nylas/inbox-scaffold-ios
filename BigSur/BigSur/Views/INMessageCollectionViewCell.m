@@ -79,15 +79,18 @@ static NSMutableDictionary * cachedMessageHeights;
 	
     float contentWidth = _headerContainerView.frame.size.width;
     
-	[[self layer] setShadowPath: CGPathCreateWithRect(self.contentView.bounds, NULL)];
+	CGPathRef path = CGPathCreateWithRect(self.contentView.bounds, NULL);
+	[[self layer] setShadowPath: path];
+	CGPathRelease(path);
+	
     [_headerBorderLayer setFrame: CGRectMake(0, _headerContainerView.frame.size.height - 0.5, contentWidth, 0.5)];
-    [_bodyView setFrameY: [_headerContainerView bottomLeft].y + 10];
+    [_bodyView in_setFrameY: [_headerContainerView in_bottomLeft].y + 10];
 
     if ([_draftOptionsView isHidden]) {
-        [_bodyView setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyView.frame.origin.y)];
+        [_bodyView in_setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyView.frame.origin.y)];
     } else {
-        [_bodyView setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyView.frame.origin.y - (_draftOptionsView.frame.size.height + 5))];
-        [_draftOptionsView setFrameY: [_bodyView bottomLeft].y + 5];
+        [_bodyView in_setFrameSize: CGSizeMake(contentWidth, self.frame.size.height - _bodyView.frame.origin.y - (_draftOptionsView.frame.size.height + 5))];
+        [_draftOptionsView in_setFrameY: [_bodyView in_bottomLeft].y + 5];
     }
 }
 
@@ -121,7 +124,7 @@ static NSMutableDictionary * cachedMessageHeights;
     if ([_message isKindOfClass: [INDraft class]])
         height += 44;
     
-	if (![[self class] cachedHeightForMessage: _message]) {
+	if ([[self class] cachedHeightForMessage: _message] != height) {
         [[self class] setCachedHeight:height forMessage:_message];
 
 		// make sure we defer the update to our parent. They might choose to

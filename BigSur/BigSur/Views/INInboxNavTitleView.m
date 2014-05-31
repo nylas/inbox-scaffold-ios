@@ -35,15 +35,15 @@
     float x = 0;
     
     [_titleLabel setText: title];
-    [_titleLabel setFrameWidth: ceilf([_titleLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleLabel font]}].width) + 6];
+    [_titleLabel in_setFrameWidth: ceilf([_titleLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleLabel font]}].width) + 6];
     x += [_titleLabel frame].size.width;
     
     if ((count == NSNotFound) || (count == 0)) {
-        [_titleUnreadLabel setFrameWidth: 0];
+        [_titleUnreadLabel in_setFrameWidth: 0];
     } else {
         [_titleUnreadLabel setText: [NSString stringWithFormat: @"%ld", count]];
-        [_titleUnreadLabel setFrameWidth: ceilf([_titleUnreadLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleUnreadLabel font]}].width) + 6];
-        [_titleUnreadLabel setFrameX: x];
+        [_titleUnreadLabel in_setFrameWidth: ceilf([_titleUnreadLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleUnreadLabel font]}].width) + 6];
+        [_titleUnreadLabel in_setFrameX: x];
         x += [_titleUnreadLabel frame].size.width;
     }
     

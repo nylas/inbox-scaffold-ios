@@ -98,7 +98,7 @@
 	[super layoutSubviews];
 	
 	CGRect frame = [self convertRect:[self bounds] toView:[self superview]];
-	[_autocompletionView setFrameOrigin: CGPointMake(0, frame.origin.y + frame.size.height)];
+	[_autocompletionView in_setFrameOrigin: CGPointMake(0, frame.origin.y + frame.size.height)];
 }
 
 - (void)propogateConstraintChanges
@@ -188,7 +188,7 @@
 	} else {
 		CGSize textSize = [[_textField text] sizeWithAttributes: @{NSFontAttributeName: INComposeRecipientFont}];
 		float size = fminf(textSize.width + 20, _recipientsCollectionView.frame.size.width - 8);
-		[_textField setFrameSize: CGSizeMake(size, rowHeight)];
+		[_textField in_setFrameSize: CGSizeMake(size, rowHeight)];
 		[collectionView invalidateIntrinsicContentSize];
 		return CGSizeMake(size, rowHeight);
 	}

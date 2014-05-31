@@ -42,7 +42,10 @@
 {
 	[super setFrame: frame];
 	[_tableView setFrame: self.bounds];
-	[[self layer] setShadowPath: CGPathCreateWithRect(self.bounds, NULL)];
+	
+	CGPathRef path = CGPathCreateWithRect(self.bounds, NULL);
+	[[self layer] setShadowPath: path];
+	CGPathRelease(path);
 }
 
 #pragma mark Autocompletion
@@ -58,7 +61,7 @@
 	float resultsHeight = [[_provider items] count] * ROW_HEIGHT;
 	float availableHeight = worldMaxY - worldFrame.origin.y;
 	float height = fminf(availableHeight, resultsHeight);
-	[self setFrameHeight: height];
+	[self in_setFrameHeight: height];
 	[_tableView setScrollEnabled: (height < resultsHeight)];
 }
 

@@ -164,12 +164,12 @@
         UIButton * lastButton = [visible lastObject];
         if (x + [_moreButton frame].size.width > self.frame.size.width) {
             float maxX = self.frame.size.width - [_moreButton frame].size.width;
-            [lastButton setFrameWidth: lastButton.frame.size.width - (x - maxX)];
+            [lastButton in_setFrameWidth: lastButton.frame.size.width - (x - maxX)];
             x = maxX;
         }
         
-        [_moreButton setFrameHeight: self.frame.size.height];
-        [_moreButton setFrameX: x];
+        [_moreButton in_setFrameHeight: self.frame.size.height];
+        [_moreButton in_setFrameX: x];
     }
 }
 @end

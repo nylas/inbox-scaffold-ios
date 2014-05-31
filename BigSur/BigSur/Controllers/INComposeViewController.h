@@ -15,6 +15,7 @@
 @interface INComposeViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, INComposeAttachmentsRowViewDelegate>
 {
     NSMutableArray * _verticalLayoutConstraints;
+	UIPopoverController * _attachmentsPopover;
     
 }
 

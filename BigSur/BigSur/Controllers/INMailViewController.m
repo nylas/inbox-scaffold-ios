@@ -78,6 +78,9 @@
     INDraft * draft = [[INDraft alloc] initInNamespace: namespace];
 	INComposeViewController * compose = [[INComposeViewController alloc] initWithDraft: draft];
 	UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: compose];
+	[nav setModalPresentationStyle: UIModalPresentationFormSheet];
+	[nav setModalTransitionStyle: UIModalTransitionStyleCoverVertical];
+	
 	[self presentViewController:nav animated:YES completion:NULL];
 }
 
@@ -198,13 +201,15 @@
     
     if ([model isKindOfClass: [INThread class]]) {
         INThreadViewController * threadVC = [[INThreadViewController alloc] initWithThread: (INThread*)model];
-        [self.navigationController pushViewController:threadVC animated:YES];
+		[self smartPushViewController: threadVC animated: YES];
     }
 
     if ([model isKindOfClass: [INDraft class]]) {
         INComposeViewController * composeVC = [[INComposeViewController alloc] initWithDraft: (INDraft*)model];
         UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController: composeVC];
-        [self.navigationController presentViewController:nav animated:YES completion:NULL];
+		[nav setModalPresentationStyle: UIModalPresentationFormSheet];
+		[nav setModalTransitionStyle: UIModalTransitionStyleCoverVertical];
+		[self smartPresentViewController: nav animated: YES];
     }
 }
 

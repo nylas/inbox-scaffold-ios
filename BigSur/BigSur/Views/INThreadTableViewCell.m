@@ -55,31 +55,22 @@
         [_threadCountLabel setHidden: NO];
         
         textW -= s.width + INSETS.right;
-        [self.subjectLabel setFrameWidth: textW];
-        [self.bodyLabel setFrameSize: CGSizeMake(textW, 1000)];
+        [self.subjectLabel in_setFrameWidth: textW];
+        [self.bodyLabel in_setFrameSize: CGSizeMake(textW, 1000)];
         [self.bodyLabel sizeToFit];
         
     } else {
         [_threadCountLabel setHidden: YES];
     }
     
-    [_unreadDot setFrameCenter: CGPointMake(20, self.subjectLabel.center.y)];
+    [_unreadDot in_setFrameCenter: CGPointMake(20, self.subjectLabel.center.y)];
 }
 
 
 - (void)setThread:(INThread *)thread
 {
 	_thread = thread;
-	
-	NSArray * youAddresses = [[INAPIManager shared] namespaceEmailAddresses];
-	NSString * otherEmail = nil;
-	for (NSDictionary * recipient in _thread.participants) {
-		if ([youAddresses containsObject: recipient[@"email"]])
-			continue;
-		otherEmail = recipient[@"email"];
-		break;
-	}
-    
+	    
 	BOOL includeMe = (([[_thread messageIDs] count] > 1) || ([[_thread participants] count] > 2));
 	[self.participantsLabel setPrefixString: @"" andRecipients:[_thread participants] includeMe: includeMe];
 	[self.dateLabel setText: [NSString stringForMessageDate: [_thread lastMessageDate]]];

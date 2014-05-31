@@ -46,7 +46,7 @@
 		[tagLabel setTextAlignment: NSTextAlignmentCenter];
 		
 		CGSize textSize = [[tagLabel text] sizeWithAttributes: @{NSFontAttributeName: [tagLabel font]}];
-		[tagLabel setFrameSize: CGSizeMake(textSize.width + 8, 13)];
+		[tagLabel in_setFrameSize: CGSizeMake(textSize.width + 8, 13)];
 		[self addSubview: tagLabel];
 		[_tagViews addObject: tagLabel];
 	}
@@ -65,16 +65,16 @@
 	for (UIView * tagView in _tagViews) {
 
 		if (_alignment == NSTextAlignmentLeft)
-			[tagView setFrameOrigin: CGPointMake(x, y)];
+			[tagView in_setFrameOrigin: CGPointMake(x, y)];
 		else
-			[tagView setFrameOrigin: CGPointMake(self.frame.size.width - x - tagView.frame.size.width, y)];
+			[tagView in_setFrameOrigin: CGPointMake(self.frame.size.width - x - tagView.frame.size.width, y)];
 		
 		x += [tagView frame].size.width + 5;
 		if (x >= self.frame.size.width)
 			y += [tagView frame].size.height + 5;
 	}
 	
-	[self setFrameHeight: y + [[_tagViews lastObject] frame].size.height];
+	[self in_setFrameHeight: y + [[_tagViews lastObject] frame].size.height];
 }
 
 @end

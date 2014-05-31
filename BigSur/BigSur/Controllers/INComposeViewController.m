@@ -39,23 +39,25 @@
 {
     [super viewDidLoad];
 	
+	float w = [self.view frame].size.width;
+	
 	// create our views
-	_toRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
+	_toRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, w, 0)];
 	[_toRecipientsView.rowLabel setText: @"To:"];
 	[[_toRecipientsView actionButton] addTarget:self action:@selector(addToRecipientTapped:) forControlEvents:UIControlEventTouchUpInside];
     [_toRecipientsView addRecipients: [_draft to]];
     
-	_ccBccRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
+	_ccBccRecipientsView = [[INComposeRecipientRowView alloc] initWithFrame: CGRectMake(0, 0, w, 0)];
 	[_ccBccRecipientsView.rowLabel setText: @"Cc/Bcc:"];
     
-	_subjectView = [[INComposeSubjectRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
+	_subjectView = [[INComposeSubjectRowView alloc] initWithFrame: CGRectMake(0, 0, w, 0)];
     [[_subjectView actionButton] addTarget:self action:@selector(addAttachmentTapped:) forControlEvents:UIControlEventTouchUpInside];
     [[_subjectView subjectField] setText: _draft.subject];
     
-    _attachmentsView = [[INComposeAttachmentsRowView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
+    _attachmentsView = [[INComposeAttachmentsRowView alloc] initWithFrame: CGRectMake(0, 0, w, 0)];
 	[_attachmentsView setDelegate: self];
 		
-	_bodyTextView = [[INPlaceholderTextView alloc] initWithFrame: CGRectMake(0, 0, 320, 0)];
+	_bodyTextView = [[INPlaceholderTextView alloc] initWithFrame: CGRectMake(0, 0, w, 0)];
 	[_bodyTextView setPlaceholder: @"Compose a message..."];
 	[_bodyTextView setFont: [UIFont systemFontOfSize: 15]];
 	[_bodyTextView setTextContainerInset: UIEdgeInsetsMake(5,4,5,4)];
@@ -96,7 +98,10 @@
 	for (UIView * view in rows) {
 		view.translatesAutoresizingMaskIntoConstraints = NO;
 		[self.scrollView addSubview: view];
-		[self.scrollView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view(==containerWidth)]|" options:0 metrics:@{@"containerWidth": @(self.scrollView.frame.size.width)} views:@{@"view":view}]];
+		
+		NSLayoutConstraint * widthConstraint = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeWidth multiplier:1.0f constant:0];
+		[self.scrollView addConstraints: @[widthConstraint]];
+		[self.scrollView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view":view}]];
 	}
     
 	[self.scrollView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[first]" options:0 metrics:nil views:@{@"first": [rows firstObject]}]];
@@ -245,7 +250,14 @@
     UIImagePickerController * picker = [[UIImagePickerController alloc] init];
     [picker setSourceType: UIImagePickerControllerSourceTypePhotoLibrary];
     [picker setDelegate: self];
-    [self presentViewController:picker animated:YES completion:NULL];
+	
+	if ([[[UIDevice currentDevice] model] hasPrefix:@"iPad"]) {
+		_attachmentsPopover = [[UIPopoverController alloc] initWithContentViewController: picker];
+		[_attachmentsPopover presentPopoverFromRect: [sender frame] inView:[sender superview] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		
+	} else {
+		[self presentViewController:picker animated:YES completion:NULL];
+	}
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -255,16 +267,23 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [picker dismissViewControllerAnimated: YES completion:^{
+	VoidBlock ready = ^{
 		UIImage * image = [info objectForKey: UIImagePickerControllerOriginalImage];
 		[_attachmentsView animateAttachmentAdditionAtIndex:0 withBlock:^{
 			INAttachment * attachment = [[INAttachment alloc] initWithImage: image inNamespace: [_draft namespace]];
 			[_draft addAttachment: attachment atIndex: 0];
 			[attachment upload];
 		}];
-
+		
         [self arrangeContentViews];
-    }];
+	};
+	
+	if (_attachmentsPopover) {
+		[_attachmentsPopover dismissPopoverAnimated:YES];
+		ready();
+	} else {
+		[picker dismissViewControllerAnimated: YES completion: ready];
+	}
 }
 
 #pragma mark Attachments View Delegate
@@ -299,12 +318,15 @@
 
 #pragma mark Showing and Hiding Keyboard
 
-
 - (void)keyboardWillShow:(NSNotification*)notif
 {
 	CGRect keyboardFrame = [[[notif userInfo] objectForKey: UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	[self.scrollView setFrameHeight: self.view.frame.size.height - keyboardFrame.size.height];
-	
+
+	UIEdgeInsets insets = self.scrollView.contentInset;
+	insets.bottom = keyboardFrame.size.height;
+	[self.scrollView setContentInset: insets];
+	[self.scrollView setScrollIndicatorInsets: insets];
+
     // find our first responder and make it visible
     NSMutableArray * search = [NSMutableArray array];
     [search addObjectsFromArray: self.scrollView.subviews];
@@ -326,7 +348,10 @@
 
 - (void)keyboardWillHide:(NSNotification*)notif
 {
-	[self.scrollView setFrameHeight: self.view.frame.size.height];
+	UIEdgeInsets insets = self.scrollView.contentInset;
+	insets.bottom = 0;
+	[self.scrollView setContentInset: insets];
+	[self.scrollView setScrollIndicatorInsets: insets];
 }
 
 @end
