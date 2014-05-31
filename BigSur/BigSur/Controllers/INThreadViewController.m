@@ -226,7 +226,7 @@
 
 - (void)provider:(INModelProvider*)provider dataFetchFailed:(NSError *)error
 {
-	if (([_messages count] == 0) && ([_drafts count] == 0)) {
+	if (([_messages count] == 0) && ([_drafts count] == 0) && error) {
 		[_errorView setHidden: NO];
 		[_errorLabel setText: [NSString stringWithFormat:@"Sorry, messages could not be loaded. %@", [error localizedDescription]]];
 	}
@@ -240,8 +240,7 @@
         _messages = [provider items];
 
 	[[self collectionView] reloadData];
-    
-	[_errorView setHidden: (([_messages count] > 0) || ([_drafts count] > 0))];
+	[_errorView setHidden: YES];
 }
 
 @end

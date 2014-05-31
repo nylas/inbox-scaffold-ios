@@ -60,6 +60,7 @@
 	
 	UIView * shadow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 1024)];
 	UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(popPane)];
+	[shadow setAlpha: 0];
 	[shadow setBackgroundColor: [UIColor colorWithWhite:0 alpha:0.15]];
 	[shadow addGestureRecognizer: tap];
 	[shadow setUserInteractionEnabled: YES];
@@ -73,7 +74,7 @@
 	float width = [[paneWidths lastObject] floatValue];
 	float x = self.view.bounds.size.width;
 	[navBar setFrame: CGRectMake(x, 0, width, NAV_HEIGHT)];
-	[controller.view setFrame: CGRectMake(x, NAV_HEIGHT, width, self.view.frame.size.height)];
+	[controller.view setFrame: CGRectMake(x, NAV_HEIGHT, width, self.view.bounds.size.height - NAV_HEIGHT)];
 	[shadow in_setFrameX: x - shadow.frame.size.width];
 	
 	if (animated) {
@@ -167,9 +168,9 @@
 		[shadow setAlpha: (lastOccluded ? 1.0 : 0.0)];
 
 		float visibleW = fminf(w, ((self.view.bounds.size.width - lastWidth - x) / ([_paneViewControllers count] - 2)));
-		if ((paneCount == 3) && (ii == 0))
+		if ((paneCount == 3) && (ii == 0)) {
 			visibleW = 60;
-			
+		}
 		x += visibleW;
 		lastOccluded = (w != visibleW);
 	}
