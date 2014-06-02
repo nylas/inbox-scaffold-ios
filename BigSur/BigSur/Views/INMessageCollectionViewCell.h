@@ -29,6 +29,7 @@ typedef void (^ CellBlock)();
 @property (nonatomic, weak) IBOutlet UIView * draftOptionsView;
 @property (nonatomic, weak) IBOutlet UIView * headerContainerView;
 @property (nonatomic, strong) CALayer * headerBorderLayer;
+@property (nonatomic, assign) BOOL collapsed;
 
 + (float)cachedHeightForMessage:(INMessage*)message;
 

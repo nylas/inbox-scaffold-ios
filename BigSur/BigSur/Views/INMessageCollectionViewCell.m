@@ -102,7 +102,10 @@ static NSMutableDictionary * cachedMessageHeights;
     
     if (newMessage) {
         NSString * email = [[_message.from firstObject] objectForKey: @"email"];
-        [_fromProfileButton setImageForState:UIControlStateNormal withURL:[NSURL URLForGravatar: email] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"]];
+        [_fromProfileButton setImageForState:UIControlStateNormal withURLRequest:[NSURLRequest requestWithURL: [NSURL URLForGravatar: email]] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"] success:^(NSHTTPURLResponse *response, UIImage *image) {
+            [_fromProfileButton setImage:image forState:UIControlStateNormal];
+            [_fromProfileButton setNeedsDisplay];
+        }failure: NULL];
         [_bodyView clearContent];
     }
     
@@ -114,6 +117,10 @@ static NSMutableDictionary * cachedMessageHeights;
     [_draftOptionsView setHidden: ![_message isKindOfClass: [INDraft class]]];
 }
 
+- (void)setCollapsed:(BOOL)collapsed
+{
+    [_bodyView setHidden: collapsed];
+}
 
 - (void)messageContentViewSizeDetermined:(CGSize)size
 {

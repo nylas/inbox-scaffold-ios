@@ -35,6 +35,8 @@
 	[_messageProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
 	[_messageProvider setDelegate: self];
 
+    _messagesCollapsedState = [NSMutableDictionary dictionary];
+    
     _draftProvider = [_thread newDraftProvider];
     [_draftProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
 	[_draftProvider setDelegate: self];
@@ -143,6 +145,21 @@
     [self presentViewController:nav animated:YES completion:NULL];
 }
 
+- (void)toggleMessageCollapse:(UITapGestureRecognizer*)recognizer
+{
+    INMessageCollectionViewCell * cell = [[recognizer view] viewAncestorOfClass: [INMessageCollectionViewCell class]];
+    if (!cell) return;
+    
+    NSString * key = [[cell message] ID];
+    BOOL collapsed = [[_messagesCollapsedState objectForKey: key] boolValue];
+
+    collapsed = !collapsed;
+    
+    [cell setCollapsed: collapsed];
+    [_messagesCollapsedState setObject:@(collapsed) forKey:key];
+    [[_collectionView collectionViewLayout] invalidateLayout];
+}
+
 #pragma Collection View Data Source
 
 - (INMessage *)messageForIndexPath:(NSIndexPath*)indexPath
@@ -170,13 +187,21 @@
 {
 	INMessageCollectionViewCell * cell = (INMessageCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"message" forIndexPath: indexPath];
     INMessage * message = [self messageForIndexPath: indexPath];
-
+    BOOL collapsed = [_messagesCollapsedState[[message ID]] boolValue];
+    
 	UICollectionView __weak * __collectionView = collectionView;
 	[cell setMessageHeightDeterminedBlock: ^() {
 		[[__collectionView collectionViewLayout] invalidateLayout];
 	}];
-	
+    
 	[cell setMessage: message];
+    [cell setCollapsed: collapsed];
+    
+    if ([[[cell headerContainerView] gestureRecognizers] count] == 0) {
+        UITapGestureRecognizer * tapRecognzier = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMessageCollapse:)];
+        [[cell headerContainerView] addGestureRecognizer: tapRecognzier];
+    }
+    
     [[cell draftDeleteButton] removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [[cell draftDeleteButton] addTarget:self action:@selector(deleteDraftTapped:) forControlEvents:UIControlEventTouchUpInside];
     [[cell draftEditButton] removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
@@ -188,7 +213,11 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     INMessage * message = [self messageForIndexPath: indexPath];
-	float height = [INMessageCollectionViewCell cachedHeightForMessage: message];
+
+    if ([[_messagesCollapsedState objectForKey: [message ID]] boolValue] == YES)
+        return CGSizeMake(300, 66);
+    
+    float height = [INMessageCollectionViewCell cachedHeightForMessage: message];
 	if (height == 0)
 		height = 100;
 		

@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) INThread * thread;
 @property (nonatomic, strong) NSArray * messages;
+@property (nonatomic, strong) NSMutableDictionary * messagesCollapsedState;
 @property (nonatomic, strong) NSArray * drafts;
 
 - (id)initWithThread:(INThread*)thread;
