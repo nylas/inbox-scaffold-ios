@@ -109,7 +109,7 @@ static NSMutableDictionary * cachedMessageHeights;
 	[_fromField setPrefixString: @"" andRecipients: [message from] includeMe: YES];
 	[_toField setPrefixString:@"To: " andRecipients: [message to] includeMe: YES];
 	[_dateField setText: [NSString stringForMessageDate: [_message date]]];
-
+    
     [_bodyView setContent: [message body]];
     [_draftOptionsView setHidden: ![_message isKindOfClass: [INDraft class]]];
 }

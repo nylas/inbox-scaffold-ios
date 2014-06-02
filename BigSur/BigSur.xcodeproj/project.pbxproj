@@ -123,8 +123,8 @@
 		435764AC192530BB00E6B340 /* INAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INAuthViewController.xib; sourceTree = "<group>"; };
 		435BB0CD192FF51F00BEE4AE /* INMessageContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageContentView.h; sourceTree = "<group>"; };
 		435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageContentView.m; sourceTree = "<group>"; };
-		436BB2631938FA33004BA79B /* INSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INSplitViewController.h; path = Controllers/INSplitViewController.h; sourceTree = "<group>"; };
-		436BB2641938FA33004BA79B /* INSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INSplitViewController.m; path = Controllers/INSplitViewController.m; sourceTree = "<group>"; };
+		436BB2631938FA33004BA79B /* INSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSplitViewController.h; sourceTree = "<group>"; };
+		436BB2641938FA33004BA79B /* INSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSplitViewController.m; sourceTree = "<group>"; };
 		438159F71922E6D70069116A /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
 		438159F81922E6D70069116A /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
 		438159FC1922E7580069116A /* INSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarViewController.h; sourceTree = "<group>"; };
@@ -399,8 +399,6 @@
 			children = (
 				43F22A8419071A1100A032D1 /* INAppDelegate.h */,
 				43F22A8519071A1100A032D1 /* INAppDelegate.m */,
-				436BB2631938FA33004BA79B /* INSplitViewController.h */,
-				436BB2641938FA33004BA79B /* INSplitViewController.m */,
 				43DB20EF192145F100DCFA4A /* INThemeManager.h */,
 				43DB20F0192145F100DCFA4A /* INThemeManager.m */,
 				438BEA031926C9F500E5C67D /* INStupidFullSyncEngine.h */,
@@ -449,6 +447,8 @@
 		43F22AC919071C5200A032D1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				436BB2631938FA33004BA79B /* INSplitViewController.h */,
+				436BB2641938FA33004BA79B /* INSplitViewController.m */,
 				43DB20F21921498200DCFA4A /* INRootViewController.h */,
 				43DB20F31921498200DCFA4A /* INRootViewController.m */,
 				43F22ACA19071C5200A032D1 /* INMailViewController.h */,

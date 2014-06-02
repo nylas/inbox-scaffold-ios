@@ -26,12 +26,10 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	[[[INAppDelegate current] slidingViewController] setLocked:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[[[INAppDelegate current] slidingViewController] setLocked:YES];
 }
 
 - (JSSlidingViewController*)parentSlidingViewController

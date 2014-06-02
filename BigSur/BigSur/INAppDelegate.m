@@ -70,11 +70,12 @@
 
 		// initialize the controller that manages the sliding of the sidebar tray
 		_slidingViewController = [[JSSlidingViewController alloc] initWithFrontViewController: nav backViewController: _sidebarViewController];
-		_slidingViewController.useBouncyAnimations = NO;
 		_slidingViewController.delegate = self;
 		self.window.rootViewController = _slidingViewController;
 	}
 	[self.window makeKeyAndVisible];
+    _slidingViewController.useBouncyAnimations = NO;
+    _slidingViewController.allowManualSliding = NO;
 
     [self showThreadsWithTag: [INTag tagWithID: INTagIDInbox]];
 
@@ -177,11 +178,13 @@
 - (void)slidingViewControllerWillOpen:(JSSlidingViewController *)viewController
 {
     [_sidebarViewController refresh];
+    [_slidingViewController setAllowManualSliding: YES];
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)slidingViewControllerWillClose:(JSSlidingViewController *)viewController
 {
+    [_slidingViewController setAllowManualSliding: NO];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 }
 

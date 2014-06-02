@@ -66,8 +66,10 @@ height:auto;\
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [_webView setFrame: self.bounds];
-    [_textView setFrame: self.bounds];
+    if (_contentLoadCompleted) {
+        [_textView setFrame: self.bounds];
+        [_webView setFrame: self.bounds];
+    }
 }
 
 - (void)setFrame:(CGRect)frame
@@ -85,11 +87,14 @@ height:auto;\
     _webView = nil;
     
     [_textView setText: @""];
+
+    _contentLoadCompleted = NO;
 }
 
 - (void)setContent:(NSString*)content
 {
     _content = content;
+    _contentLoadCompleted = NO;
     
     if ([content rangeOfString:@"<[^<]+>" options:NSRegularExpressionSearch].location != NSNotFound)
         [self setContentWebView: content];
@@ -117,8 +122,8 @@ height:auto;\
         [_webView setTintColor: _tintColor];
         [_webView setScalesPageToFit: YES];
         [_webView setDataDetectorTypes: UIDataDetectorTypeAll];
-        [[_webView scrollView] setScrollEnabled: NO];
         [_webView setBackgroundColor:[UIColor whiteColor]];
+        [[_webView scrollView] setScrollEnabled: NO];
         [[_webView scrollView] setBackgroundColor:[UIColor whiteColor]];
         [self addSubview: _webView];
     }
@@ -161,6 +166,7 @@ height:auto;\
     CGSize size = [_textView sizeThatFits: CGSizeMake(self.bounds.size.width, MAXFLOAT)];
     [_textView setFrame: CGRectMake(0, 0, size.width, size.height)];
     
+    _contentLoadCompleted = YES;
     if ([self.delegate respondsToSelector: @selector(messageContentViewSizeDetermined:)])
         [self.delegate messageContentViewSizeDetermined: size];
 }
@@ -171,6 +177,8 @@ height:auto;\
 	[_webView in_setFrameHeight: s.height];
 	[_webView setAlpha: 1];
 
+    _contentLoadCompleted = YES;
+    
     if ([self.delegate respondsToSelector: @selector(messageContentViewSizeDetermined:)]) {
         [self.delegate messageContentViewSizeDetermined: s];
 	}

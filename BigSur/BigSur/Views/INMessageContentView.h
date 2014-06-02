@@ -17,6 +17,7 @@
 @interface INMessageContentView : UIView <UIWebViewDelegate>
 {
     NSString * _content;
+    BOOL _contentLoadCompleted;
 }
 
 @property (nonatomic, weak) IBOutlet NSObject<INMessageContentViewDelegate> * delegate;
