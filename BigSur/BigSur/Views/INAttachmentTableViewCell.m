@@ -55,19 +55,27 @@
 	INUploadAttachmentTask * task = [attachment uploadTask];
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	if (task) {
-		[[self progressView] setHidden: NO];
-		[[self progressView] setProgress: [task percentComplete]];
+		[[self progressView] setAlpha: 1];
+		[[self progressView] setProgress: [task percentComplete] animated: NO];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProgress:) name:INTaskProgressNotification object:task];
 	} else {
-		[[self progressView] setHidden: YES];
+		[[self progressView] setAlpha: 0];
 	}
 }
 
 - (void)updateProgress:(NSNotification*)notif
 {
 	INUploadAttachmentTask * task = [notif object];
-	[[self progressView] setHidden: ([task percentComplete] >= 1.0)];
-	[[self progressView] setProgress: [task percentComplete]];
+
+    if (([task percentComplete] >= 1.0) && ([[self progressView] progress] < 1)) {
+        [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            [[self progressView] setAlpha: 0];
+        } completion:NULL];
+    }
+
+    [UIView animateWithDuration:0.3 animations:^{
+        [[self progressView] setProgress: [task percentComplete] animated: YES];
+    }];
 }
 
 - (void)dealloc
