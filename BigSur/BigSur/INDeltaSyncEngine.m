@@ -211,7 +211,7 @@
         AFHTTPRequestOperation * op = [[INAPIManager shared] GET:path parameters:params success:^(AFHTTPRequestOperation *operation, id response) {
             // Check that the response is valid
             if (![response isKindOfClass: [NSDictionary class]]) {
-                NSError * error = [NSError inboxErrorWithDescription: @"The /sync/events API returned an object that was not a dictionary: %@", response];
+                NSError * error = [NSError inboxErrorWithFormat: @"The /sync/events API returned an object that was not a dictionary: %@", response];
                 return callback(NO, error);
             }
             

@@ -272,7 +272,6 @@
 		[_attachmentsView animateAttachmentAdditionAtIndex:0 withBlock:^{
 			INAttachment * attachment = [[INAttachment alloc] initWithImage: image inNamespace: [_draft namespace]];
 			[_draft addAttachment: attachment atIndex: 0];
-			[attachment upload];
 		}];
 		
         [self arrangeContentViews];
