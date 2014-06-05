@@ -11,6 +11,9 @@
 #import "INMessageCollectionViewCell.h"
 #import "UIView+FrameAdditions.h"
 #import "NSObject+AssociatedObjects.h"
+#import "INPluginManager.h"
+#import "INThemeManager.h"
+#import "BPopdownMenu.h"
 
 #define SECTION_INSET 10
 
@@ -87,15 +90,34 @@
         archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_unarchive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(unarchiveTapped:)];
     else
         archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(archiveTapped:)];
+
     
-	UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
-	[self.navigationItem setRightBarButtonItems:@[reply, archive] animated:NO];
+    _actions = [NSMutableArray array];
+    NSMutableArray * actionTitles = [NSMutableArray array];
+    
+    for (NSString * name in [[INPluginManager shared] pluginNamesForRole: @"message-action"]) {
+        JSContext * context = [[INPluginManager shared] contextForPluginWithName:name];
+        context[@"thread"] = self.thread;
+        BOOL available = [[context evaluateScript:@"isAvailableForThread(thread);"] toBool];
+        if (available) {
+            NSString * title = [[context evaluateScript:@"actionTitleForThread(thread);"] toString];
+            if (title != nil) {
+                [_actions addObject: context];
+                [actionTitles addObject: title];
+            }
+        }
+    }
+    _actionsButton = [[BPopdownButton alloc] initWithFrame: CGRectMake(0, 0, 30, 20)];
 
-}
+    UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
+	UIBarButtonItem * actions = [[UIBarButtonItem alloc] initWithCustomView: _actionsButton];
+	[self.navigationItem setRightBarButtonItems:@[actions, reply, archive] animated:NO];
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+    [_actionsButton setTitle:@"•••" forState:UIControlStateNormal];
+    [_actionsButton setTitleColor:[[INThemeManager shared] tintColor] forState:UIControlStateNormal];
+    [_actionsButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+    [_actionsButton setMenuOptions: actionTitles];
+    [_actionsButton setMenuDelegate: self];
 }
 
 - (void)dealloc
@@ -111,6 +133,17 @@
 	[nav setModalPresentationStyle: UIModalPresentationFormSheet];
 	[nav setModalTransitionStyle: UIModalTransitionStyleCoverVertical];
 	[self presentViewController: nav animated:YES completion:NULL];
+}
+
+- (void)popdownMenu:(BPopdownMenu*)menu optionSelected:(int)index
+{
+    JSContext * context = [_actions objectAtIndex: index];
+    [context evaluateScript:@"performForThread(thread);"];
+    [_actionsButton dismissMenu];
+    
+    if (context.exception) {
+        [[[UIAlertView alloc] initWithTitle:@"Plugin Error" message:[context.exception description] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+    }
 }
 
 - (IBAction)archiveTapped:(id)sender

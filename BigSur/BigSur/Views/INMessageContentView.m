@@ -8,6 +8,7 @@
 
 #import "INMessageContentView.h"
 #import "UIView+FrameAdditions.h"
+#import "INPluginManager.h"
 
 static NSString * messageCSS = @"\
 html, body {\
@@ -142,7 +143,7 @@ height:auto;\
     [html writeToFile:[@"~/Documents/test_email.html" stringByExpandingTildeInPath] atomically:NO encoding:NSUTF8StringEncoding error:nil];
 	
 	[_webView setAlpha: 0.01];
-    [_webView loadHTMLString:html baseURL:nil];
+    [_webView loadHTMLString:html baseURL: _contentBaseURL];
 }
 
 - (void)setContentTextView:(NSString*)content

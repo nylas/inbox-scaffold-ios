@@ -58,7 +58,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9Vx-Nl-Ncg">
-                                <rect key="frame" x="175" y="11" width="96.000000351108625" height="22"/>
+                                <rect key="frame" x="175" y="11" width="96" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Edit Draft" image="icon_draft_edit">

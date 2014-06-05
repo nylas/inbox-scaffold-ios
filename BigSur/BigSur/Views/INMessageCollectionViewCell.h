@@ -19,6 +19,8 @@ typedef void (^ CellBlock)();
 @property (nonatomic, strong) INMessage * message;
 @property (nonatomic, strong) CellBlock messageHeightDeterminedBlock;
 
+@property (nonatomic, strong) NSMutableArray * bodySegments;
+
 @property (nonatomic, weak) IBOutlet INMessageContentView * bodyView;
 @property (nonatomic, weak) IBOutlet UIButton * fromProfileButton;
 @property (nonatomic, weak) IBOutlet INRecipientsLabel * fromField;

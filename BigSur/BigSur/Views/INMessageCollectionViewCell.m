@@ -12,6 +12,7 @@
 #import "UIView+FrameAdditions.h"
 #import "INConvenienceCategories.h"
 #import "INThemeManager.h"
+#import "INPluginManager.h"
 
 #define ASSOCIATED_CACHED_HEIGHT @"cell-message-height"
 
@@ -113,13 +114,45 @@ static NSMutableDictionary * cachedMessageHeights;
 	[_toField setPrefixString:@"To: " andRecipients: [message to] includeMe: YES];
 	[_dateField setText: [NSString stringForMessageDate: [_message date]]];
     
-    [_bodyView setContent: [message body]];
+    _bodySegments = [NSMutableArray array];
+    [_bodySegments addObject: [message body]];
+    
+    // start evaluating message with plugins
+    for (NSString * pluginName in [[INPluginManager shared] pluginNamesForRole:@"message-body"]) {
+        JSContext * context = [[INPluginManager shared] contextForPluginWithName: pluginName];
+        context[@"message"] = message;
+        
+        if ([[context evaluateScript:@"isAvailableForMessage(message);"] toBool] == YES) {
+            NSString * initialHTML = [[context evaluateScript:@"initialHTMLForMessage(message);"] toString];
+            if ([initialHTML isEqualToString: @"undefined"])
+                initialHTML = @"";
+            
+            [_bodySegments insertObject:initialHTML atIndex:0];
+            dispatch_async([[INPluginManager shared] pluginBackgroundQueue], ^{
+                NSString * finalHTML = [[context evaluateScript:@"finalHTMLForMessage(message);"] toString];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSInteger index = [_bodySegments indexOfObject: initialHTML];
+                    [_bodySegments replaceObjectAtIndex:index withObject: finalHTML];
+                    [self updateBodyViewContent];
+                });
+            });
+        }
+    }
+    
+    [self updateBodyViewContent];
     [_draftOptionsView setHidden: ![_message isKindOfClass: [INDraft class]]];
 }
 
 - (void)setCollapsed:(BOOL)collapsed
 {
     [_bodyView setHidden: collapsed];
+}
+
+- (void)updateBodyViewContent
+{
+    NSString * html = [_bodySegments componentsJoinedByString:@" "];
+    [_bodyView setContentBaseURL: [[INPluginManager shared] webViewBaseURL]];
+    [_bodyView setContent: html];
 }
 
 - (void)messageContentViewSizeDetermined:(CGSize)size

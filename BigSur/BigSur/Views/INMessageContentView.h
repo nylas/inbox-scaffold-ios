@@ -26,6 +26,7 @@
 @property (nonatomic, strong) UIWebView * webView;
 @property (nonatomic, strong) UITextView * textView;
 @property (nonatomic, assign) UIEdgeInsets contentMargin;
+@property (nonatomic, strong) NSURL * contentBaseURL;
 
 - (void)clearContent;
 - (void)setContent:(NSString*)content;
