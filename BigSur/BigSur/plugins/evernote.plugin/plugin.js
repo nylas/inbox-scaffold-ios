@@ -1,11 +1,12 @@
-function isAvailableForThread(thread) {
+
+plugin.isAvailableForThread = function(thread) {
 	return true;
 }
 
-function actionTitleForThread(thread) {
+plugin.actionTitleForThread = function(thread) {
 	return "Send to Evernote";
 }
 
-function performForThread(thread) {
+plugin.performForThread = function(thread) {
     app.alert("HIi");
 }

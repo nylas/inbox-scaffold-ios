@@ -1,12 +1,12 @@
-function isAvailableForMessage(message) {
+plugin.isAvailableForMessage = function(message) {
     return (message.from[0].email.indexOf('luv.southwest.com') != -1);
 }
 
-function initialHTMLForMessage(message) {
+plugin.initialHTMLForMessage = function(message) {
     return "<div style='background-color:#fcfcfc; padding:15px; border:1px solid #eee; color:#333;'><img src='./swa_flight.png' style='width:40px; height:40px; float:right; padding-left:15px;'>Loading flight status...</div>";
 }
 
-function finalHTMLForMessage(message, callback) {
+plugin.finalHTMLForMessage = function(message) {
     $ = cheerio.load(message.body);
     
     var passengerName = $('table tbody tr td table tbody tr td table tbody tr td tbody tr td div').eq(4).text().trim()

@@ -122,8 +122,8 @@ static NSMutableDictionary * cachedMessageHeights;
         JSContext * context = [[INPluginManager shared] contextForPluginWithName: pluginName];
         context[@"message"] = message;
         
-        if ([[context evaluateScript:@"isAvailableForMessage(message);"] toBool] == YES) {
-            NSString * initialHTML = [[context evaluateScript:@"initialHTMLForMessage(message);"] toString];
+        if ([[context evaluateScript:@"plugin.isAvailableForMessage(message);"] toBool] == YES) {
+            NSString * initialHTML = [[context evaluateScript:@"plugin.initialHTMLForMessage(message);"] toString];
             if ([initialHTML isEqualToString: @"undefined"])
                 initialHTML = @"";
             

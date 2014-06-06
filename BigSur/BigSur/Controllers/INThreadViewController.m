@@ -98,9 +98,9 @@
     for (NSString * name in [[INPluginManager shared] pluginNamesForRole: @"message-action"]) {
         JSContext * context = [[INPluginManager shared] contextForPluginWithName:name];
         context[@"thread"] = self.thread;
-        BOOL available = [[context evaluateScript:@"isAvailableForThread(thread);"] toBool];
+        BOOL available = [[context evaluateScript:@"plugin.isAvailableForThread(thread);"] toBool];
         if (available) {
-            NSString * title = [[context evaluateScript:@"actionTitleForThread(thread);"] toString];
+            NSString * title = [[context evaluateScript:@"plugin.actionTitleForThread(thread);"] toString];
             if (title != nil) {
                 [_actions addObject: context];
                 [actionTitles addObject: title];
@@ -138,7 +138,7 @@
 - (void)popdownMenu:(BPopdownMenu*)menu optionSelected:(int)index
 {
     JSContext * context = [_actions objectAtIndex: index];
-    [context evaluateScript:@"performForThread(thread);"];
+    [context evaluateScript:@"plugin.performForThread(thread);"];
     [_actionsButton dismissMenu];
     
     if (context.exception) {

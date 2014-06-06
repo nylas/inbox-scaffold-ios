@@ -1,12 +1,12 @@
-function isAvailableForThread(thread) {
+plugin.isAvailableForThread = function(thread) {
     return thread.subject.substring(0, 6) == 'Order:';
 }
 
-function actionTitleForThread(thread) {
+plugin.actionTitleForThread = function(thread) {
 	return "Open in FastSpring...";
 }
 
-function performForThread(thread) {
+plugin.performForThread = function(thread) {
 	// find the order id
     var messages = thread.messages();
     var order_id = thread.subject.substring(7);

@@ -107,7 +107,8 @@
     };
 
     context[@"app"] = self;
-    
+	[context evaluateScript: @"plugin = {}"];
+
     [context evaluateScript: baseJS];
     if (context.exception) {
         NSLog(@"Plugin %@ not loaded due to exception reading compiled.js base code.", name);
