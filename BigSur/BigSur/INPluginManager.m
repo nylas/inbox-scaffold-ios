@@ -24,6 +24,7 @@
 
 @end
 
+
 @implementation INPluginManager
 
 + (INPluginManager *)shared
@@ -92,21 +93,33 @@
     
     if (!pluginBundle)
         return nil;
-    
-    NSString * baseJSPath = [pluginBundle pathForResource:@"plugin" ofType:@"js"];
+
+    NSString * baseJSPath = [[NSBundle mainBundle] pathForResource:@"compiled" ofType:@"js" inDirectory:@"plugins/base"];
     NSString * baseJS = [NSString stringWithContentsOfFile:baseJSPath encoding:NSUTF8StringEncoding error:NULL];
+
+    NSString * pluginJSPath = [pluginBundle pathForResource:@"plugin" ofType:@"js"];
+    NSString * pluginJS = [NSString stringWithContentsOfFile:pluginJSPath encoding:NSUTF8StringEncoding error:NULL];
+
     JSContext * context = [[JSContext alloc] initWithVirtualMachine: [[JSVirtualMachine alloc] init]];
-    context[@"app"] = self;
-    [context evaluateScript: baseJS];
-    if (context.exception) {
-        NSLog(@"Plugin not loaded due to exception reading plugin.js:\n%@", context.exception);
-        context.exception = nil;
-        return nil;
-    }
     context.exceptionHandler = ^(JSContext *context, JSValue *exception) {
         context.exception = exception;
         NSLog(@"%@", exception);
     };
+
+    context[@"app"] = self;
+    
+    [context evaluateScript: baseJS];
+    if (context.exception) {
+        NSLog(@"Plugin %@ not loaded due to exception reading compiled.js base code.", name);
+        context.exception = nil;
+        return nil;
+    }
+    [context evaluateScript: pluginJS];
+    if (context.exception) {
+        NSLog(@"Plugin %@ not loaded due to exception reading plugin.js", name);
+        context.exception = nil;
+        return nil;
+    }
 
     [_pluginContexts setObject:context forKey:name];
     return context;
@@ -116,6 +129,8 @@
 {
     return _pluginNamesByRole[role];
 }
+
+#pragma Exposed Methods
 
 - (void)alert:(NSString*)alert
 {
@@ -132,10 +147,16 @@
     [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
 }
 
-- (id)getJSON:(NSString*)url
+- (void)getJSON:(NSString*)url withCallback:(JSValue*)block
 {
-    NSURLRequest * request = [NSURLRequest requestWithURL: [NSURL URLWithString: url]];
-    NSData * result = [NSURLConnection sendSynchronousRequest:request returningResponse:NULL error: NULL];
-    return [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingAllowFragments error:NULL];
+    AFHTTPRequestOperationManager * manager = [[AFHTTPRequestOperationManager alloc] init];
+    AFHTTPRequestOperation * op = [manager GET:url parameters:NULL success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [block callWithArguments: @[responseObject]];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [block callWithArguments: @[[NSNull null], error]];
+    }];
+    [op setResponseSerializer: [[AFJSONResponseSerializer alloc] init]];
+    
 }
+
 @end

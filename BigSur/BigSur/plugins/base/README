@@ -1,0 +1,10 @@
+Use Browserify to convert index.js into a flat file with all of the required modules:
+
+npm install -g browserify
+browserify index.js > compiled.js
+
+At the very top of the compiled.js file, add:
+
+window = this;
+
+Otherwise lodash flips a shit because and overwrites Object with null.

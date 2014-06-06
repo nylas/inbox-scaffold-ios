@@ -14,7 +14,7 @@
 - (void)alert:(NSString*)alert;
 - (void)log:(NSString*)msg;
 - (void)openURL:(NSString*)url;
-- (id)getJSON:(NSString*)url;
+- (void)getJSON:(NSString*)url withCallback:(JSValue*)callback;
 
 @end
 
@@ -62,5 +62,6 @@
 - (void)alert:(NSString*)alert;
 - (void)log:(NSString*)msg;
 - (void)openURL:(NSString*)url;
+- (void)getJSON:(NSString*)url withCallback:(JSValue*)callback;
 
 @end

@@ -127,15 +127,15 @@ static NSMutableDictionary * cachedMessageHeights;
             if ([initialHTML isEqualToString: @"undefined"])
                 initialHTML = @"";
             
+            context[@"callback"] = ^(NSString * finalHTML){
+                NSInteger index = [_bodySegments indexOfObject: initialHTML];
+                if (index == NSNotFound) return;
+                [_bodySegments replaceObjectAtIndex:index withObject: finalHTML];
+                [self updateBodyViewContent];
+            };
+            
             [_bodySegments insertObject:initialHTML atIndex:0];
-            dispatch_async([[INPluginManager shared] pluginBackgroundQueue], ^{
-                NSString * finalHTML = [[context evaluateScript:@"finalHTMLForMessage(message);"] toString];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSInteger index = [_bodySegments indexOfObject: initialHTML];
-                    [_bodySegments replaceObjectAtIndex:index withObject: finalHTML];
-                    [self updateBodyViewContent];
-                });
-            });
+            [context evaluateScript:@"finalHTMLForMessage(message, callback);"];
         }
     }
     
