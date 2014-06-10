@@ -1,0 +1,48 @@
+
+<script>
+var thread = {
+	"subject": "Order: Hello World!",
+	"body": "Ben Says Hi",
+	messages: function() {
+		return [];
+	}
+}
+</script>
+
+<script>
+function pluginReady(plugin_name) {
+	var frame = window.frames[plugin_name];
+	var plugin = frame.plugin;
+
+	/* Declare functions that we want to expose in the plugin iFrame.
+	These functions are run in our frame, not in the iFrame, so
+	window.location refers to our main window and not the iframe, etc. */
+	frame.app.alert = function(msg) {
+		alert(msg);
+	}
+
+	frame.app.log = function(msg) {	
+		console.log(msg);
+	}
+
+	frame.app.openURL = function(url) {
+		window.location = url;
+	}
+
+	if (plugin.isAvailableForThread(thread)) {
+		var actionTitle = plugin.actionTitleForThread(thread);
+		alert("About to perform plugin action: " + actionTitle);
+
+		setTimeout(function() {
+			plugin.performForThread(thread);
+		}, 1000);
+	}
+}
+</script>
+
+<iframe seamless onload="pluginReady('plugin-fastspring');" name="plugin-fastspring" id="plugin-fastspring" src="/plugin-frame/fastspring" style="border:0; width:10px; height:10px;">
+</iframe>
+
+<div class="message-body">
+	Imagine the Message Body Here
+</div>
