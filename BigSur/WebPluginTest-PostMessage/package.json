@@ -1,0 +1,40 @@
+{
+  "name": "Palomar",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=development foreman start -e configs/development.env",
+    "test": "NODE_ENV=test foreman run -e configs/test.env ./node_modules/.bin/mocha --compilers coffee:coffee-script --reporter spec tests/**.coffee"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "3.4.7",
+    "jade": "*",
+    "sequelize": "1.7.0-beta.2",
+    "mysql": "~2.0.0-rc2",
+    "pg": "~2.8.3",
+    "coffee-script": "1.6.2",
+    "coffeescript-compiler": "0.1.1",
+    "mocha": "~1.15.1",
+    "supertest": "~0.8.2",
+    "should": "2.1.1",
+    "coffee-errors": "~0.8.4",
+    "aws-sdk": "~2.0.0-rc3",
+    "connect-coffee-script": "0.1.1",
+    "connect-less": "0.3.1",
+    "basic-auth": "0.0.1",
+    "restler": "~3.1.0",
+    "crypto-js": "~3.1.2-2",
+    "underscore": "~1.5.2",
+    "async": "~0.2.9",
+    "handlebars": "~1.3.0",
+    "twilio": "~1.5.0",
+    "html-to-text": "0.0.2"
+  },
+    "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
+}

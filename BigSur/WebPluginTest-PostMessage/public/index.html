@@ -1,0 +1,39 @@
+
+<script>
+var thread = {
+	"subject": "Order: Hello World!",
+	"body": "Ben Says Hi",
+	messages: function() {
+		return [];
+	}
+}
+</script>
+
+<script>
+function pluginReady(plugin_name) {
+	var perform = function(js) {
+		window.frames[plugin_name].postMessage(js, '*');
+	}
+
+	window.addEventListener('message', function (e) {
+		console.log(e, e.data);
+	});
+
+	perform('thread = ' + JSON.stringify(thread));
+	if (perform('plugin.isAvailableForThread(thread)')) {
+		var actionTitle = perform('plugin.actionTitleForThread(thread)');
+		alert("About to perform plugin action: " + actionTitle);
+
+		// setTimeout(function() {
+		// 	plugin.performForThread(thread);
+		// }, 1000);
+	}
+}
+</script>
+
+<iframe seamless sandbox="allow-scripts" onload="pluginReady('plugin-fastspring');" name="plugin-fastspring" id="plugin-fastspring" src="/plugin-frame/fastspring" style="border:0; width:10px; height:10px;">
+</iframe>
+
+<div class="message-body">
+	Imagine the Message Body Here
+</div>
