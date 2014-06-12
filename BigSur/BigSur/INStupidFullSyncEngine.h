@@ -20,4 +20,6 @@
 - (void)syncWithCallback:(ErrorBlock)callback;
 - (void)syncClass:(Class)klass callback:(ErrorBlock)callback;
 
+- (void)resetSyncState;
+
 @end

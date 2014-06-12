@@ -11,6 +11,7 @@
 #import "INAppDelegate.h"
 
 #define REQUEST_PAGE_SIZE 50
+#define SYNC_STAMPS_KEY @"sync-stamps"
 
 @implementation INDeltaSyncEngine
 
@@ -25,6 +26,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startPeriodicSync) name:UIApplicationDidBecomeActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopPeriodicSync) name:UIApplicationWillResignActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUnreadState) name:UIApplicationWillResignActiveNotification object:nil];
+
         [self startPeriodicSync];
     }
     return self;
@@ -221,11 +223,11 @@
             
             for (NSDictionary * event in events) {
                 // convert the provided type into a model class
-                Class eventClass = NSClassFromString([NSString stringWithFormat:@"IN%@", [event[@"type"] capitalizedString]]);
+                Class eventClass = NSClassFromString([NSString stringWithFormat:@"IN%@", [event[@"object_type"] capitalizedString]]);
                 NSString * eventType = event[@"event"];
                 
                 if ((!eventClass) || (![eventClass isSubclassOfClass: [INModelObject class]])) {
-                    NSLog(@"Event skipped. No INModelObject subclass for %@", event[@"type"]);
+                    NSLog(@"Event skipped. No INModelObject subclass for %@", event[@"object_type"]);
                     continue;
                 }
                 
@@ -248,19 +250,17 @@
             [_syncOperations removeObject: operation];
             
             // Update our local sync stamp
-            [self obtainedSyncStamp:response[@"events_end"] forNamespace: namespace];
-            
-            // If the response indicates that we have more events to sync, call
-            // ourselves again. Otherwise indicate a successful sync.
-            if ([response[@"events_end"] isEqualToString: response[@"events_start"]] == NO)
+            if (response[@"next_event"]) {
+                [self obtainedSyncStamp:response[@"next_event"] forNamespace: namespace];
                 [self syncEventsOfTypes: types inNamespace: namespace withCallback: callback];
-            else {
+            } else {
                 [self trimLocalCacheForNamespace: namespace];
                 callback(YES, nil);
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [_syncOperations removeObject: operation];
+            error = [NSError inboxErrorWithDescription: @"Could not fetch sync events." underlyingError: error];
             callback(NO, error);
         }];
         
@@ -294,17 +294,20 @@
     }];
 }
 
+- (void)resetSyncState
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey: SYNC_STAMPS_KEY];
+}
+
 - (BOOL)hasSyncedNamespace:(INNamespace*)namespace
 {
-    NSString * cacheKey = [NSString stringWithFormat: @"sync-stamp-%@", [namespace ID]];
-    return ([[NSUserDefaults standardUserDefaults] objectForKey: cacheKey] != nil);
+    return ([[[NSUserDefaults standardUserDefaults] objectForKey: SYNC_STAMPS_KEY] objectForKey: [namespace ID]] != nil);
 }
 
 - (void)obtainSyncStampForNamespace:(INNamespace*)namespace withCallback:(ResultBlock)callback
 {
     // Check to see if there's a stamp in our user defaults for this namespace
-    NSString * cacheKey = [NSString stringWithFormat: @"sync-stamp-%@", [namespace ID]];
-    NSString * cacheStamp = [[NSUserDefaults standardUserDefaults] objectForKey: cacheKey];
+    NSString * cacheStamp = [[[NSUserDefaults standardUserDefaults] objectForKey: SYNC_STAMPS_KEY] objectForKey: [namespace ID]];
     if (cacheStamp)
         return callback(cacheStamp, nil);
     
@@ -312,20 +315,22 @@
     NSString * stampPath = [NSString stringWithFormat: @"/n/%@/sync/generate_stamp", [namespace ID]];
     NSTimeInterval timestamp = [[NSDate dateWithTimeIntervalSinceNow: -4 * 31 * (60 * 60 * 24)] timeIntervalSince1970];
 
-    [[INAPIManager shared] POST:stampPath parameters:@{@"before":@((int)timestamp)} success:^(AFHTTPRequestOperation *operation, id response) {
+    [[INAPIManager shared] POST:stampPath parameters:@{@"start":@((int)timestamp)} success:^(AFHTTPRequestOperation *operation, id response) {
         NSString * stamp = [response objectForKey: @"stamp"];
         [self obtainedSyncStamp: stamp forNamespace: namespace];
         callback(stamp, nil);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        error = [NSError inboxErrorWithDescription: @"Could not generate sync stamp." underlyingError: error];
         callback(nil, error);
     }];
 }
 
 - (void)obtainedSyncStamp:(NSString *)stamp forNamespace:(INNamespace*)namespace
 {
-    NSString * cacheKey = [NSString stringWithFormat: @"sync-stamp-%@", [namespace ID]];
-    [[NSUserDefaults standardUserDefaults] setObject: stamp forKey: cacheKey];
+    NSMutableDictionary * keys = [NSMutableDictionary dictionaryWithDictionary: [[NSUserDefaults standardUserDefaults] objectForKey:SYNC_STAMPS_KEY]];
+    [keys setObject: stamp forKey:[namespace ID]];
+    [[NSUserDefaults standardUserDefaults] setObject: keys forKey: SYNC_STAMPS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

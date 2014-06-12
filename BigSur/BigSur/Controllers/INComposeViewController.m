@@ -270,7 +270,7 @@
 	VoidBlock ready = ^{
 		UIImage * image = [info objectForKey: UIImagePickerControllerOriginalImage];
 		[_attachmentsView animateAttachmentAdditionAtIndex:0 withBlock:^{
-			INAttachment * attachment = [[INAttachment alloc] initWithImage: image inNamespace: [_draft namespace]];
+			INFile * attachment = [[INFile alloc] initWithImage: image inNamespace: [_draft namespace]];
 			[_draft addAttachment: attachment atIndex: 0];
 		}];
 		

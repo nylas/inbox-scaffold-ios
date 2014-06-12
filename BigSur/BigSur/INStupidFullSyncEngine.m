@@ -101,4 +101,9 @@
     [_syncOperations addObject: op];
 }
 
+- (void)resetSyncState
+{
+    
+}
+
 @end

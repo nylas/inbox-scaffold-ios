@@ -46,7 +46,7 @@
     // have data loaded for each of the displayed by INModelProviders (which would be
     // be preferred if our app only ever loaded a specific view of attachments, or
     // something like that...)
-    INStupidFullSyncEngine * engine = [[INStupidFullSyncEngine alloc] initWithConfiguration: @{}];
+    INDeltaSyncEngine * engine = [[INDeltaSyncEngine alloc] initWithConfiguration: @{}];
     [[INAPIManager shared] setSyncEngine: engine];
     
     // initialize the sidebar controller

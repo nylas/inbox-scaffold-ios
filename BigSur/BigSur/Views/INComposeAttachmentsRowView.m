@@ -96,7 +96,7 @@
     if (!cell) cell = [[INAttachmentTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier:@"cell"];
 
 	NSArray * attachments = [self.delegate attachmentsForAttachmentsView: self];
-    INAttachment * attachment = [attachments objectAtIndex: [indexPath row]];
+    INFile * attachment = [attachments objectAtIndex: [indexPath row]];
     [cell setAttachment: attachment];
     [cell setDeleteCallback: ^{
         NSUInteger index = [attachments indexOfObject: attachment];

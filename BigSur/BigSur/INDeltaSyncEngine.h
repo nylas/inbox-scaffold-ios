@@ -32,4 +32,7 @@ the callback is called immediately with success=NO, error=nil.
 */
 - (void)syncWithCallback:(ErrorBlock)callback;
 
+/* Clear all sync state, usually called during the logout process. */
+- (void)resetSyncState;
+
 @end

@@ -48,11 +48,11 @@
     [super setSelected:selected animated:animated];
 }
 
-- (void)setAttachment:(INAttachment*)attachment
+- (void)setAttachment:(INFile*)attachment
 {
 	[[self imageView] setImage: [attachment localPreview]];
 	
-	INUploadAttachmentTask * task = [attachment uploadTask];
+	INUploadFileTask * task = [attachment uploadTask];
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	if (task) {
 		[[self progressView] setAlpha: 1];
@@ -65,7 +65,7 @@
 
 - (void)updateProgress:(NSNotification*)notif
 {
-	INUploadAttachmentTask * task = [notif object];
+	INUploadFileTask * task = [notif object];
 
     if (([task percentComplete] >= 1.0) && ([[self progressView] progress] < 1)) {
         [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionCurveEaseOut animations:^{
