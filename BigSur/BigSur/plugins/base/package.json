@@ -1,0 +1,12 @@
+{
+  "name": "Base",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "*",
+    "cheerio": "*"
+  }
+}
