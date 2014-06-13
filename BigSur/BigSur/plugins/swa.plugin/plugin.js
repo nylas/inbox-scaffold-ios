@@ -6,7 +6,7 @@ plugin.initialHTMLForMessage = function(message) {
     return "<div style='background-color:#fcfcfc; padding:15px; border:1px solid #eee; color:#333;'><img src='./swa_flight.png' style='width:40px; height:40px; float:right; padding-left:15px;'>Loading flight status...</div>";
 }
 
-plugin.finalHTMLForMessage = function(message) {
+plugin.finalHTMLForMessage = function(message, callback) {
     $ = cheerio.load(message.body);
     
     var passengerName = $('table tbody tr td table tbody tr td table tbody tr td tbody tr td div').eq(4).text().trim()
