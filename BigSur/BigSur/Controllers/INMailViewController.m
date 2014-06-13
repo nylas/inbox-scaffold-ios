@@ -101,6 +101,7 @@
 {
     _provider = provider;
     [_provider setDelegate: self];
+	[_tableView reloadData];
     [_provider refresh];
     
     if ([provider isKindOfClass:[INThreadProvider class]]) {
