@@ -44,12 +44,12 @@
 			// character, place the punctutation where the whitespace is. Otherwise just
 			// append the character.
 			if (hasSpace && [punctuationSet characterIsMember: c])
-				cleanedLength --;
+				cleanedLength = fmaxf(0, cleanedLength-1);
 			cleaned[cleanedLength++] = c;
 			hasSpace = NO;
 		}
 	}
-	return [[NSString alloc] initWithCharacters:cleaned length:cleanedLength];
+	return [[NSString alloc] initWithCharactersNoCopy:cleaned length:cleanedLength freeWhenDone: YES];
 }
 
 - (NSArray *)arrayOfValidEmailAddresses
