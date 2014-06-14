@@ -87,9 +87,15 @@
 
     UIBarButtonItem * archive = nil;
     if ([_thread hasTagWithID: INTagIDArchive])
-        archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_unarchive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(unarchiveTapped:)];
+        archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_unarchive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleArchiveTapped:)];
     else
-        archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(archiveTapped:)];
+        archive = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_archive.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleArchiveTapped:)];
+
+    UIBarButtonItem * star = nil;
+    if ([_thread hasTagWithID: INTagIDStarred])
+        star = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_unstar.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleStarredTapped:)];
+    else
+        star = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_star.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleStarredTapped:)];
 
     
     _actions = [NSMutableArray array];
@@ -111,7 +117,7 @@
 
     UIBarButtonItem * reply = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_reply.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(replyTapped:)];
 	UIBarButtonItem * actions = [[UIBarButtonItem alloc] initWithCustomView: _actionsButton];
-	[self.navigationItem setRightBarButtonItems:@[actions, reply, archive] animated:NO];
+	[self.navigationItem setRightBarButtonItems:@[actions, star, reply, archive] animated:NO];
 
     [_actionsButton setTitle:@"•••" forState:UIControlStateNormal];
     [_actionsButton setTitleColor:[[INThemeManager shared] tintColor] forState:UIControlStateNormal];
@@ -146,14 +152,20 @@
     }
 }
 
-- (IBAction)archiveTapped:(id)sender
+- (IBAction)toggleArchiveTapped:(id)sender
 {
-	[_thread archive];
+    if ([_thread hasTagWithID: INTagIDArchive])
+        [_thread unarchive];
+    else
+        [_thread archive];
 }
 
-- (IBAction)unarchiveTapped:(id)sender
+- (IBAction)toggleStarredTapped:(id)sender
 {
-	[_thread unarchive];
+    if ([_thread hasTagWithID: INTagIDStarred])
+        [_thread unstar];
+    else
+        [_thread star];
 }
 
 - (IBAction)deleteDraftTapped:(id)sender

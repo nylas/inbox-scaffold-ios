@@ -183,6 +183,22 @@
     if ([model isKindOfClass: [INThread class]]) {
         INThreadTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"INThreadTableViewCell" forIndexPath:indexPath];
         [cell setThread: (INThread*)model];
+        [cell setDetatchBlock: ^(INMailItemTableViewCell*cell) {
+            UIView * detatchedView = [cell contentInnerView];
+//            CGRect f = [detatchedView bounds];
+//            f.origin.x -= [[cell contentScrollView] contentOffset].x;
+//            f.origin.y -= [_tableView contentOffset].y;
+//            f = [self.view convertRect:f fromView:cell];
+            
+            [[cell superview] bringSubviewToFront: cell];
+//            [detatchedView removeFromSuperview];
+//            [detatchedView setFrame: f];
+//            [self.view addSubview:detatchedView];
+            
+            [UIView animateWithDuration:0.3 animations:^{
+                [detatchedView setTransform: CGAffineTransformMakeScale(0.95, 0.95)];
+            }];
+        }];
         return cell;
         
     } else if ([model isKindOfClass: [INMessage class]]) {
@@ -212,41 +228,6 @@
 		[nav setModalTransitionStyle: UIModalTransitionStyleCoverVertical];
 		[self smartPresentViewController: nav animated: YES];
     }
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
-- (void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
-}
-
-- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
-}
-
-- (NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    INModelObject * model = [[_provider items] objectAtIndex:[indexPath row]];
-    if ([model isKindOfClass: [INThread class]])
-        return @"Archive";
-    
-    if ([model isKindOfClass: [INDraft class]])
-        return @"Delete Draft";
-    
-    return nil;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    INModelObject * model = [[_provider items] objectAtIndex:[indexPath row]];
-    if ([model isKindOfClass: [INThread class]])
-        [(INThread*)model archive];
-    
-    if ([model isKindOfClass: [INDraft class]])
-        [(INDraft*)model delete];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

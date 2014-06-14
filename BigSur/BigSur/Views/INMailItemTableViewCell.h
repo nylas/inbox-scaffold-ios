@@ -11,12 +11,22 @@
 
 #define INSETS UIEdgeInsetsMake(8, 10, 8, 10)
 
-@interface INMailItemTableViewCell : UITableViewCell
+@class INMailItemTableViewCell;
+
+typedef void (^ DetatchBlock)(INMailItemTableViewCell * cell);
+
+@interface INMailItemTableViewCell : UITableViewCell <UIScrollViewDelegate>
+
+@property (nonatomic, strong) UIScrollView * contentScrollView;
+@property (nonatomic, strong) UIView * contentInnerView;
 
 @property (nonatomic, strong) UILabel * dateLabel;
 @property (nonatomic, strong) UILabel * bodyLabel;
 @property (nonatomic, strong) UILabel * subjectLabel;
 @property (nonatomic, strong) INRecipientsLabel * participantsLabel;
+
+@property (nonatomic, assign) BOOL hasDetatched;
+@property (nonatomic, strong) DetatchBlock detatchBlock;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
