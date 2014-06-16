@@ -12,10 +12,11 @@ typedef void (^ ContactSelectionBlock)(INContact * object);
 
 @interface INContactsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, INModelProviderDelegate>
 
+@property (nonatomic, strong) INNamespace * namespace;
 @property (nonatomic, strong) INModelProvider * contactsProvider;
 @property (nonatomic, strong) ContactSelectionBlock contactSelectionCallback;
 @property (nonatomic, weak) IBOutlet UITableView * tableView;
 
-- (id)initForSelectingContactWithCallback:(ContactSelectionBlock)block;
+- (id)initForSelectingContactInNamespace:(INNamespace*)ns withCallback:(ContactSelectionBlock)block;
 
 @end

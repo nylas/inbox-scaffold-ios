@@ -12,10 +12,11 @@
 
 @implementation INContactsViewController
 
-- (id)initForSelectingContactWithCallback:(ContactSelectionBlock)block
+- (id)initForSelectingContactInNamespace:(INNamespace*)ns withCallback:(ContactSelectionBlock)block;
 {
     self = [super init];
     if (self) {
+		_namespace = ns;
         _contactSelectionCallback = block;
     }
     return self;
@@ -32,15 +33,9 @@
 
     [_tableView setRowHeight: 50];
     
-    INNamespace * namespace = [[INAppDelegate current] currentNamespace];
-	self.contactsProvider = [namespace newContactProvider];
+	self.contactsProvider = [self.namespace newContactProvider];
 	[_contactsProvider setDelegate:self];
 	[_contactsProvider refresh];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 - (IBAction)cancelTapped:(id)sender

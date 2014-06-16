@@ -236,7 +236,8 @@
 
 - (IBAction)addToRecipientTapped:(id)sender
 {
-    INContactsViewController * vc = [[INContactsViewController alloc] initForSelectingContactWithCallback:^(INContact * contact) {
+	INNamespace * namespace = [[INAppDelegate current] currentNamespace];
+    INContactsViewController * vc = [[INContactsViewController alloc] initForSelectingContactInNamespace:namespace withCallback:^(INContact * contact) {
         if (contact)
             [_toRecipientsView addRecipientFromContact: contact];
     }];
