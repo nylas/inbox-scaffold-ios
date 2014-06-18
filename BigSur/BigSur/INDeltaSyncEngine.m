@@ -27,6 +27,13 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopPeriodicSync) name:UIApplicationWillResignActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUnreadState) name:UIApplicationWillResignActiveNotification object:nil];
 
+        // trim local cache. We need to do this on boot so that we don't inadvertently
+        // delete data the user is looking at!
+        [[INDatabaseManager shared] selectModelsOfClass:[INNamespace class] matching:nil sortedBy:nil limit:1000 offset:0 withCallback:^(NSArray *objects) {
+            for (INNamespace * namespace in objects)
+                [self trimLocalCacheForNamespace: namespace];
+        }];
+        
         [self startPeriodicSync];
     }
     return self;
@@ -254,7 +261,6 @@
                 [self obtainedSyncStamp:response[@"next_event"] forNamespace: namespace];
                 [self syncEventsOfTypes: types inNamespace: namespace withCallback: callback];
             } else {
-                [self trimLocalCacheForNamespace: namespace];
                 callback(YES, nil);
             }
             
