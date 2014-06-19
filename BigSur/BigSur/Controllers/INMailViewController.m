@@ -183,22 +183,6 @@
     if ([model isKindOfClass: [INThread class]]) {
         INThreadTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"INThreadTableViewCell" forIndexPath:indexPath];
         [cell setThread: (INThread*)model];
-        [cell setDetatchBlock: ^(INMailItemTableViewCell*cell) {
-            UIView * detatchedView = [cell contentInnerView];
-//            CGRect f = [detatchedView bounds];
-//            f.origin.x -= [[cell contentScrollView] contentOffset].x;
-//            f.origin.y -= [_tableView contentOffset].y;
-//            f = [self.view convertRect:f fromView:cell];
-            
-            [[cell superview] bringSubviewToFront: cell];
-//            [detatchedView removeFromSuperview];
-//            [detatchedView setFrame: f];
-//            [self.view addSubview:detatchedView];
-            
-            [UIView animateWithDuration:0.3 animations:^{
-                [detatchedView setTransform: CGAffineTransformMakeScale(0.95, 0.95)];
-            }];
-        }];
         return cell;
         
     } else if ([model isKindOfClass: [INMessage class]]) {

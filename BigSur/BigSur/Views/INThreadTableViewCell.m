@@ -20,7 +20,7 @@
 		_unreadDot = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 14, 14)];
 		[_unreadDot setBackgroundColor: [[INThemeManager shared] tintColor]];
 		[[_unreadDot layer] setCornerRadius: _unreadDot.frame.size.width / 2];
-		[self.contentInnerView addSubview: _unreadDot];
+		[self.contentView addSubview: _unreadDot];
 	
         _threadCountLabel = [[UILabel alloc] initWithFrame: CGRectZero];
 		[_threadCountLabel setFont: [UIFont systemFontOfSize: 13]];
@@ -29,7 +29,7 @@
 		[[_threadCountLabel layer] setBorderWidth: 1];
 		[[_threadCountLabel layer] setCornerRadius: 3];
 		[[_threadCountLabel layer] setBorderColor: [[UIColor colorWithWhite:0.7 alpha:1] CGColor]];
-		[self.contentInnerView addSubview: _threadCountLabel];
+		[self.contentView addSubview: _threadCountLabel];
     }
     return self;
 }

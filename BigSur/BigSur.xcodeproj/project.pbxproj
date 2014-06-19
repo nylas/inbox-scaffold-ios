@@ -54,10 +54,12 @@
 		438BEA0F192AC41100E5C67D /* INTaskQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */; };
 		438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA12192AC4B300E5C67D /* INLogViewController.m */; };
 		438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA15192AC9A700E5C67D /* INDismissSegue.m */; };
-		438BF41E19343DA400544E6A /* Inbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 438BF41D19343DA400544E6A /* Inbox.framework */; };
+		438C57D319526DB30088FF9D /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439F05FD19526855003F5A90 /* ShareViewController.m */; };
+		438C57D4195271B20088FF9D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439F05FB19526855003F5A90 /* MainInterface.storyboard */; };
 		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
 		43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */; };
 		43A1475E192E8A29001AF02F /* INThreadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */; };
+		43A16F581952697B00ED7C0E /* com.inbox.BigSur.Mail.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */; };
 		43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A9684F191C099600F24844 /* INConvenienceCategories.m */; };
 		43AAF5361911B8E5000FA5AF /* INThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AAF5341911B8E5000FA5AF /* INThreadViewController.m */; };
 		43AAF5371911B8E5000FA5AF /* INThreadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AAF5351911B8E5000FA5AF /* INThreadViewController.xib */; };
@@ -74,6 +76,7 @@
 		43AE9BC519185ACF005D70C0 /* INComposeRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BC419185ACF005D70C0 /* INComposeRowView.m */; };
 		43AE9BC819185C46005D70C0 /* INComposeSubjectRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */; };
 		43AE9BCB19186DD1005D70C0 /* INPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */; };
+		43B27E1519526189002532D3 /* Inbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B27E1319526167002532D3 /* Inbox.framework */; };
 		43DB20EE191D5D4800DCFA4A /* INAutocompletionResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */; };
 		43DB20F1192145F100DCFA4A /* INThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20F0192145F100DCFA4A /* INThemeManager.m */; };
 		43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20F31921498200DCFA4A /* INRootViewController.m */; };
@@ -98,7 +101,35 @@
 			remoteGlobalIDString = 43F22A7119071A1100A032D1;
 			remoteInfo = BigSur;
 		};
+		43A16F561952697B00ED7C0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43F22A6A19071A1000A032D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 43A16F4C1952697B00ED7C0E;
+			remoteInfo = Mail;
+		};
+		43A16F591952697B00ED7C0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43F22A6A19071A1000A032D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 43A16F4C1952697B00ED7C0E;
+			remoteInfo = Mail;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		43B27D4F19525BEC002532D3 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				43A16F581952697B00ED7C0E /* com.inbox.BigSur.Mail.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		43105797193548DA00C5B1FC /* notif-unread-sound.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = "notif-unread-sound.aiff"; sourceTree = "<group>"; };
@@ -157,10 +188,15 @@
 		438BF41D19343DA400544E6A /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../InboxFramework/build/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
 		439283BF191450AA00926291 /* INRecipientsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INRecipientsLabel.h; path = BigSur/Views/INRecipientsLabel.h; sourceTree = SOURCE_ROOT; };
 		439283C0191450AA00926291 /* INRecipientsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INRecipientsLabel.m; path = BigSur/Views/INRecipientsLabel.m; sourceTree = SOURCE_ROOT; };
+		439F05FA19526855003F5A90 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		439F05FB19526855003F5A90 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		439F05FC19526855003F5A90 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		439F05FD19526855003F5A90 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		43A14759192E8A1A001AF02F /* INMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageTableViewCell.h; sourceTree = "<group>"; };
 		43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageTableViewCell.m; sourceTree = "<group>"; };
 		43A1475C192E8A29001AF02F /* INThreadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadTableViewCell.h; sourceTree = "<group>"; };
 		43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INThreadTableViewCell.m; sourceTree = "<group>"; };
+		43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = com.inbox.BigSur.Mail.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A9684E191C099600F24844 /* INConvenienceCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INConvenienceCategories.h; sourceTree = "<group>"; };
 		43A9684F191C099600F24844 /* INConvenienceCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INConvenienceCategories.m; sourceTree = "<group>"; };
 		43AAF5331911B8E5000FA5AF /* INThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadViewController.h; sourceTree = "<group>"; };
@@ -189,6 +225,7 @@
 		43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INComposeSubjectRowView.m; sourceTree = "<group>"; };
 		43AE9BC919186DD1005D70C0 /* INPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INPlaceholderTextView.h; sourceTree = "<group>"; };
 		43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INPlaceholderTextView.m; sourceTree = "<group>"; };
+		43B27E1319526167002532D3 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "DerivedData/BigSur/Build/Products/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
 		43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAutocompletionResultsView.h; sourceTree = "<group>"; };
 		43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAutocompletionResultsView.m; sourceTree = "<group>"; };
 		43DB20EF192145F100DCFA4A /* INThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThemeManager.h; sourceTree = "<group>"; };
@@ -237,11 +274,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		43A16F4A1952697B00ED7C0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43F22A6F19071A1100A032D1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				438BF41E19343DA400544E6A /* Inbox.framework in Frameworks */,
+				43B27E1519526189002532D3 /* Inbox.framework in Frameworks */,
 				43F22A7819071A1100A032D1 /* CoreGraphics.framework in Frameworks */,
 				43F22A7A19071A1100A032D1 /* UIKit.framework in Frameworks */,
 				43F22A7619071A1100A032D1 /* Foundation.framework in Frameworks */,
@@ -335,6 +379,25 @@
 			name = Internal;
 			sourceTree = "<group>";
 		};
+		439F05F819526855003F5A90 /* BigSurExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				439F05F919526855003F5A90 /* Mail */,
+			);
+			path = BigSurExtensions;
+			sourceTree = "<group>";
+		};
+		439F05F919526855003F5A90 /* Mail */ = {
+			isa = PBXGroup;
+			children = (
+				439F05FA19526855003F5A90 /* Info.plist */,
+				439F05FB19526855003F5A90 /* MainInterface.storyboard */,
+				439F05FC19526855003F5A90 /* ShareViewController.h */,
+				439F05FD19526855003F5A90 /* ShareViewController.m */,
+			);
+			path = Mail;
+			sourceTree = "<group>";
+		};
 		43AAF5461912D607000FA5AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -372,6 +435,7 @@
 			isa = PBXGroup;
 			children = (
 				43F22A7B19071A1100A032D1 /* BigSur */,
+				439F05F819526855003F5A90 /* BigSurExtensions */,
 				4317023F19132BA10002491F /* BigSurTests */,
 				43F22A7419071A1100A032D1 /* Frameworks */,
 				43F22A7319071A1100A032D1 /* Products */,
@@ -386,6 +450,7 @@
 			children = (
 				43F22A7219071A1100A032D1 /* BigSur.app */,
 				4317023B19132BA10002491F /* BigSurTests.xctest */,
+				43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -393,6 +458,7 @@
 		43F22A7419071A1100A032D1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43B27E1319526167002532D3 /* Inbox.framework */,
 				438BF41D19343DA400544E6A /* Inbox.framework */,
 				43FF121C191AF1A30043E2E6 /* SystemConfiguration.framework */,
 				43FF121A191AF1A00043E2E6 /* Security.framework */,
@@ -515,6 +581,23 @@
 			productReference = 4317023B19132BA10002491F /* BigSurTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		43A16F4C1952697B00ED7C0E /* Mail */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 43A16F5B1952697B00ED7C0E /* Build configuration list for PBXNativeTarget "Mail" */;
+			buildPhases = (
+				43A16F491952697B00ED7C0E /* Sources */,
+				43A16F4A1952697B00ED7C0E /* Frameworks */,
+				43A16F4B1952697B00ED7C0E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mail;
+			productName = Mail;
+			productReference = 43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		43F22A7119071A1100A032D1 /* BigSur */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43F22AA419071A1100A032D1 /* Build configuration list for PBXNativeTarget "BigSur" */;
@@ -525,10 +608,13 @@
 				43F22A6F19071A1100A032D1 /* Frameworks */,
 				43F22A7019071A1100A032D1 /* Resources */,
 				7C3E1C59E7884C76BF05137A /* Copy Pods Resources */,
+				43B27D4F19525BEC002532D3 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				43A16F571952697B00ED7C0E /* PBXTargetDependency */,
+				43A16F5A1952697B00ED7C0E /* PBXTargetDependency */,
 			);
 			name = BigSur;
 			productName = BigSur;
@@ -547,6 +633,10 @@
 				TargetAttributes = {
 					4317023A19132BA10002491F = {
 						TestTargetID = 43F22A7119071A1100A032D1;
+					};
+					43A16F4C1952697B00ED7C0E = {
+						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = X9RJ36K9D4;
 					};
 					43F22A7119071A1100A032D1 = {
 						DevelopmentTeam = X9RJ36K9D4;
@@ -574,6 +664,7 @@
 				43F22A7119071A1100A032D1 /* BigSur */,
 				4317023A19132BA10002491F /* BigSurTests */,
 				43AAF513190ECC8E000FA5AF /* OCLint */,
+				43A16F4C1952697B00ED7C0E /* Mail */,
 			);
 		};
 /* End PBXProject section */
@@ -584,6 +675,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4317024419132BA10002491F /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43A16F4B1952697B00ED7C0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				438C57D4195271B20088FF9D /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,6 +805,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		43A16F491952697B00ED7C0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				438C57D319526DB30088FF9D /* ShareViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43F22A6E19071A1100A032D1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -764,6 +871,16 @@
 			isa = PBXTargetDependency;
 			target = 43F22A7119071A1100A032D1 /* BigSur */;
 			targetProxy = 4317024819132BA10002491F /* PBXContainerItemProxy */;
+		};
+		43A16F571952697B00ED7C0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 43A16F4C1952697B00ED7C0E /* Mail */;
+			targetProxy = 43A16F561952697B00ED7C0E /* PBXContainerItemProxy */;
+		};
+		43A16F5A1952697B00ED7C0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 43A16F4C1952697B00ED7C0E /* Mail */;
+			targetProxy = 43A16F591952697B00ED7C0E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -836,6 +953,42 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		43A16F5C1952697B00ED7C0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/BigSurExtensions/Mail/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "com.inbox.BigSur.$(TARGET_NAME:rfc1034identifier)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		43A16F5D1952697B00ED7C0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/BigSurExtensions/Mail/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "com.inbox.BigSur.$(TARGET_NAME:rfc1034identifier)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -927,9 +1080,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -940,7 +1093,6 @@
 				GCC_PREFIX_HEADER = "BigSur/BigSur-Prefix.pch";
 				INFOPLIST_FILE = "BigSur/BigSur-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = BigSur;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -952,9 +1104,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -965,7 +1117,6 @@
 				GCC_PREFIX_HEADER = "BigSur/BigSur-Prefix.pch";
 				INFOPLIST_FILE = "BigSur/BigSur-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = BigSur;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -981,6 +1132,15 @@
 			buildConfigurations = (
 				4317024B19132BA10002491F /* Debug */,
 				4317024C19132BA10002491F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		43A16F5B1952697B00ED7C0E /* Build configuration list for PBXNativeTarget "Mail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43A16F5C1952697B00ED7C0E /* Debug */,
+				43A16F5D1952697B00ED7C0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

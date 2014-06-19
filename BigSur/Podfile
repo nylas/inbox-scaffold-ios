@@ -5,7 +5,7 @@
 target "BigSur" do
 	pod 'FMDB', '2.3'
 	pod 'AFNetworking', '2.3.1'
-	pod 'NSDate+TimeAgo'
+	pod 'DateTools'
 	pod 'MBProgressHUD'
 	pod 'UIActionSheet+Blocks'
     pod 'UIAlertView+Blocks'

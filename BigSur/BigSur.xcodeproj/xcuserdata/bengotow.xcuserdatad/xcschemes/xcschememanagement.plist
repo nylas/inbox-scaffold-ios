@@ -7,12 +7,17 @@
 		<key>BigSur.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>1</integer>
+		</dict>
+		<key>Mail.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>17</integer>
 		</dict>
 		<key>OCLint.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -22,7 +27,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>43A16F4C1952697B00ED7C0E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>43AAF513190ECC8E000FA5AF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>43B27D3D19525BEB002532D3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

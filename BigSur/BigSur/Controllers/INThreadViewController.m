@@ -141,7 +141,7 @@
 	[self presentViewController: nav animated:YES completion:NULL];
 }
 
-- (void)popdownMenu:(BPopdownMenu*)menu optionSelected:(int)index
+- (void)popdownMenu:(BPopdownMenu*)menu optionSelected:(NSInteger)index
 {
     JSContext * context = [_actions objectAtIndex: index];
     [context evaluateScript:@"plugin.performForThread(thread);"];

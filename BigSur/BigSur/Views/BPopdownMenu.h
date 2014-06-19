@@ -12,7 +12,7 @@
 
 @protocol BPopdownMenuDelegate <NSObject>
 
-- (void)popdownMenu:(BPopdownMenu*)menu optionSelected:(int)index;
+- (void)popdownMenu:(BPopdownMenu*)menu optionSelected:(NSInteger)index;
 
 @end
 

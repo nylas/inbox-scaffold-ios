@@ -34,6 +34,7 @@
     [_tableView setRowHeight: 50];
     
 	self.contactsProvider = [self.namespace newContactProvider];
+    [_contactsProvider setItemSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES]]];
 	[_contactsProvider setDelegate:self];
 	[_contactsProvider refresh];
 }
@@ -48,10 +49,10 @@
 - (void)provider:(INModelProvider*)provider dataAltered:(INModelProviderChangeSet *)changeSet
 {
 	[_tableView beginUpdates];
-	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeRemove] withRowAnimation:UITableViewRowAnimationTop];
-	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeAdd] withRowAnimation:UITableViewRowAnimationRight];
-	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeUpdate] withRowAnimation:UITableViewRowAnimationFade];
+	[_tableView deleteRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeRemove] withRowAnimation:UITableViewRowAnimationAutomatic];
+	[_tableView insertRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeAdd] withRowAnimation:UITableViewRowAnimationAutomatic];
 	[_tableView endUpdates];
+	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeUpdate] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)provider:(INModelProvider*)provider dataFetchFailed:(NSError *)error
@@ -91,7 +92,6 @@
     INContact * contact = [[_contactsProvider items] objectAtIndex: [indexPath row]];
     if (_contactSelectionCallback) {
         _contactSelectionCallback(contact);
-        [self dismissViewControllerAnimated:YES completion:NULL];
     }
 }
 
