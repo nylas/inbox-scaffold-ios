@@ -54,7 +54,6 @@
 		438BEA0F192AC41100E5C67D /* INTaskQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */; };
 		438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA12192AC4B300E5C67D /* INLogViewController.m */; };
 		438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA15192AC9A700E5C67D /* INDismissSegue.m */; };
-		438C57D319526DB30088FF9D /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439F05FD19526855003F5A90 /* ShareViewController.m */; };
 		438C57D4195271B20088FF9D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439F05FB19526855003F5A90 /* MainInterface.storyboard */; };
 		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
 		43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */; };
@@ -186,12 +185,17 @@
 		438BEA14192AC9A700E5C67D /* INDismissSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDismissSegue.h; sourceTree = "<group>"; };
 		438BEA15192AC9A700E5C67D /* INDismissSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDismissSegue.m; sourceTree = "<group>"; };
 		438BF41D19343DA400544E6A /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../InboxFramework/build/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
+		438C580919538B5F0088FF9D /* libPods-BigSur-AFNetworking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-AFNetworking.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-AFNetworking.a"; sourceTree = "<group>"; };
+		438C580A19538B5F0088FF9D /* libPods-BigSur-DateTools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-DateTools.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-DateTools.a"; sourceTree = "<group>"; };
+		438C580B19538B5F0088FF9D /* libPods-BigSur-FMDB.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-FMDB.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-FMDB.a"; sourceTree = "<group>"; };
+		438C580C19538B5F0088FF9D /* libPods-BigSur-MBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-MBProgressHUD.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-MBProgressHUD.a"; sourceTree = "<group>"; };
+		438C580D19538B5F0088FF9D /* libPods-BigSur-UIActionSheet+Blocks.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-UIActionSheet+Blocks.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-UIActionSheet+Blocks.a"; sourceTree = "<group>"; };
+		438C580E19538B5F0088FF9D /* libPods-BigSur-UIAlertView+Blocks.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-UIAlertView+Blocks.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-UIAlertView+Blocks.a"; sourceTree = "<group>"; };
+		438C580F19538B5F0088FF9D /* libPods-BigSur.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur.a"; sourceTree = "<group>"; };
 		439283BF191450AA00926291 /* INRecipientsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INRecipientsLabel.h; path = BigSur/Views/INRecipientsLabel.h; sourceTree = SOURCE_ROOT; };
 		439283C0191450AA00926291 /* INRecipientsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INRecipientsLabel.m; path = BigSur/Views/INRecipientsLabel.m; sourceTree = SOURCE_ROOT; };
 		439F05FA19526855003F5A90 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		439F05FB19526855003F5A90 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
-		439F05FC19526855003F5A90 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
-		439F05FD19526855003F5A90 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		43A14759192E8A1A001AF02F /* INMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageTableViewCell.h; sourceTree = "<group>"; };
 		43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageTableViewCell.m; sourceTree = "<group>"; };
 		43A1475C192E8A29001AF02F /* INThreadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadTableViewCell.h; sourceTree = "<group>"; };
@@ -392,8 +396,6 @@
 			children = (
 				439F05FA19526855003F5A90 /* Info.plist */,
 				439F05FB19526855003F5A90 /* MainInterface.storyboard */,
-				439F05FC19526855003F5A90 /* ShareViewController.h */,
-				439F05FD19526855003F5A90 /* ShareViewController.m */,
 			);
 			path = Mail;
 			sourceTree = "<group>";
@@ -458,6 +460,13 @@
 		43F22A7419071A1100A032D1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				438C580919538B5F0088FF9D /* libPods-BigSur-AFNetworking.a */,
+				438C580A19538B5F0088FF9D /* libPods-BigSur-DateTools.a */,
+				438C580B19538B5F0088FF9D /* libPods-BigSur-FMDB.a */,
+				438C580C19538B5F0088FF9D /* libPods-BigSur-MBProgressHUD.a */,
+				438C580D19538B5F0088FF9D /* libPods-BigSur-UIActionSheet+Blocks.a */,
+				438C580E19538B5F0088FF9D /* libPods-BigSur-UIAlertView+Blocks.a */,
+				438C580F19538B5F0088FF9D /* libPods-BigSur.a */,
 				43B27E1319526167002532D3 /* Inbox.framework */,
 				438BF41D19343DA400544E6A /* Inbox.framework */,
 				43FF121C191AF1A30043E2E6 /* SystemConfiguration.framework */,
@@ -809,7 +818,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				438C57D319526DB30088FF9D /* ShareViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -970,6 +978,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BigSurExtensions/Mail/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+				);
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "com.inbox.BigSur.$(TARGET_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
@@ -986,6 +998,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BigSurExtensions/Mail/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+				);
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "com.inbox.BigSur.$(TARGET_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
