@@ -1,0 +1,1194 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		43AAF513190ECC8E000FA5AF /* OCLint */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 43AAF514190ECC8E000FA5AF /* Build configuration list for PBXAggregateTarget "OCLint" */;
+			buildPhases = (
+				43AAF517190ECCAE000FA5AF /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = OCLint;
+			productName = OCLint;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		2C125E2EAB824E7D83894E33 /* libPods-BigSur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2420BCACEA341CC82596784 /* libPods-BigSur.a */; };
+		3C3B918E04844AC4A613D8CE /* libPods-BigSurTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FD0759ED3148CBBD9FE711 /* libPods-BigSurTests.a */; };
+		43105798193548DA00C5B1FC /* notif-unread-sound.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 43105797193548DA00C5B1FC /* notif-unread-sound.aiff */; };
+		4317023C19132BA10002491F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A9419071A1100A032D1 /* XCTest.framework */; };
+		4317023D19132BA10002491F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7519071A1100A032D1 /* Foundation.framework */; };
+		4317023E19132BA10002491F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7919071A1100A032D1 /* UIKit.framework */; };
+		4317024419132BA10002491F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4317024219132BA10002491F /* InfoPlist.strings */; };
+		4317024619132BA10002491F /* INModelProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4317024519132BA10002491F /* INModelProviderTests.m */; };
+		4319792E191D8A0100523C8B /* INComposeAttachmentsRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */; };
+		43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43197930191D938300523C8B /* INAttachmentTableViewCell.m */; };
+		431A54A0192C0C5A00AE0719 /* UIImage+BlurEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 431A549F192C0C5A00AE0719 /* UIImage+BlurEffects.m */; };
+		4324ED561940D5F700C24E88 /* INPluginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4324ED551940D5F700C24E88 /* INPluginManager.m */; };
+		4324ED5B1940DCB500C24E88 /* BPopdownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4324ED581940DCB500C24E88 /* BPopdownButton.m */; };
+		4324ED5C1940DCB500C24E88 /* BPopdownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 4324ED5A1940DCB500C24E88 /* BPopdownMenu.m */; };
+		4324ED631940E38A00C24E88 /* plugins in Resources */ = {isa = PBXBuildFile; fileRef = 4324ED621940E38A00C24E88 /* plugins */; };
+		433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */; };
+		433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */; };
+		4342322F1923F84E002AE05D /* INTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4342322E1923F84E002AE05D /* INTagsView.m */; };
+		434B896C1935090000A2AD33 /* INDeltaSyncEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 434B896B1935090000A2AD33 /* INDeltaSyncEngine.m */; };
+		435764AD192530BB00E6B340 /* INAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435764AB192530BB00E6B340 /* INAuthViewController.m */; };
+		435764AE192530BB00E6B340 /* INAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 435764AC192530BB00E6B340 /* INAuthViewController.xib */; };
+		435BB0CF192FF51F00BEE4AE /* INMessageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */; };
+		436BB2651938FA33004BA79B /* INSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 436BB2641938FA33004BA79B /* INSplitViewController.m */; };
+		438159FB1922E6D70069116A /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159F81922E6D70069116A /* JSSlidingViewController.m */; };
+		438159FF1922E7580069116A /* INSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159FD1922E7580069116A /* INSidebarViewController.m */; };
+		43815A001922E7580069116A /* INSidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 438159FE1922E7580069116A /* INSidebarViewController.xib */; };
+		43815A031922F5790069116A /* INInboxNavTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A021922F5790069116A /* INInboxNavTitleView.m */; };
+		43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43815A051922F8370069116A /* INSidebarTableViewCell.m */; };
+		438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */; };
+		438BEA0C192AC16500E5C67D /* INInternalInfoStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */; };
+		438BEA0F192AC41100E5C67D /* INTaskQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */; };
+		438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA12192AC4B300E5C67D /* INLogViewController.m */; };
+		438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA15192AC9A700E5C67D /* INDismissSegue.m */; };
+		438C57D4195271B20088FF9D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439F05FB19526855003F5A90 /* MainInterface.storyboard */; };
+		439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 439283C0191450AA00926291 /* INRecipientsLabel.m */; };
+		43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */; };
+		43A1475E192E8A29001AF02F /* INThreadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */; };
+		43A16F581952697B00ED7C0E /* com.inbox.BigSur.Mail.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */; };
+		43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A9684F191C099600F24844 /* INConvenienceCategories.m */; };
+		43AAF5361911B8E5000FA5AF /* INThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AAF5341911B8E5000FA5AF /* INThreadViewController.m */; };
+		43AAF5371911B8E5000FA5AF /* INThreadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AAF5351911B8E5000FA5AF /* INThreadViewController.xib */; };
+		43AAF5491912D607000FA5AF /* INMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AAF5481912D607000FA5AF /* INMessageCollectionViewCell.m */; };
+		43AAF54B1912D614000FA5AF /* INMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AAF54A1912D614000FA5AF /* INMessageCollectionViewCell.xib */; };
+		43AAF54E1912E985000FA5AF /* INMailItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AAF54D1912E985000FA5AF /* INMailItemTableViewCell.m */; };
+		43AE9B751918045C005D70C0 /* INContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9B731918045C005D70C0 /* INContactsViewController.m */; };
+		43AE9B761918045C005D70C0 /* INContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AE9B741918045C005D70C0 /* INContactsViewController.xib */; };
+		43AE9B7A191833AF005D70C0 /* INComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9B78191833AF005D70C0 /* INComposeViewController.m */; };
+		43AE9B7B191833AF005D70C0 /* INComposeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AE9B79191833AF005D70C0 /* INComposeViewController.xib */; };
+		43AE9BBF191841DE005D70C0 /* INComposeRecipientRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BBE191841DE005D70C0 /* INComposeRecipientRowView.m */; };
+		43AE9BC219185999005D70C0 /* INLeftJustifiedFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BC119185999005D70C0 /* INLeftJustifiedFlowLayout.m */; };
+		43AE9BC519185ACF005D70C0 /* INComposeRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BC419185ACF005D70C0 /* INComposeRowView.m */; };
+		43AE9BC819185C46005D70C0 /* INComposeSubjectRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */; };
+		43AE9BCB19186DD1005D70C0 /* INPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */; };
+		43B27E1519526189002532D3 /* Inbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B27E1319526167002532D3 /* Inbox.framework */; };
+		43DB20EE191D5D4800DCFA4A /* INAutocompletionResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */; };
+		43DB20F1192145F100DCFA4A /* INThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20F0192145F100DCFA4A /* INThemeManager.m */; };
+		43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DB20F31921498200DCFA4A /* INRootViewController.m */; };
+		43F22A7619071A1100A032D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7519071A1100A032D1 /* Foundation.framework */; };
+		43F22A7819071A1100A032D1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7719071A1100A032D1 /* CoreGraphics.framework */; };
+		43F22A7A19071A1100A032D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7919071A1100A032D1 /* UIKit.framework */; };
+		43F22A8019071A1100A032D1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43F22A7E19071A1100A032D1 /* InfoPlist.strings */; };
+		43F22A8219071A1100A032D1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F22A8119071A1100A032D1 /* main.m */; };
+		43F22A8619071A1100A032D1 /* INAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F22A8519071A1100A032D1 /* INAppDelegate.m */; };
+		43F22A8E19071A1100A032D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43F22A8D19071A1100A032D1 /* Images.xcassets */; };
+		43F22AD019071C5200A032D1 /* INMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F22ACB19071C5200A032D1 /* INMailViewController.m */; };
+		43F22AD119071C5200A032D1 /* INMailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43F22ACC19071C5200A032D1 /* INMailViewController.xib */; };
+		43F788DA1919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F788D91919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m */; };
+		43F788E01919991F00B6E0E5 /* INDeleteDetectingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F788DF1919991F00B6E0E5 /* INDeleteDetectingTextField.m */; };
+		43F9F4B2196490B50048ABE8 /* UIView+FrameAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F9F4B1196490B50048ABE8 /* UIView+FrameAdditions.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4317024819132BA10002491F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43F22A6A19071A1000A032D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 43F22A7119071A1100A032D1;
+			remoteInfo = BigSur;
+		};
+		43A16F561952697B00ED7C0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43F22A6A19071A1000A032D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 43A16F4C1952697B00ED7C0E;
+			remoteInfo = Mail;
+		};
+		43A16F591952697B00ED7C0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43F22A6A19071A1000A032D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 43A16F4C1952697B00ED7C0E;
+			remoteInfo = Mail;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		43B27D4F19525BEC002532D3 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				43A16F581952697B00ED7C0E /* com.inbox.BigSur.Mail.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		43105797193548DA00C5B1FC /* notif-unread-sound.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = "notif-unread-sound.aiff"; sourceTree = "<group>"; };
+		4317023B19132BA10002491F /* BigSurTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BigSurTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4317024119132BA10002491F /* BigSurTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BigSurTests-Info.plist"; sourceTree = "<group>"; };
+		4317024319132BA10002491F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4317024519132BA10002491F /* INModelProviderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INModelProviderTests.m; sourceTree = "<group>"; };
+		4317024719132BA10002491F /* BigSurTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BigSurTests-Prefix.pch"; sourceTree = "<group>"; };
+		4319792C191D8A0100523C8B /* INComposeAttachmentsRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INComposeAttachmentsRowView.h; path = BigSur/Views/INComposeAttachmentsRowView.h; sourceTree = SOURCE_ROOT; };
+		4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INComposeAttachmentsRowView.m; path = BigSur/Views/INComposeAttachmentsRowView.m; sourceTree = SOURCE_ROOT; };
+		4319792F191D938300523C8B /* INAttachmentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAttachmentTableViewCell.h; sourceTree = "<group>"; };
+		43197930191D938300523C8B /* INAttachmentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAttachmentTableViewCell.m; sourceTree = "<group>"; };
+		431A549E192C0C5A00AE0719 /* UIImage+BlurEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlurEffects.h"; sourceTree = "<group>"; };
+		431A549F192C0C5A00AE0719 /* UIImage+BlurEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BlurEffects.m"; sourceTree = "<group>"; };
+		4324ED541940D5F700C24E88 /* INPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INPluginManager.h; sourceTree = "<group>"; };
+		4324ED551940D5F700C24E88 /* INPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INPluginManager.m; sourceTree = "<group>"; };
+		4324ED571940DCB500C24E88 /* BPopdownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPopdownButton.h; sourceTree = "<group>"; };
+		4324ED581940DCB500C24E88 /* BPopdownButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPopdownButton.m; sourceTree = "<group>"; };
+		4324ED591940DCB500C24E88 /* BPopdownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPopdownMenu.h; sourceTree = "<group>"; };
+		4324ED5A1940DCB500C24E88 /* BPopdownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPopdownMenu.m; sourceTree = "<group>"; };
+		4324ED621940E38A00C24E88 /* plugins */ = {isa = PBXFileReference; lastKnownFileType = folder; path = plugins; sourceTree = "<group>"; };
+		4325D513191329DC00743CD4 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		433711AD191C0A0100E7F793 /* NSString+FormatConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FormatConversion.h"; sourceTree = "<group>"; };
+		433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FormatConversion.m"; sourceTree = "<group>"; };
+		433711B0191C0A3000E7F793 /* NSObject+AssociatedObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AssociatedObjects.h"; sourceTree = "<group>"; };
+		433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AssociatedObjects.m"; sourceTree = "<group>"; };
+		4342322D1923F84E002AE05D /* INTagsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTagsView.h; path = BigSur/Views/INTagsView.h; sourceTree = SOURCE_ROOT; };
+		4342322E1923F84E002AE05D /* INTagsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTagsView.m; path = BigSur/Views/INTagsView.m; sourceTree = SOURCE_ROOT; };
+		434B896A1935090000A2AD33 /* INDeltaSyncEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDeltaSyncEngine.h; sourceTree = "<group>"; };
+		434B896B1935090000A2AD33 /* INDeltaSyncEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDeltaSyncEngine.m; sourceTree = "<group>"; };
+		435764AA192530BB00E6B340 /* INAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAuthViewController.h; sourceTree = "<group>"; };
+		435764AB192530BB00E6B340 /* INAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAuthViewController.m; sourceTree = "<group>"; };
+		435764AC192530BB00E6B340 /* INAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INAuthViewController.xib; sourceTree = "<group>"; };
+		435BB0CD192FF51F00BEE4AE /* INMessageContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageContentView.h; sourceTree = "<group>"; };
+		435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageContentView.m; sourceTree = "<group>"; };
+		436BB2631938FA33004BA79B /* INSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSplitViewController.h; sourceTree = "<group>"; };
+		436BB2641938FA33004BA79B /* INSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSplitViewController.m; sourceTree = "<group>"; };
+		438159F71922E6D70069116A /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
+		438159F81922E6D70069116A /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
+		438159FC1922E7580069116A /* INSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarViewController.h; sourceTree = "<group>"; };
+		438159FD1922E7580069116A /* INSidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSidebarViewController.m; sourceTree = "<group>"; };
+		438159FE1922E7580069116A /* INSidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INSidebarViewController.xib; sourceTree = "<group>"; };
+		43815A011922F5790069116A /* INInboxNavTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INInboxNavTitleView.h; path = BigSur/Views/INInboxNavTitleView.h; sourceTree = SOURCE_ROOT; };
+		43815A021922F5790069116A /* INInboxNavTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INInboxNavTitleView.m; path = BigSur/Views/INInboxNavTitleView.m; sourceTree = SOURCE_ROOT; };
+		43815A041922F8370069116A /* INSidebarTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarTableViewCell.h; sourceTree = "<group>"; };
+		43815A051922F8370069116A /* INSidebarTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSidebarTableViewCell.m; sourceTree = "<group>"; };
+		438BEA031926C9F500E5C67D /* INStupidFullSyncEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INStupidFullSyncEngine.h; sourceTree = "<group>"; };
+		438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INStupidFullSyncEngine.m; sourceTree = "<group>"; };
+		438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = INInternalInfoStoryboard.storyboard; sourceTree = "<group>"; };
+		438BEA0D192AC41100E5C67D /* INTaskQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTaskQueueViewController.h; sourceTree = "<group>"; };
+		438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INTaskQueueViewController.m; sourceTree = "<group>"; };
+		438BEA11192AC4B300E5C67D /* INLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INLogViewController.h; sourceTree = "<group>"; };
+		438BEA12192AC4B300E5C67D /* INLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INLogViewController.m; sourceTree = "<group>"; };
+		438BEA14192AC9A700E5C67D /* INDismissSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDismissSegue.h; sourceTree = "<group>"; };
+		438BEA15192AC9A700E5C67D /* INDismissSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDismissSegue.m; sourceTree = "<group>"; };
+		438BF41D19343DA400544E6A /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../InboxFramework/build/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
+		438C580919538B5F0088FF9D /* libPods-BigSur-AFNetworking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-AFNetworking.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-AFNetworking.a"; sourceTree = "<group>"; };
+		438C580A19538B5F0088FF9D /* libPods-BigSur-DateTools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-DateTools.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-DateTools.a"; sourceTree = "<group>"; };
+		438C580B19538B5F0088FF9D /* libPods-BigSur-FMDB.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-FMDB.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-FMDB.a"; sourceTree = "<group>"; };
+		438C580C19538B5F0088FF9D /* libPods-BigSur-MBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-MBProgressHUD.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-MBProgressHUD.a"; sourceTree = "<group>"; };
+		438C580D19538B5F0088FF9D /* libPods-BigSur-UIActionSheet+Blocks.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-UIActionSheet+Blocks.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-UIActionSheet+Blocks.a"; sourceTree = "<group>"; };
+		438C580E19538B5F0088FF9D /* libPods-BigSur-UIAlertView+Blocks.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-UIAlertView+Blocks.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-UIAlertView+Blocks.a"; sourceTree = "<group>"; };
+		438C580F19538B5F0088FF9D /* libPods-BigSur.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur.a"; sourceTree = "<group>"; };
+		439283BF191450AA00926291 /* INRecipientsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INRecipientsLabel.h; path = BigSur/Views/INRecipientsLabel.h; sourceTree = SOURCE_ROOT; };
+		439283C0191450AA00926291 /* INRecipientsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INRecipientsLabel.m; path = BigSur/Views/INRecipientsLabel.m; sourceTree = SOURCE_ROOT; };
+		439F05FA19526855003F5A90 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		439F05FB19526855003F5A90 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		43A14759192E8A1A001AF02F /* INMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageTableViewCell.h; sourceTree = "<group>"; };
+		43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageTableViewCell.m; sourceTree = "<group>"; };
+		43A1475C192E8A29001AF02F /* INThreadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadTableViewCell.h; sourceTree = "<group>"; };
+		43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INThreadTableViewCell.m; sourceTree = "<group>"; };
+		43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = com.inbox.BigSur.Mail.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		43A9684E191C099600F24844 /* INConvenienceCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INConvenienceCategories.h; sourceTree = "<group>"; };
+		43A9684F191C099600F24844 /* INConvenienceCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INConvenienceCategories.m; sourceTree = "<group>"; };
+		43AAF5331911B8E5000FA5AF /* INThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadViewController.h; sourceTree = "<group>"; };
+		43AAF5341911B8E5000FA5AF /* INThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INThreadViewController.m; sourceTree = "<group>"; };
+		43AAF5351911B8E5000FA5AF /* INThreadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INThreadViewController.xib; sourceTree = "<group>"; };
+		43AAF5471912D607000FA5AF /* INMessageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageCollectionViewCell.h; sourceTree = "<group>"; };
+		43AAF5481912D607000FA5AF /* INMessageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageCollectionViewCell.m; sourceTree = "<group>"; };
+		43AAF54A1912D614000FA5AF /* INMessageCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INMessageCollectionViewCell.xib; sourceTree = "<group>"; };
+		43AAF54C1912E985000FA5AF /* INMailItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMailItemTableViewCell.h; sourceTree = "<group>"; };
+		43AAF54D1912E985000FA5AF /* INMailItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMailItemTableViewCell.m; sourceTree = "<group>"; };
+		43AE9B721918045C005D70C0 /* INContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INContactsViewController.h; sourceTree = "<group>"; };
+		43AE9B731918045C005D70C0 /* INContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INContactsViewController.m; sourceTree = "<group>"; };
+		43AE9B741918045C005D70C0 /* INContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INContactsViewController.xib; sourceTree = "<group>"; };
+		43AE9B77191833AF005D70C0 /* INComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INComposeViewController.h; sourceTree = "<group>"; };
+		43AE9B78191833AF005D70C0 /* INComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INComposeViewController.m; sourceTree = "<group>"; };
+		43AE9B79191833AF005D70C0 /* INComposeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INComposeViewController.xib; sourceTree = "<group>"; };
+		43AE9BBD191841DE005D70C0 /* INComposeRecipientRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INComposeRecipientRowView.h; path = BigSur/Views/INComposeRecipientRowView.h; sourceTree = SOURCE_ROOT; };
+		43AE9BBE191841DE005D70C0 /* INComposeRecipientRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INComposeRecipientRowView.m; path = BigSur/Views/INComposeRecipientRowView.m; sourceTree = SOURCE_ROOT; };
+		43AE9BC019185999005D70C0 /* INLeftJustifiedFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INLeftJustifiedFlowLayout.h; sourceTree = "<group>"; };
+		43AE9BC119185999005D70C0 /* INLeftJustifiedFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INLeftJustifiedFlowLayout.m; sourceTree = "<group>"; };
+		43AE9BC319185ACF005D70C0 /* INComposeRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INComposeRowView.h; sourceTree = "<group>"; };
+		43AE9BC419185ACF005D70C0 /* INComposeRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INComposeRowView.m; sourceTree = "<group>"; };
+		43AE9BC619185C46005D70C0 /* INComposeSubjectRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INComposeSubjectRowView.h; sourceTree = "<group>"; };
+		43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INComposeSubjectRowView.m; sourceTree = "<group>"; };
+		43AE9BC919186DD1005D70C0 /* INPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INPlaceholderTextView.h; sourceTree = "<group>"; };
+		43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INPlaceholderTextView.m; sourceTree = "<group>"; };
+		43B27E1319526167002532D3 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "DerivedData/BigSur/Build/Products/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
+		43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAutocompletionResultsView.h; sourceTree = "<group>"; };
+		43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAutocompletionResultsView.m; sourceTree = "<group>"; };
+		43DB20EF192145F100DCFA4A /* INThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThemeManager.h; sourceTree = "<group>"; };
+		43DB20F0192145F100DCFA4A /* INThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INThemeManager.m; sourceTree = "<group>"; };
+		43DB20F21921498200DCFA4A /* INRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INRootViewController.h; sourceTree = "<group>"; };
+		43DB20F31921498200DCFA4A /* INRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INRootViewController.m; sourceTree = "<group>"; };
+		43F22A7219071A1100A032D1 /* BigSur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BigSur.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43F22A7519071A1100A032D1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		43F22A7719071A1100A032D1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		43F22A7919071A1100A032D1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		43F22A7D19071A1100A032D1 /* BigSur-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BigSur-Info.plist"; sourceTree = "<group>"; };
+		43F22A7F19071A1100A032D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		43F22A8119071A1100A032D1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		43F22A8319071A1100A032D1 /* BigSur-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BigSur-Prefix.pch"; sourceTree = "<group>"; };
+		43F22A8419071A1100A032D1 /* INAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INAppDelegate.h; sourceTree = "<group>"; };
+		43F22A8519071A1100A032D1 /* INAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INAppDelegate.m; sourceTree = "<group>"; };
+		43F22A8D19071A1100A032D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		43F22A9419071A1100A032D1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		43F22ACA19071C5200A032D1 /* INMailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMailViewController.h; sourceTree = "<group>"; };
+		43F22ACB19071C5200A032D1 /* INMailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMailViewController.m; sourceTree = "<group>"; };
+		43F22ACC19071C5200A032D1 /* INMailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INMailViewController.xib; sourceTree = "<group>"; };
+		43F788D81919902100B6E0E5 /* INComposeRecipientCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INComposeRecipientCollectionViewCell.h; sourceTree = "<group>"; };
+		43F788D91919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INComposeRecipientCollectionViewCell.m; sourceTree = "<group>"; };
+		43F788DE1919991F00B6E0E5 /* INDeleteDetectingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDeleteDetectingTextField.h; sourceTree = "<group>"; };
+		43F788DF1919991F00B6E0E5 /* INDeleteDetectingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDeleteDetectingTextField.m; sourceTree = "<group>"; };
+		43F9F4B0196490B50048ABE8 /* UIView+FrameAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FrameAdditions.h"; sourceTree = "<group>"; };
+		43F9F4B1196490B50048ABE8 /* UIView+FrameAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FrameAdditions.m"; sourceTree = "<group>"; };
+		43FF1216191AF18F0043E2E6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		43FF1218191AF19C0043E2E6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		43FF121A191AF1A00043E2E6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		43FF121C191AF1A30043E2E6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		64FD0759ED3148CBBD9FE711 /* libPods-BigSurTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BigSurTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7ACFCC688CD14ACE9835C12A /* Pods-BigSurFramework.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BigSurFramework.xcconfig"; path = "Pods/Pods-BigSurFramework.xcconfig"; sourceTree = "<group>"; };
+		8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BigSur.xcconfig"; path = "Pods/Pods-BigSur.xcconfig"; sourceTree = "<group>"; };
+		A001EFB96BFF4722BDE59D9F /* Pods-BigSurTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BigSurTests.xcconfig"; path = "Pods/Pods-BigSurTests.xcconfig"; sourceTree = "<group>"; };
+		E2420BCACEA341CC82596784 /* libPods-BigSur.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BigSur.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4317023819132BA10002491F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4317023C19132BA10002491F /* XCTest.framework in Frameworks */,
+				4317023E19132BA10002491F /* UIKit.framework in Frameworks */,
+				4317023D19132BA10002491F /* Foundation.framework in Frameworks */,
+				3C3B918E04844AC4A613D8CE /* libPods-BigSurTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43A16F4A1952697B00ED7C0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43F22A6F19071A1100A032D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43B27E1519526189002532D3 /* Inbox.framework in Frameworks */,
+				43F22A7819071A1100A032D1 /* CoreGraphics.framework in Frameworks */,
+				43F22A7A19071A1100A032D1 /* UIKit.framework in Frameworks */,
+				43F22A7619071A1100A032D1 /* Foundation.framework in Frameworks */,
+				2C125E2EAB824E7D83894E33 /* libPods-BigSur.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		43105796193548DA00C5B1FC /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				43105797193548DA00C5B1FC /* notif-unread-sound.aiff */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		4317023F19132BA10002491F /* BigSurTests */ = {
+			isa = PBXGroup;
+			children = (
+				4317024519132BA10002491F /* INModelProviderTests.m */,
+				4317024019132BA10002491F /* Supporting Files */,
+			);
+			path = BigSurTests;
+			sourceTree = "<group>";
+		};
+		4317024019132BA10002491F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4317024119132BA10002491F /* BigSurTests-Info.plist */,
+				4317024219132BA10002491F /* InfoPlist.strings */,
+				4317024719132BA10002491F /* BigSurTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		435BB0CC192FE4C000BEE4AE /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				43F788DE1919991F00B6E0E5 /* INDeleteDetectingTextField.h */,
+				43F788DF1919991F00B6E0E5 /* INDeleteDetectingTextField.m */,
+				43AE9BC319185ACF005D70C0 /* INComposeRowView.h */,
+				43AE9BC419185ACF005D70C0 /* INComposeRowView.m */,
+				43AE9BBD191841DE005D70C0 /* INComposeRecipientRowView.h */,
+				43AE9BBE191841DE005D70C0 /* INComposeRecipientRowView.m */,
+				4319792F191D938300523C8B /* INAttachmentTableViewCell.h */,
+				43197930191D938300523C8B /* INAttachmentTableViewCell.m */,
+				4319792C191D8A0100523C8B /* INComposeAttachmentsRowView.h */,
+				4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */,
+				43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */,
+				43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */,
+				43F788D81919902100B6E0E5 /* INComposeRecipientCollectionViewCell.h */,
+				43F788D91919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m */,
+				43AE9BC619185C46005D70C0 /* INComposeSubjectRowView.h */,
+				43AE9BC719185C46005D70C0 /* INComposeSubjectRowView.m */,
+				43AE9BC019185999005D70C0 /* INLeftJustifiedFlowLayout.h */,
+				43AE9BC119185999005D70C0 /* INLeftJustifiedFlowLayout.m */,
+			);
+			name = Composer;
+			sourceTree = "<group>";
+		};
+		438159F31922E6D70069116A /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				438159F41922E6D70069116A /* JSSlidingViewController */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		438159F41922E6D70069116A /* JSSlidingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				438159F71922E6D70069116A /* JSSlidingViewController.h */,
+				438159F81922E6D70069116A /* JSSlidingViewController.m */,
+			);
+			path = JSSlidingViewController;
+			sourceTree = "<group>";
+		};
+		438BEA10192AC41400E5C67D /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				438BEA0B192AC16500E5C67D /* INInternalInfoStoryboard.storyboard */,
+				438BEA14192AC9A700E5C67D /* INDismissSegue.h */,
+				438BEA15192AC9A700E5C67D /* INDismissSegue.m */,
+				438BEA0D192AC41100E5C67D /* INTaskQueueViewController.h */,
+				438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */,
+				438BEA11192AC4B300E5C67D /* INLogViewController.h */,
+				438BEA12192AC4B300E5C67D /* INLogViewController.m */,
+			);
+			name = Internal;
+			sourceTree = "<group>";
+		};
+		439F05F819526855003F5A90 /* BigSurExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				439F05F919526855003F5A90 /* Mail */,
+			);
+			path = BigSurExtensions;
+			sourceTree = "<group>";
+		};
+		439F05F919526855003F5A90 /* Mail */ = {
+			isa = PBXGroup;
+			children = (
+				439F05FA19526855003F5A90 /* Info.plist */,
+				439F05FB19526855003F5A90 /* MainInterface.storyboard */,
+			);
+			path = Mail;
+			sourceTree = "<group>";
+		};
+		43AAF5461912D607000FA5AF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4324ED571940DCB500C24E88 /* BPopdownButton.h */,
+				4324ED581940DCB500C24E88 /* BPopdownButton.m */,
+				4324ED591940DCB500C24E88 /* BPopdownMenu.h */,
+				4324ED5A1940DCB500C24E88 /* BPopdownMenu.m */,
+				4342322D1923F84E002AE05D /* INTagsView.h */,
+				4342322E1923F84E002AE05D /* INTagsView.m */,
+				43815A011922F5790069116A /* INInboxNavTitleView.h */,
+				43815A021922F5790069116A /* INInboxNavTitleView.m */,
+				43815A041922F8370069116A /* INSidebarTableViewCell.h */,
+				43815A051922F8370069116A /* INSidebarTableViewCell.m */,
+				43AE9BC919186DD1005D70C0 /* INPlaceholderTextView.h */,
+				43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */,
+				43AAF54C1912E985000FA5AF /* INMailItemTableViewCell.h */,
+				43AAF54D1912E985000FA5AF /* INMailItemTableViewCell.m */,
+				43A14759192E8A1A001AF02F /* INMessageTableViewCell.h */,
+				43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */,
+				43A1475C192E8A29001AF02F /* INThreadTableViewCell.h */,
+				43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */,
+				439283BF191450AA00926291 /* INRecipientsLabel.h */,
+				439283C0191450AA00926291 /* INRecipientsLabel.m */,
+				43AAF5471912D607000FA5AF /* INMessageCollectionViewCell.h */,
+				43AAF5481912D607000FA5AF /* INMessageCollectionViewCell.m */,
+				43AAF54A1912D614000FA5AF /* INMessageCollectionViewCell.xib */,
+				435BB0CD192FF51F00BEE4AE /* INMessageContentView.h */,
+				435BB0CE192FF51F00BEE4AE /* INMessageContentView.m */,
+				435BB0CC192FE4C000BEE4AE /* Composer */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		43F22A6919071A1000A032D1 = {
+			isa = PBXGroup;
+			children = (
+				43F22A7B19071A1100A032D1 /* BigSur */,
+				439F05F819526855003F5A90 /* BigSurExtensions */,
+				4317023F19132BA10002491F /* BigSurTests */,
+				43F22A7419071A1100A032D1 /* Frameworks */,
+				43F22A7319071A1100A032D1 /* Products */,
+				8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */,
+				7ACFCC688CD14ACE9835C12A /* Pods-BigSurFramework.xcconfig */,
+				A001EFB96BFF4722BDE59D9F /* Pods-BigSurTests.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		43F22A7319071A1100A032D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				43F22A7219071A1100A032D1 /* BigSur.app */,
+				4317023B19132BA10002491F /* BigSurTests.xctest */,
+				43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		43F22A7419071A1100A032D1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				438C580919538B5F0088FF9D /* libPods-BigSur-AFNetworking.a */,
+				438C580A19538B5F0088FF9D /* libPods-BigSur-DateTools.a */,
+				438C580B19538B5F0088FF9D /* libPods-BigSur-FMDB.a */,
+				438C580C19538B5F0088FF9D /* libPods-BigSur-MBProgressHUD.a */,
+				438C580D19538B5F0088FF9D /* libPods-BigSur-UIActionSheet+Blocks.a */,
+				438C580E19538B5F0088FF9D /* libPods-BigSur-UIAlertView+Blocks.a */,
+				438C580F19538B5F0088FF9D /* libPods-BigSur.a */,
+				43B27E1319526167002532D3 /* Inbox.framework */,
+				438BF41D19343DA400544E6A /* Inbox.framework */,
+				43FF121C191AF1A30043E2E6 /* SystemConfiguration.framework */,
+				43FF121A191AF1A00043E2E6 /* Security.framework */,
+				43FF1218191AF19C0043E2E6 /* MobileCoreServices.framework */,
+				43FF1216191AF18F0043E2E6 /* libsqlite3.dylib */,
+				43F22A7519071A1100A032D1 /* Foundation.framework */,
+				43F22A7719071A1100A032D1 /* CoreGraphics.framework */,
+				43F22A7919071A1100A032D1 /* UIKit.framework */,
+				43F22A9419071A1100A032D1 /* XCTest.framework */,
+				4325D513191329DC00743CD4 /* SenTestingKit.framework */,
+				E2420BCACEA341CC82596784 /* libPods-BigSur.a */,
+				64FD0759ED3148CBBD9FE711 /* libPods-BigSurTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		43F22A7B19071A1100A032D1 /* BigSur */ = {
+			isa = PBXGroup;
+			children = (
+				43F22A8419071A1100A032D1 /* INAppDelegate.h */,
+				43F22A8519071A1100A032D1 /* INAppDelegate.m */,
+				43DB20EF192145F100DCFA4A /* INThemeManager.h */,
+				43DB20F0192145F100DCFA4A /* INThemeManager.m */,
+				438BEA031926C9F500E5C67D /* INStupidFullSyncEngine.h */,
+				438BEA041926C9F500E5C67D /* INStupidFullSyncEngine.m */,
+				4324ED541940D5F700C24E88 /* INPluginManager.h */,
+				4324ED551940D5F700C24E88 /* INPluginManager.m */,
+				434B896A1935090000A2AD33 /* INDeltaSyncEngine.h */,
+				434B896B1935090000A2AD33 /* INDeltaSyncEngine.m */,
+				43AAF5461912D607000FA5AF /* Views */,
+				43F22AC219071C5200A032D1 /* Categories */,
+				43F22AC919071C5200A032D1 /* Controllers */,
+				438159F31922E6D70069116A /* Vendor */,
+				43F22A7C19071A1100A032D1 /* Supporting Files */,
+				43105796193548DA00C5B1FC /* Sounds */,
+				43F22A8D19071A1100A032D1 /* Images.xcassets */,
+			);
+			path = BigSur;
+			sourceTree = "<group>";
+		};
+		43F22A7C19071A1100A032D1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4324ED621940E38A00C24E88 /* plugins */,
+				43F22A7D19071A1100A032D1 /* BigSur-Info.plist */,
+				43F22A7E19071A1100A032D1 /* InfoPlist.strings */,
+				43F22A8119071A1100A032D1 /* main.m */,
+				43F22A8319071A1100A032D1 /* BigSur-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		43F22AC219071C5200A032D1 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				431A549E192C0C5A00AE0719 /* UIImage+BlurEffects.h */,
+				431A549F192C0C5A00AE0719 /* UIImage+BlurEffects.m */,
+				43F9F4B0196490B50048ABE8 /* UIView+FrameAdditions.h */,
+				43F9F4B1196490B50048ABE8 /* UIView+FrameAdditions.m */,
+				433711B0191C0A3000E7F793 /* NSObject+AssociatedObjects.h */,
+				433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */,
+				433711AD191C0A0100E7F793 /* NSString+FormatConversion.h */,
+				433711AE191C0A0100E7F793 /* NSString+FormatConversion.m */,
+				43A9684E191C099600F24844 /* INConvenienceCategories.h */,
+				43A9684F191C099600F24844 /* INConvenienceCategories.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		43F22AC919071C5200A032D1 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				436BB2631938FA33004BA79B /* INSplitViewController.h */,
+				436BB2641938FA33004BA79B /* INSplitViewController.m */,
+				43DB20F21921498200DCFA4A /* INRootViewController.h */,
+				43DB20F31921498200DCFA4A /* INRootViewController.m */,
+				43F22ACA19071C5200A032D1 /* INMailViewController.h */,
+				43F22ACB19071C5200A032D1 /* INMailViewController.m */,
+				43F22ACC19071C5200A032D1 /* INMailViewController.xib */,
+				435764AA192530BB00E6B340 /* INAuthViewController.h */,
+				435764AB192530BB00E6B340 /* INAuthViewController.m */,
+				435764AC192530BB00E6B340 /* INAuthViewController.xib */,
+				43AE9B721918045C005D70C0 /* INContactsViewController.h */,
+				43AE9B731918045C005D70C0 /* INContactsViewController.m */,
+				43AE9B741918045C005D70C0 /* INContactsViewController.xib */,
+				438159FC1922E7580069116A /* INSidebarViewController.h */,
+				438159FD1922E7580069116A /* INSidebarViewController.m */,
+				438159FE1922E7580069116A /* INSidebarViewController.xib */,
+				43AAF5331911B8E5000FA5AF /* INThreadViewController.h */,
+				43AAF5341911B8E5000FA5AF /* INThreadViewController.m */,
+				43AAF5351911B8E5000FA5AF /* INThreadViewController.xib */,
+				43AE9B77191833AF005D70C0 /* INComposeViewController.h */,
+				43AE9B78191833AF005D70C0 /* INComposeViewController.m */,
+				43AE9B79191833AF005D70C0 /* INComposeViewController.xib */,
+				438BEA10192AC41400E5C67D /* Internal */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4317023A19132BA10002491F /* BigSurTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4317024A19132BA10002491F /* Build configuration list for PBXNativeTarget "BigSurTests" */;
+			buildPhases = (
+				0BA9CF6855EF498B9CA6C0A0 /* Check Pods Manifest.lock */,
+				4317023719132BA10002491F /* Sources */,
+				4317023819132BA10002491F /* Frameworks */,
+				4317023919132BA10002491F /* Resources */,
+				70D92777D9284523A44AF9BA /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4317024919132BA10002491F /* PBXTargetDependency */,
+			);
+			name = BigSurTests;
+			productName = BigSurTests;
+			productReference = 4317023B19132BA10002491F /* BigSurTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		43A16F4C1952697B00ED7C0E /* Mail */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 43A16F5B1952697B00ED7C0E /* Build configuration list for PBXNativeTarget "Mail" */;
+			buildPhases = (
+				43A16F491952697B00ED7C0E /* Sources */,
+				43A16F4A1952697B00ED7C0E /* Frameworks */,
+				43A16F4B1952697B00ED7C0E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mail;
+			productName = Mail;
+			productReference = 43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		43F22A7119071A1100A032D1 /* BigSur */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 43F22AA419071A1100A032D1 /* Build configuration list for PBXNativeTarget "BigSur" */;
+			buildPhases = (
+				FF7605F5F805472081A19E2F /* Check Pods Manifest.lock */,
+				43F22A6E19071A1100A032D1 /* Sources */,
+				4324ED641940E9D700C24E88 /* ShellScript */,
+				43F22A6F19071A1100A032D1 /* Frameworks */,
+				43F22A7019071A1100A032D1 /* Resources */,
+				7C3E1C59E7884C76BF05137A /* Copy Pods Resources */,
+				43B27D4F19525BEC002532D3 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				43A16F571952697B00ED7C0E /* PBXTargetDependency */,
+				43A16F5A1952697B00ED7C0E /* PBXTargetDependency */,
+			);
+			name = BigSur;
+			productName = BigSur;
+			productReference = 43F22A7219071A1100A032D1 /* BigSur.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		43F22A6A19071A1000A032D1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = IN;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = Inbox;
+				TargetAttributes = {
+					4317023A19132BA10002491F = {
+						TestTargetID = 43F22A7119071A1100A032D1;
+					};
+					43A16F4C1952697B00ED7C0E = {
+						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = X9RJ36K9D4;
+					};
+					43F22A7119071A1100A032D1 = {
+						DevelopmentTeam = X9RJ36K9D4;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 43F22A6D19071A1000A032D1 /* Build configuration list for PBXProject "BigSur" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 43F22A6919071A1000A032D1;
+			productRefGroup = 43F22A7319071A1100A032D1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				43F22A7119071A1100A032D1 /* BigSur */,
+				4317023A19132BA10002491F /* BigSurTests */,
+				43AAF513190ECC8E000FA5AF /* OCLint */,
+				43A16F4C1952697B00ED7C0E /* Mail */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4317023919132BA10002491F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4317024419132BA10002491F /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43A16F4B1952697B00ED7C0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				438C57D4195271B20088FF9D /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43F22A7019071A1100A032D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				438BEA0C192AC16500E5C67D /* INInternalInfoStoryboard.storyboard in Resources */,
+				43AAF54B1912D614000FA5AF /* INMessageCollectionViewCell.xib in Resources */,
+				43F22A8E19071A1100A032D1 /* Images.xcassets in Resources */,
+				43AE9B761918045C005D70C0 /* INContactsViewController.xib in Resources */,
+				435764AE192530BB00E6B340 /* INAuthViewController.xib in Resources */,
+				43105798193548DA00C5B1FC /* notif-unread-sound.aiff in Resources */,
+				43AAF5371911B8E5000FA5AF /* INThreadViewController.xib in Resources */,
+				43815A001922E7580069116A /* INSidebarViewController.xib in Resources */,
+				43F22A8019071A1100A032D1 /* InfoPlist.strings in Resources */,
+				4324ED631940E38A00C24E88 /* plugins in Resources */,
+				43AE9B7B191833AF005D70C0 /* INComposeViewController.xib in Resources */,
+				43F22AD119071C5200A032D1 /* INMailViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0BA9CF6855EF498B9CA6C0A0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4324ED641940E9D700C24E88 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "touch -cm ${SRCROOT}/BigSur/plugins";
+		};
+		43AAF517190ECCAE000FA5AF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "source ~/.bash_profile\n\nhash oclint &> /dev/null\nif [ $? -eq 1 ]; then\necho >&2 \"oclint not found, analyzing stopped\"\nexit 1\nfi\n\ncd \"${TARGET_TEMP_DIR}\"\n\nif [ ! -f compile_commands.json ]; then\necho \"[*] compile_commands.json not found, possibly clean was performed\"\necho \"[*] starting xcodebuild to rebuild the project..\"\n# clean previous output\nif [ -f xcodebuild.log ]; then\nrm xcodebuild.log\nfi\n\ncd \"${SRCROOT}\"\n\nxcodebuild clean\n\n#build xcodebuild.log\nxcodebuild | tee \"${TARGET_TEMP_DIR}/xcodebuild.log\"\n#xcodebuild <options>| tee ${TARGET_TEMP_DIR}/xcodebuild.log\n\necho \"[*] transforming xcodebuild.log into compile_commands.json...\"\ncd \"${TARGET_TEMP_DIR}\"\n#transform it into compile_commands.json\noclint-xcodebuild\n\necho \"[*] copy compile_commands.json to the project root...\"\ncp \"${TARGET_TEMP_DIR}/compile_commands.json\" \"${SRCROOT}/compile_commands.json\"\n\nfi\n\necho \"[*] starting analyzing\"\ncd \"${TARGET_TEMP_DIR}\"\noclint-json-compilation-database | sed 's/\\(.*\\.\\m\\{1,2\\}:[0-9]*:[0-9]*:\\)/\\1 warning:/'";
+		};
+		70D92777D9284523A44AF9BA /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-BigSurTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7C3E1C59E7884C76BF05137A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-BigSur-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF7605F5F805472081A19E2F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4317023719132BA10002491F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4317024619132BA10002491F /* INModelProviderTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43A16F491952697B00ED7C0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43F22A6E19071A1100A032D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43AAF5361911B8E5000FA5AF /* INThreadViewController.m in Sources */,
+				438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */,
+				43815A031922F5790069116A /* INInboxNavTitleView.m in Sources */,
+				4324ED561940D5F700C24E88 /* INPluginManager.m in Sources */,
+				43F788E01919991F00B6E0E5 /* INDeleteDetectingTextField.m in Sources */,
+				431A54A0192C0C5A00AE0719 /* UIImage+BlurEffects.m in Sources */,
+				433711AF191C0A0100E7F793 /* NSString+FormatConversion.m in Sources */,
+				43AE9BC519185ACF005D70C0 /* INComposeRowView.m in Sources */,
+				43AE9B7A191833AF005D70C0 /* INComposeViewController.m in Sources */,
+				4324ED5B1940DCB500C24E88 /* BPopdownButton.m in Sources */,
+				43F788DA1919902100B6E0E5 /* INComposeRecipientCollectionViewCell.m in Sources */,
+				438159FB1922E6D70069116A /* JSSlidingViewController.m in Sources */,
+				43AAF54E1912E985000FA5AF /* INMailItemTableViewCell.m in Sources */,
+				43A1475E192E8A29001AF02F /* INThreadTableViewCell.m in Sources */,
+				43AAF5491912D607000FA5AF /* INMessageCollectionViewCell.m in Sources */,
+				4324ED5C1940DCB500C24E88 /* BPopdownMenu.m in Sources */,
+				43DB20F1192145F100DCFA4A /* INThemeManager.m in Sources */,
+				43AE9B751918045C005D70C0 /* INContactsViewController.m in Sources */,
+				43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */,
+				43AE9BC219185999005D70C0 /* INLeftJustifiedFlowLayout.m in Sources */,
+				436BB2651938FA33004BA79B /* INSplitViewController.m in Sources */,
+				43F22A8219071A1100A032D1 /* main.m in Sources */,
+				434B896C1935090000A2AD33 /* INDeltaSyncEngine.m in Sources */,
+				43AE9BC819185C46005D70C0 /* INComposeSubjectRowView.m in Sources */,
+				438159FF1922E7580069116A /* INSidebarViewController.m in Sources */,
+				43AE9BCB19186DD1005D70C0 /* INPlaceholderTextView.m in Sources */,
+				43F22A8619071A1100A032D1 /* INAppDelegate.m in Sources */,
+				4342322F1923F84E002AE05D /* INTagsView.m in Sources */,
+				43F9F4B2196490B50048ABE8 /* UIView+FrameAdditions.m in Sources */,
+				43815A061922F8370069116A /* INSidebarTableViewCell.m in Sources */,
+				438BEA0F192AC41100E5C67D /* INTaskQueueViewController.m in Sources */,
+				435BB0CF192FF51F00BEE4AE /* INMessageContentView.m in Sources */,
+				433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */,
+				438BEA051926C9F500E5C67D /* INStupidFullSyncEngine.m in Sources */,
+				43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */,
+				438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */,
+				43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */,
+				435764AD192530BB00E6B340 /* INAuthViewController.m in Sources */,
+				43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */,
+				43AE9BBF191841DE005D70C0 /* INComposeRecipientRowView.m in Sources */,
+				4319792E191D8A0100523C8B /* INComposeAttachmentsRowView.m in Sources */,
+				439283C1191450AA00926291 /* INRecipientsLabel.m in Sources */,
+				43F22AD019071C5200A032D1 /* INMailViewController.m in Sources */,
+				43DB20EE191D5D4800DCFA4A /* INAutocompletionResultsView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4317024919132BA10002491F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 43F22A7119071A1100A032D1 /* BigSur */;
+			targetProxy = 4317024819132BA10002491F /* PBXContainerItemProxy */;
+		};
+		43A16F571952697B00ED7C0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 43A16F4C1952697B00ED7C0E /* Mail */;
+			targetProxy = 43A16F561952697B00ED7C0E /* PBXContainerItemProxy */;
+		};
+		43A16F5A1952697B00ED7C0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 43A16F4C1952697B00ED7C0E /* Mail */;
+			targetProxy = 43A16F591952697B00ED7C0E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		4317024219132BA10002491F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4317024319132BA10002491F /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		43F22A7E19071A1100A032D1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43F22A7F19071A1100A032D1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4317024B19132BA10002491F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A001EFB96BFF4722BDE59D9F /* Pods-BigSurTests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/BigSur.app/BigSur";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BigSurTests/BigSurTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "BigSurTests/BigSurTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					XCTest,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		4317024C19132BA10002491F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A001EFB96BFF4722BDE59D9F /* Pods-BigSurTests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/BigSur.app/BigSur";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BigSurTests/BigSurTests-Prefix.pch";
+				INFOPLIST_FILE = "BigSurTests/BigSurTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					XCTest,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		43A16F5C1952697B00ED7C0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/BigSurExtensions/Mail/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+				);
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "com.inbox.BigSur.$(TARGET_NAME:rfc1034identifier)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		43A16F5D1952697B00ED7C0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/BigSurExtensions/Mail/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+				);
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "com.inbox.BigSur.$(TARGET_NAME:rfc1034identifier)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		43AAF515190ECC8E000FA5AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		43AAF516190ECC8E000FA5AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		43F22AA219071A1100A032D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		43F22AA319071A1100A032D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		43F22AA519071A1100A032D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../InboxFramework/**",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BigSur/BigSur-Prefix.pch";
+				INFOPLIST_FILE = "BigSur/BigSur-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = BigSur;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		43F22AA619071A1100A032D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../InboxFramework/**",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BigSur/BigSur-Prefix.pch";
+				INFOPLIST_FILE = "BigSur/BigSur-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = BigSur;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4317024A19132BA10002491F /* Build configuration list for PBXNativeTarget "BigSurTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4317024B19132BA10002491F /* Debug */,
+				4317024C19132BA10002491F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		43A16F5B1952697B00ED7C0E /* Build configuration list for PBXNativeTarget "Mail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43A16F5C1952697B00ED7C0E /* Debug */,
+				43A16F5D1952697B00ED7C0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		43AAF514190ECC8E000FA5AF /* Build configuration list for PBXAggregateTarget "OCLint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43AAF515190ECC8E000FA5AF /* Debug */,
+				43AAF516190ECC8E000FA5AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		43F22A6D19071A1000A032D1 /* Build configuration list for PBXProject "BigSur" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43F22AA219071A1100A032D1 /* Debug */,
+				43F22AA319071A1100A032D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		43F22AA419071A1100A032D1 /* Build configuration list for PBXNativeTarget "BigSur" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43F22AA519071A1100A032D1 /* Debug */,
+				43F22AA619071A1100A032D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 43F22A6A19071A1000A032D1 /* Project object */;
+}
