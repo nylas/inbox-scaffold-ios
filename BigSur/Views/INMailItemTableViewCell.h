@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "INRecipientsLabel.h"
 
 #define INSETS UIEdgeInsetsMake(8, 10, 8, 10)
 

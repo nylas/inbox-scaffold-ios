@@ -5,10 +5,10 @@
       location = "group:BigSur.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../InboxFramework/InboxFramework.xcodeproj">
+      location = "group:../Inbox-iOS/InboxFramework/InboxFramework.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../InboxFramework/Pods/Pods.xcodeproj">
+      location = "group:../Inbox-iOS/InboxFramework/Pods/Pods.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

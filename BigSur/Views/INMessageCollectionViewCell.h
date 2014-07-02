@@ -7,8 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "INRecipientsLabel.h"
-#import "INMessageContentView.h"
 
 @class INMessageCollectionViewCell;
 
