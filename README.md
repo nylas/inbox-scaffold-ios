@@ -55,5 +55,7 @@ appledoc --include ./Documentation/. --index-desc ./Documentation/index-template
 html format:
 
 ```
-appledoc --include ./Documentation/. --no-create-docset --index-desc ./Documentation/index-template.txt -o ./ -p "Inbox iOS SDK Documentation" -v 1.0 -c "InboxApp, Inc." --company-id com.inbox.ios --ignore=JSON ./BigSur
+cd ./InboxFramework
+
+appledoc --include ./Documentation/. --no-create-docset --index-desc ./Documentation/index-template.txt -o ./ -p "Inbox iOS SDK Documentation" -v 1.0 -c "InboxApp, Inc." --company-id com.inbox.ios --ignore=JSON ./Inbox
 ```
