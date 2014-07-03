@@ -195,12 +195,12 @@
     if ([[INAPIManager shared] isAuthenticated]) {
         // we're good.
     } else {
-//        INAuthViewController * auth = [[INAuthViewController alloc] init];
-//        [_slidingViewController presentViewController:auth animated:YES completion:NULL];
+        INAuthViewController * auth = [[INAuthViewController alloc] init];
+        [_slidingViewController presentViewController:auth animated:YES completion:NULL];
         
-        [[INAPIManager shared] authenticateWithAuthToken:@"bla" andCompletionBlock:^(BOOL success, NSError *error) {
-            
-        }];
+//        [[INAPIManager shared] authenticateWithAuthToken:@"bla" andCompletionBlock:^(BOOL success, NSError *error) {
+        
+//        }];
     }
 }
 

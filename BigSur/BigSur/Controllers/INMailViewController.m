@@ -214,6 +214,41 @@
     }
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+}
+
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    INModelObject * model = [[_provider items] objectAtIndex:[indexPath row]];
+    if ([model isKindOfClass: [INThread class]])
+        return @"Archive";
+    
+    if ([model isKindOfClass: [INDraft class]])
+        return @"Delete Draft";
+    
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    INModelObject * model = [[_provider items] objectAtIndex:[indexPath row]];
+    if ([model isKindOfClass: [INThread class]])
+        [(INThread*)model archive];
+    
+    if ([model isKindOfClass: [INDraft class]])
+        [(INDraft*)model delete];
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     BOOL isShowingAll = ([[_provider items] count] < [_provider itemRange].length);
