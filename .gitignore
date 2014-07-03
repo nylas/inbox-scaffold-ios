@@ -2,8 +2,6 @@
 
 *Podfile.lock
 
-/.DS_Store
-
 *DerivedData
 
 /BigSur.xcodeproj/xcuserdata
@@ -20,39 +18,14 @@
 
 /html/
 
-/InboxFramework/DerivedData
+/DerivedData
 
-/InboxFramework/InboxFramework.xcodeproj/xcuserdata
-/InboxFramework/InboxFramework.xcworkspace/xcuserdata
+/Pods/
 
-/InboxFramework/InboxFramework.xcodeproj/project.xcworkspace/xcuserdata
+/Podfile.lock
 
-/InboxFramework/Pods
-
-/BigSur/DerivedData
-
-/BigSur/Pods/
-
-/BigSur/Podfile.lock
-
-/InboxFramework/Podfile.lock
-
-/InboxExamples/Triage/Pods
-
-/InboxExamples/Triage/Podfile.lock
-
-/InboxExamples/Triage/DerivedData
-
-/InboxExamples/Triage/Triage.xcworkspace/xcuserdata
-
-/InboxExamples/Triage/Triage.xcodeproj/xcuserdata
-
-/BigSur/BigSur.xcworkspace/xcuserdata/bengotow.xcuserdatad/UserInterfaceState.xcuserstate
+/BigSur.xcworkspace/xcuserdata/bengotow.xcuserdatad/UserInterfaceState.xcuserstate
 
 *.xcbkptlist
 
 *xcuserdata
-
-/InboxExamples/Snapmail/Pods
-
-/InboxExamples/Snapmail/Snapmail.xcodeproj/project.xcworkspace/xcuserdata
