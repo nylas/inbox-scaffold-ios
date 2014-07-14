@@ -36,7 +36,7 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>INAPIPath</key>
-	<string>https://gunks.inboxapp.com/</string>
+	<string>https://gunks.inboxapp.com:2222/</string>
 	<key>INAppID</key>
 	<string>635m56004j8u66vxzxwe0tcdy</string>
 	<key>LSRequiresIPhoneOS</key>
