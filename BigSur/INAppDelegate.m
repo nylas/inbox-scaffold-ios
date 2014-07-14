@@ -197,10 +197,6 @@
     } else {
         INAuthViewController * auth = [[INAuthViewController alloc] init];
         [_slidingViewController presentViewController:auth animated:YES completion:NULL];
-        
-//        [[INAPIManager shared] authenticateWithAuthToken:@"bla" andCompletionBlock:^(BOOL success, NSError *error) {
-        
-//        }];
     }
 }
 

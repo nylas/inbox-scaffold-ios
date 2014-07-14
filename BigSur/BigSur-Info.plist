@@ -29,7 +29,17 @@
 			<string>inbox</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>in-635m56004j8u66vxzxwe0tcdy</string>
+				<string>bigsur</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>inbox-api</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>in-874wihqp9t7o29f5u2pd748hl</string>
 			</array>
 		</dict>
 	</array>
@@ -38,7 +48,7 @@
 	<key>INAPIPath</key>
 	<string>https://gunks.inboxapp.com:2222/</string>
 	<key>INAppID</key>
-	<string>635m56004j8u66vxzxwe0tcdy</string>
+	<string>874wihqp9t7o29f5u2pd748hl</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>
