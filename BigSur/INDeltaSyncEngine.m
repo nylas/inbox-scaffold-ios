@@ -137,7 +137,7 @@
     // Don't sync if no namespace is provided
     // Don't sync if a sync is already in progress
     // Don't sync if the network is not reachable
-    if ((!namespace) || ([_syncOperations count] > 0) || (![[[INAPIManager shared] reachabilityManager] isReachable])) {
+    if ((!namespace) || ([_syncOperations count] > 0) || (![[[[INAPIManager shared] AF] reachabilityManager] isReachable])) {
         if (callback)
             callback(NO, nil);
         return;
@@ -188,7 +188,7 @@
     }
 
     NSString * path = [NSString stringWithFormat:@"/n/%@/%@", [namespace ID], [klass resourceAPIName]];
-    AFHTTPRequestOperation * op = [[INAPIManager shared] GET:path parameters:@{@"offset":@(page * REQUEST_PAGE_SIZE), @"limit":@(REQUEST_PAGE_SIZE)} success:^(AFHTTPRequestOperation *operation, id models) {
+    AFHTTPRequestOperation * op = [[INAPIManager shared].AF GET:path parameters:@{@"offset":@(page * REQUEST_PAGE_SIZE), @"limit":@(REQUEST_PAGE_SIZE)} success:^(AFHTTPRequestOperation *operation, id models) {
         [_syncOperations removeObject: operation];
         if ([models count] >= REQUEST_PAGE_SIZE) {
             [self syncClass: klass page: page + 1 withCallback: callback];
@@ -203,7 +203,7 @@
             callback(NO, error);
 	}];
     
-    INModelResponseSerializer * serializer = [[INModelResponseSerializer alloc] initWithModelClass: klass];
+    AFHTTPResponseSerializer * serializer = [[INAPIManager shared] responseSerializerForClass: klass];
     [op setResponseSerializer:serializer];
     [_syncOperations addObject: op];
 }
@@ -217,7 +217,7 @@
         NSString * path = [NSString stringWithFormat:@"/n/%@/sync/events", [namespace ID]];
         NSDictionary * params = @{@"stamp": stamp, @"type": [types componentsJoinedByString:@","]};
         
-        AFHTTPRequestOperation * op = [[INAPIManager shared] GET:path parameters:params success:^(AFHTTPRequestOperation *operation, id response) {
+        AFHTTPRequestOperation * op = [[INAPIManager shared].AF GET:path parameters:params success:^(AFHTTPRequestOperation *operation, id response) {
             // Check that the response is valid
             if (![response isKindOfClass: [NSDictionary class]]) {
                 NSError * error = [NSError inboxErrorWithFormat: @"The /sync/events API returned an object that was not a dictionary: %@", response];
@@ -321,7 +321,7 @@
     NSString * stampPath = [NSString stringWithFormat: @"/n/%@/sync/generate_stamp", [namespace ID]];
     NSTimeInterval timestamp = [[NSDate dateWithTimeIntervalSinceNow: -4 * 31 * (60 * 60 * 24)] timeIntervalSince1970];
 
-    [[INAPIManager shared] POST:stampPath parameters:@{@"start":@((int)timestamp)} success:^(AFHTTPRequestOperation *operation, id response) {
+    [[INAPIManager shared].AF POST:stampPath parameters:@{@"start":@((int)timestamp)} success:^(AFHTTPRequestOperation *operation, id response) {
         NSString * stamp = [response objectForKey: @"stamp"];
         [self obtainedSyncStamp: stamp forNamespace: namespace];
         callback(stamp, nil);

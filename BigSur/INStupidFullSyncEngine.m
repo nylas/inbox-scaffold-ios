@@ -78,7 +78,7 @@
     NSLog(@"SYNC: %@ - %d", path, page);
     
 	_syncInProgress += 1;
-    AFHTTPRequestOperation * op = [[INAPIManager shared] GET:path parameters:@{@"offset":@(page * REQUEST_PAGE_SIZE), @"limit":@(REQUEST_PAGE_SIZE)} success:^(AFHTTPRequestOperation *operation, id models) {
+    AFHTTPRequestOperation * op = [[INAPIManager shared].AF GET:path parameters:@{@"offset":@(page * REQUEST_PAGE_SIZE), @"limit":@(REQUEST_PAGE_SIZE)} success:^(AFHTTPRequestOperation *operation, id models) {
         if ([models count] >= REQUEST_PAGE_SIZE) {
             [self syncClass: klass page: page + 1 callback: callback];
         } else {
@@ -96,7 +96,7 @@
 		_syncInProgress -= 1;
 	}];
     
-    INModelResponseSerializer * serializer = [[INModelResponseSerializer alloc] initWithModelClass: klass];
+    AFHTTPResponseSerializer * serializer = [[INAPIManager shared] responseSerializerForClass: klass];
     [op setResponseSerializer:serializer];
     [_syncOperations addObject: op];
 }

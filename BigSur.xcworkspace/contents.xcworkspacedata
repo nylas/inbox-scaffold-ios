@@ -8,9 +8,6 @@
       location = "group:../Inbox-iOS/InboxFramework/InboxFramework.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../Inbox-iOS/InboxFramework/Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

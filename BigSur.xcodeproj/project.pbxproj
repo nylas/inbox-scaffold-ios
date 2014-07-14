@@ -22,13 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		2C125E2EAB824E7D83894E33 /* libPods-BigSur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2420BCACEA341CC82596784 /* libPods-BigSur.a */; };
-		3C3B918E04844AC4A613D8CE /* libPods-BigSurTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FD0759ED3148CBBD9FE711 /* libPods-BigSurTests.a */; };
 		43105798193548DA00C5B1FC /* notif-unread-sound.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 43105797193548DA00C5B1FC /* notif-unread-sound.aiff */; };
-		4317023C19132BA10002491F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A9419071A1100A032D1 /* XCTest.framework */; };
-		4317023D19132BA10002491F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7519071A1100A032D1 /* Foundation.framework */; };
-		4317023E19132BA10002491F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F22A7919071A1100A032D1 /* UIKit.framework */; };
-		4317024419132BA10002491F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4317024219132BA10002491F /* InfoPlist.strings */; };
-		4317024619132BA10002491F /* INModelProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4317024519132BA10002491F /* INModelProviderTests.m */; };
 		4319792E191D8A0100523C8B /* INComposeAttachmentsRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */; };
 		43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43197930191D938300523C8B /* INAttachmentTableViewCell.m */; };
 		431A54A0192C0C5A00AE0719 /* UIImage+BlurEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 431A549F192C0C5A00AE0719 /* UIImage+BlurEffects.m */; };
@@ -91,13 +85,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4317024819132BA10002491F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 43F22A6A19071A1000A032D1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 43F22A7119071A1100A032D1;
-			remoteInfo = BigSur;
-		};
 		43A16F561952697B00ED7C0E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43F22A6A19071A1000A032D1 /* Project object */;
@@ -130,11 +117,6 @@
 
 /* Begin PBXFileReference section */
 		43105797193548DA00C5B1FC /* notif-unread-sound.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = "notif-unread-sound.aiff"; sourceTree = "<group>"; };
-		4317023B19132BA10002491F /* BigSurTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BigSurTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4317024119132BA10002491F /* BigSurTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BigSurTests-Info.plist"; sourceTree = "<group>"; };
-		4317024319132BA10002491F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		4317024519132BA10002491F /* INModelProviderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INModelProviderTests.m; sourceTree = "<group>"; };
-		4317024719132BA10002491F /* BigSurTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BigSurTests-Prefix.pch"; sourceTree = "<group>"; };
 		4319792C191D8A0100523C8B /* INComposeAttachmentsRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INComposeAttachmentsRowView.h; path = BigSur/Views/INComposeAttachmentsRowView.h; sourceTree = SOURCE_ROOT; };
 		4319792D191D8A0100523C8B /* INComposeAttachmentsRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INComposeAttachmentsRowView.m; path = BigSur/Views/INComposeAttachmentsRowView.m; sourceTree = SOURCE_ROOT; };
 		4319792F191D938300523C8B /* INAttachmentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAttachmentTableViewCell.h; sourceTree = "<group>"; };
@@ -255,22 +237,10 @@
 		43FF121C191AF1A30043E2E6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		64FD0759ED3148CBBD9FE711 /* libPods-BigSurTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BigSurTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BigSur.xcconfig"; path = "Pods/Pods-BigSur.xcconfig"; sourceTree = "<group>"; };
-		A001EFB96BFF4722BDE59D9F /* Pods-BigSurTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BigSurTests.xcconfig"; path = "Pods/Pods-BigSurTests.xcconfig"; sourceTree = "<group>"; };
 		E2420BCACEA341CC82596784 /* libPods-BigSur.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BigSur.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4317023819132BA10002491F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4317023C19132BA10002491F /* XCTest.framework in Frameworks */,
-				4317023E19132BA10002491F /* UIKit.framework in Frameworks */,
-				4317023D19132BA10002491F /* Foundation.framework in Frameworks */,
-				3C3B918E04844AC4A613D8CE /* libPods-BigSurTests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		43A16F4A1952697B00ED7C0E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,25 +269,6 @@
 				43105797193548DA00C5B1FC /* notif-unread-sound.aiff */,
 			);
 			path = Sounds;
-			sourceTree = "<group>";
-		};
-		4317023F19132BA10002491F /* BigSurTests */ = {
-			isa = PBXGroup;
-			children = (
-				4317024519132BA10002491F /* INModelProviderTests.m */,
-				4317024019132BA10002491F /* Supporting Files */,
-			);
-			path = BigSurTests;
-			sourceTree = "<group>";
-		};
-		4317024019132BA10002491F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				4317024119132BA10002491F /* BigSurTests-Info.plist */,
-				4317024219132BA10002491F /* InfoPlist.strings */,
-				4317024719132BA10002491F /* BigSurTests-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		435BB0CC192FE4C000BEE4AE /* Composer */ = {
@@ -427,11 +378,9 @@
 			children = (
 				43F22A7B19071A1100A032D1 /* BigSur */,
 				439F05F819526855003F5A90 /* BigSurExtensions */,
-				4317023F19132BA10002491F /* BigSurTests */,
 				43F22A7419071A1100A032D1 /* Frameworks */,
 				43F22A7319071A1100A032D1 /* Products */,
 				8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */,
-				A001EFB96BFF4722BDE59D9F /* Pods-BigSurTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -439,7 +388,6 @@
 			isa = PBXGroup;
 			children = (
 				43F22A7219071A1100A032D1 /* BigSur.app */,
-				4317023B19132BA10002491F /* BigSurTests.xctest */,
 				43A16F4D1952697B00ED7C0E /* com.inbox.BigSur.Mail.appex */,
 			);
 			name = Products;
@@ -558,26 +506,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4317023A19132BA10002491F /* BigSurTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4317024A19132BA10002491F /* Build configuration list for PBXNativeTarget "BigSurTests" */;
-			buildPhases = (
-				0BA9CF6855EF498B9CA6C0A0 /* Check Pods Manifest.lock */,
-				4317023719132BA10002491F /* Sources */,
-				4317023819132BA10002491F /* Frameworks */,
-				4317023919132BA10002491F /* Resources */,
-				70D92777D9284523A44AF9BA /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4317024919132BA10002491F /* PBXTargetDependency */,
-			);
-			name = BigSurTests;
-			productName = BigSurTests;
-			productReference = 4317023B19132BA10002491F /* BigSurTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		43A16F4C1952697B00ED7C0E /* Mail */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43A16F5B1952697B00ED7C0E /* Build configuration list for PBXNativeTarget "Mail" */;
@@ -628,9 +556,6 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Inbox;
 				TargetAttributes = {
-					4317023A19132BA10002491F = {
-						TestTargetID = 43F22A7119071A1100A032D1;
-					};
 					43A16F4C1952697B00ED7C0E = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = X9RJ36K9D4;
@@ -659,7 +584,6 @@
 			projectRoot = "";
 			targets = (
 				43F22A7119071A1100A032D1 /* BigSur */,
-				4317023A19132BA10002491F /* BigSurTests */,
 				43AAF513190ECC8E000FA5AF /* OCLint */,
 				43A16F4C1952697B00ED7C0E /* Mail */,
 			);
@@ -667,14 +591,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		4317023919132BA10002491F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4317024419132BA10002491F /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		43A16F4B1952697B00ED7C0E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -705,21 +621,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0BA9CF6855EF498B9CA6C0A0 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 		4324ED641940E9D700C24E88 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -745,21 +646,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "source ~/.bash_profile\n\nhash oclint &> /dev/null\nif [ $? -eq 1 ]; then\necho >&2 \"oclint not found, analyzing stopped\"\nexit 1\nfi\n\ncd \"${TARGET_TEMP_DIR}\"\n\nif [ ! -f compile_commands.json ]; then\necho \"[*] compile_commands.json not found, possibly clean was performed\"\necho \"[*] starting xcodebuild to rebuild the project..\"\n# clean previous output\nif [ -f xcodebuild.log ]; then\nrm xcodebuild.log\nfi\n\ncd \"${SRCROOT}\"\n\nxcodebuild clean\n\n#build xcodebuild.log\nxcodebuild | tee \"${TARGET_TEMP_DIR}/xcodebuild.log\"\n#xcodebuild <options>| tee ${TARGET_TEMP_DIR}/xcodebuild.log\n\necho \"[*] transforming xcodebuild.log into compile_commands.json...\"\ncd \"${TARGET_TEMP_DIR}\"\n#transform it into compile_commands.json\noclint-xcodebuild\n\necho \"[*] copy compile_commands.json to the project root...\"\ncp \"${TARGET_TEMP_DIR}/compile_commands.json\" \"${SRCROOT}/compile_commands.json\"\n\nfi\n\necho \"[*] starting analyzing\"\ncd \"${TARGET_TEMP_DIR}\"\noclint-json-compilation-database | sed 's/\\(.*\\.\\m\\{1,2\\}:[0-9]*:[0-9]*:\\)/\\1 warning:/'";
-		};
-		70D92777D9284523A44AF9BA /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-BigSurTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		7C3E1C59E7884C76BF05137A /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -794,14 +680,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4317023719132BA10002491F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4317024619132BA10002491F /* INModelProviderTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		43A16F491952697B00ED7C0E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -861,11 +739,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4317024919132BA10002491F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 43F22A7119071A1100A032D1 /* BigSur */;
-			targetProxy = 4317024819132BA10002491F /* PBXContainerItemProxy */;
-		};
 		43A16F571952697B00ED7C0E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43A16F4C1952697B00ED7C0E /* Mail */;
@@ -879,14 +752,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		4317024219132BA10002491F /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4317024319132BA10002491F /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		43F22A7E19071A1100A032D1 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -898,58 +763,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		4317024B19132BA10002491F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A001EFB96BFF4722BDE59D9F /* Pods-BigSurTests.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/BigSur.app/BigSur";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BigSurTests/BigSurTests-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "BigSurTests/BigSurTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-framework",
-					XCTest,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		4317024C19132BA10002491F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A001EFB96BFF4722BDE59D9F /* Pods-BigSurTests.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/BigSur.app/BigSur";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BigSurTests/BigSurTests-Prefix.pch";
-				INFOPLIST_FILE = "BigSurTests/BigSurTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-framework",
-					XCTest,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 		43A16F5C1952697B00ED7C0E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1087,10 +900,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../InboxFramework/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BigSur/BigSur-Prefix.pch";
 				INFOPLIST_FILE = "BigSur/BigSur-Info.plist";
@@ -1111,10 +921,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../InboxFramework/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BigSur/BigSur-Prefix.pch";
 				INFOPLIST_FILE = "BigSur/BigSur-Info.plist";
@@ -1129,15 +936,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4317024A19132BA10002491F /* Build configuration list for PBXNativeTarget "BigSurTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4317024B19132BA10002491F /* Debug */,
-				4317024C19132BA10002491F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		43A16F5B1952697B00ED7C0E /* Build configuration list for PBXNativeTarget "Mail" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

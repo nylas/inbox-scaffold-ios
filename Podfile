@@ -11,7 +11,3 @@ target "BigSur" do
     pod 'UIAlertView+Blocks'
 end
 
-target "BigSurTests", :exclusive => true do
-	pod 'Kiwi/XCTest'
-end
-
