@@ -47,7 +47,6 @@
 		438BEA0F192AC41100E5C67D /* INTaskQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA0E192AC41100E5C67D /* INTaskQueueViewController.m */; };
 		438BEA13192AC4B300E5C67D /* INLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA12192AC4B300E5C67D /* INLogViewController.m */; };
 		438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 438BEA15192AC9A700E5C67D /* INDismissSegue.m */; };
-		438F5C0F19743F5A00F3029C /* Inbox-Mk8.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 438F5C0E19743F5A00F3029C /* Inbox-Mk8.framework */; };
 		43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */; };
 		43A1475E192E8A29001AF02F /* INThreadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */; };
 		43A96850191C099600F24844 /* INConvenienceCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A9684F191C099600F24844 /* INConvenienceCategories.m */; };
@@ -103,6 +102,7 @@
 		43197930191D938300523C8B /* INAttachmentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAttachmentTableViewCell.m; sourceTree = "<group>"; };
 		431A549E192C0C5A00AE0719 /* UIImage+BlurEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlurEffects.h"; sourceTree = "<group>"; };
 		431A549F192C0C5A00AE0719 /* UIImage+BlurEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BlurEffects.m"; sourceTree = "<group>"; };
+		432321171974B2770069F1A3 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
 		4324ED541940D5F700C24E88 /* INPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INPluginManager.h; sourceTree = "<group>"; };
 		4324ED551940D5F700C24E88 /* INPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INPluginManager.m; sourceTree = "<group>"; };
 		4324ED571940DCB500C24E88 /* BPopdownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPopdownButton.h; sourceTree = "<group>"; };
@@ -117,6 +117,7 @@
 		433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AssociatedObjects.m"; sourceTree = "<group>"; };
 		4342322D1923F84E002AE05D /* INTagsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTagsView.h; path = BigSur/Views/INTagsView.h; sourceTree = SOURCE_ROOT; };
 		4342322E1923F84E002AE05D /* INTagsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTagsView.m; path = BigSur/Views/INTagsView.m; sourceTree = SOURCE_ROOT; };
+		4342BFDD19744CA20007D0C6 /* Inbox-Mk8.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Inbox-Mk8.framework"; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox-Mk8.framework"; sourceTree = "<group>"; };
 		434B896A1935090000A2AD33 /* INDeltaSyncEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDeltaSyncEngine.h; sourceTree = "<group>"; };
 		434B896B1935090000A2AD33 /* INDeltaSyncEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDeltaSyncEngine.m; sourceTree = "<group>"; };
 		435764AA192530BB00E6B340 /* INAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAuthViewController.h; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 		435764AC192530BB00E6B340 /* INAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INAuthViewController.xib; sourceTree = "<group>"; };
 		436BB2631938FA33004BA79B /* INSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSplitViewController.h; sourceTree = "<group>"; };
 		436BB2641938FA33004BA79B /* INSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSplitViewController.m; sourceTree = "<group>"; };
+		4379E0051974B10600175947 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
 		438159F71922E6D70069116A /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
 		438159F81922E6D70069116A /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
 		438159FC1922E7580069116A /* INSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSidebarViewController.h; sourceTree = "<group>"; };
@@ -157,6 +159,8 @@
 		43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageTableViewCell.m; sourceTree = "<group>"; };
 		43A1475C192E8A29001AF02F /* INThreadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadTableViewCell.h; sourceTree = "<group>"; };
 		43A1475D192E8A29001AF02F /* INThreadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INThreadTableViewCell.m; sourceTree = "<group>"; };
+		43A67A111974AF4F00AC14FA /* Inbox-Mk8.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Inbox-Mk8.framework"; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox-Mk8.framework"; sourceTree = "<group>"; };
+		43A67A131974AF6700AC14FA /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
 		43A9684E191C099600F24844 /* INConvenienceCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INConvenienceCategories.h; sourceTree = "<group>"; };
 		43A9684F191C099600F24844 /* INConvenienceCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INConvenienceCategories.m; sourceTree = "<group>"; };
 		43AAF5331911B8E5000FA5AF /* INThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadViewController.h; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 		43AE9BC919186DD1005D70C0 /* INPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INPlaceholderTextView.h; sourceTree = "<group>"; };
 		43AE9BCA19186DD1005D70C0 /* INPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INPlaceholderTextView.m; sourceTree = "<group>"; };
 		43B27E1319526167002532D3 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "DerivedData/BigSur/Build/Products/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
+		43B813BA1974B16E006C1B5B /* Inbox-Mk8.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Inbox-Mk8.framework"; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox-Mk8.framework"; sourceTree = "<group>"; };
 		43DB20EC191D5D4800DCFA4A /* INAutocompletionResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAutocompletionResultsView.h; sourceTree = "<group>"; };
 		43DB20ED191D5D4800DCFA4A /* INAutocompletionResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAutocompletionResultsView.m; sourceTree = "<group>"; };
 		43DB20EF192145F100DCFA4A /* INThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThemeManager.h; sourceTree = "<group>"; };
@@ -225,7 +230,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				438F5C0F19743F5A00F3029C /* Inbox-Mk8.framework in Frameworks */,
 				43F22A7819071A1100A032D1 /* CoreGraphics.framework in Frameworks */,
 				43F22A7A19071A1100A032D1 /* UIKit.framework in Frameworks */,
 				43F22A7619071A1100A032D1 /* Foundation.framework in Frameworks */,
@@ -368,6 +372,12 @@
 		43F22A7419071A1100A032D1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				432321171974B2770069F1A3 /* Inbox.framework */,
+				43B813BA1974B16E006C1B5B /* Inbox-Mk8.framework */,
+				4379E0051974B10600175947 /* Inbox.framework */,
+				43A67A131974AF6700AC14FA /* Inbox.framework */,
+				43A67A111974AF4F00AC14FA /* Inbox-Mk8.framework */,
+				4342BFDD19744CA20007D0C6 /* Inbox-Mk8.framework */,
 				438F5C0E19743F5A00F3029C /* Inbox-Mk8.framework */,
 				438C580919538B5F0088FF9D /* libPods-BigSur-AFNetworking.a */,
 				438C580A19538B5F0088FF9D /* libPods-BigSur-DateTools.a */,
@@ -485,7 +495,7 @@
 			buildPhases = (
 				FF7605F5F805472081A19E2F /* Check Pods Manifest.lock */,
 				43F22A6E19071A1100A032D1 /* Sources */,
-				4324ED641940E9D700C24E88 /* ShellScript */,
+				4324ED641940E9D700C24E88 /* Run Script */,
 				43F22A6F19071A1100A032D1 /* Frameworks */,
 				43F22A7019071A1100A032D1 /* Resources */,
 				7C3E1C59E7884C76BF05137A /* Copy Pods Resources */,
@@ -562,13 +572,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4324ED641940E9D700C24E88 /* ShellScript */ = {
+		4324ED641940E9D700C24E88 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

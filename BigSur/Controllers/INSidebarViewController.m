@@ -12,7 +12,9 @@
 #import "UIImage+BlurEffects.h"
 #import "UIView+FrameAdditions.h"
 
-#define BUILT_IN_TAGS @[INTagIDInbox, INTagIDStarred, INTagIDSent, INTagIDArchive]
+#define BUILTIN_TAGS @[INTagIDInbox, INTagIDUnread, INTagIDUnseen, INTagIDArchive, INTagIDDraft, INTagIDStarred, INTagIDSent]
+#define BUILTIN_DISPLAYED_TAGS @[INTagIDInbox, INTagIDStarred, INTagIDSent, INTagIDArchive]
+
 
 static NSString * INSidebarItemTypeDrafts = @"drafts";
 static NSString * INSidebarItemTypeTag = @"tag";
@@ -51,7 +53,7 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
 {
     if (![[_tagProvider namespaceID] isEqualToString: [[[INAppDelegate current] currentNamespace] ID]]) {
         _tagProvider = [[[INAppDelegate current] currentNamespace] newTagProvider];
-        [_tagProvider setDelegate: self];
+		[_tagProvider setDelegate: self];
     }
     [_tagProvider refresh];
 }
@@ -105,7 +107,7 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
             [namespaces addObject: @{@"type": INSidebarItemTypeNamespace, @"name": [namespace emailAddress], @"namespace": namespace}];
         
         NSMutableArray * builtin = [NSMutableArray array];
-        for (NSString * ID in BUILT_IN_TAGS) {
+        for (NSString * ID in BUILTIN_DISPLAYED_TAGS) {
             INTag * tag = [INTag tagWithID: ID];
             [builtin addObject: @{@"type": INSidebarItemTypeTag, @"name": [tag name], @"tag": tag}];
         }
@@ -113,7 +115,7 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
         
         NSMutableArray * usertags = [NSMutableArray array];
         for (INTag * tag in [_tagProvider items]) {
-            if ([BUILT_IN_TAGS containsObject: [tag ID]])
+            if ([BUILTIN_TAGS containsObject: [tag ID]])
                 continue;
             [usertags addObject: @{@"type": INSidebarItemTypeTag, @"name": [tag ID], @"tag": tag}];
         }

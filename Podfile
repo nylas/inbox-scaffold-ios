@@ -3,11 +3,11 @@
 # platform :ios, "6.0"
 
 target "BigSur" do
-	pod 'FMDB', '2.3'
-	pod 'AFNetworking', '2.3.1'
 	pod 'DateTools'
 	pod 'MBProgressHUD'
+	pod 'AFNetworking', '2.3.1'
 	pod 'UIActionSheet+Blocks'
-    pod 'UIAlertView+Blocks'
+	pod 'InboxSDK', :path => "../Inbox-iOS"
+	pod 'UIAlertView+Blocks'
 end
 
