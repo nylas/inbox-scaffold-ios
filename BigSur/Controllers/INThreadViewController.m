@@ -24,6 +24,8 @@
 	self = [super init];
 	if (self) {
 		_thread = thread;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update) name:INModelObjectChangedNotification object:_thread];
 	}
 	return self;
 }
@@ -67,10 +69,9 @@
         [_thread markAsRead];
     }
 }
+
 - (void)update
 {
-    [_messageProvider refresh];
-
     float headerPadding = _threadSubjectLabel.frame.origin.y;
 	
     [_threadSubjectLabel setText: [_thread subject]];
@@ -78,7 +79,7 @@
 	[_threadSubjectLabel in_setFrameWidth: _threadSubjectLabel.frame.size.width + 1]; // fix for rounding error
     
 	[_tagsView setAlignment: NSTextAlignmentRight];
-	[_tagsView setTags: [_thread tags]];
+	[_tagsView setTags: [_thread tags] withOmmittedTagIDs: @[INTagIDUnread, INTagIDUnseen]];
 	[_tagsView in_setFrameY: [_threadSubjectLabel in_bottomLeft].y + headerPadding / 2];
     [_threadHeaderView in_setFrameHeight: [_tagsView in_bottomLeft].y + headerPadding];
     
@@ -128,6 +129,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self.messageProvider setDelegate: nil];
 }
 

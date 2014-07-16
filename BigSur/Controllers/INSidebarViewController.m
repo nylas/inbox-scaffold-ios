@@ -12,8 +12,8 @@
 #import "UIImage+BlurEffects.h"
 #import "UIView+FrameAdditions.h"
 
-#define BUILTIN_TAGS @[INTagIDInbox, INTagIDUnread, INTagIDUnseen, INTagIDArchive, INTagIDDraft, INTagIDStarred, INTagIDSent]
-#define BUILTIN_DISPLAYED_TAGS @[INTagIDInbox, INTagIDStarred, INTagIDSent, INTagIDArchive]
+#define BUILTIN_TAGS @[INTagIDInbox, INTagIDUnread, INTagIDUnseen, INTagIDArchive, INTagIDDraft, INTagIDStarred, INTagIDSent, INTagIDTrash]
+#define BUILTIN_DISPLAYED_TAGS @[INTagIDInbox, INTagIDStarred, INTagIDSent, INTagIDArchive, INTagIDTrash]
 
 
 static NSString * INSidebarItemTypeDrafts = @"drafts";
@@ -117,12 +117,12 @@ static NSString * INSidebarItemTypeNamespace = @"namespace";
         for (INTag * tag in [_tagProvider items]) {
             if ([BUILTIN_TAGS containsObject: [tag ID]])
                 continue;
-            [usertags addObject: @{@"type": INSidebarItemTypeTag, @"name": [tag ID], @"tag": tag}];
+            [usertags addObject: @{@"type": INSidebarItemTypeTag, @"name": [tag name], @"tag": tag}];
         }
         
-        _tableSectionData =  @[@{@"label":@"ACCOUNTS", @"items": namespaces},
-                             @{@"label": @"", @"items": builtin},
-                             @{@"label": @"TAGS", @"items": usertags}];
+        _tableSectionData = @[@{@"label":@"ACCOUNTS", @"items": namespaces},
+                              @{@"label": @"", @"items": builtin},
+                              @{@"label": @"TAGS", @"items": usertags}];
     }
 
     return _tableSectionData;

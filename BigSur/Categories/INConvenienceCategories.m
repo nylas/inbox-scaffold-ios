@@ -13,11 +13,22 @@
 
 + (NSString *)stringForMessageDate:(NSDate*)date
 {
+    return [self stringForMessageDate:date withStyle:NSDateFormatterShortStyle];
+}
+
++ (NSString *)stringForMessageDate:(NSDate*)date withStyle:(NSDateFormatterStyle)style
+{
 	NSTimeInterval twelveHours = -60 * 60 * 12;
 	if ([date timeIntervalSinceNow] > twelveHours)
 		return [NSString stringWithDate:date format:@"h:mm aa"];
-	else
-		return [NSString stringWithDate:date format:@"MMM d, YYYY"];
+	else {
+        if (style == NSDateFormatterShortStyle) {
+            return [NSString stringWithDate:date format:@"MMM d, YYYY"];
+        } else if (style == NSDateFormatterLongStyle) {
+            return [NSString stringWithDate:date format:@"MMM d, YYYY at h:mm aa"];
+        }
+        return @"Unknown Date Style";
+    }
 }
 
 + (NSString *)stringByCleaningWhitespaceInString:(NSString*)snippet

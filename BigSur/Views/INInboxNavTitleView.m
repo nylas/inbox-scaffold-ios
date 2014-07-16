@@ -33,9 +33,12 @@
 - (void)setTitle:(NSString*)title andUnreadCount:(long)count
 {
     float x = 0;
+    float width = ceilf([_titleLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleLabel font]}].width) + 6;
+    if (width > 180)
+        width = 180;
     
     [_titleLabel setText: title];
-    [_titleLabel in_setFrameWidth: ceilf([_titleLabel.text sizeWithAttributes: @{NSFontAttributeName: [_titleLabel font]}].width) + 6];
+    [_titleLabel in_setFrameWidth: width];
     x += [_titleLabel frame].size.width;
     
     if ((count == NSNotFound) || (count == 0)) {

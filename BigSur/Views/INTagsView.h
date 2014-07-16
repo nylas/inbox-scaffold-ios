@@ -15,11 +15,18 @@
 
 @property (nonatomic, assign) NSTextAlignment alignment;
 
-/* Set the tags that are displayed in the view. 
+/* Set the tags that are displayed in the view.
 
  @param tags An array of INTag objects.
 */
-
 - (void)setTags:(NSArray*)tags;
+
+/* Set the tags that are displayed in the view, omitting tags in the given
+ set that you may want to hide.
+ 
+ @param tags An array of INTag objects.
+ @param omitted An array of tag IDs that you want to omit from display.
+ */
+- (void)setTags:(NSArray*)tags withOmmittedTagIDs:(NSArray*)omitted;
 
 @end

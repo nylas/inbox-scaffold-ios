@@ -38,16 +38,16 @@
 	[[UISwitch appearance] setOnTintColor: [[INThemeManager shared] tintColor]];
     [[UIButton appearance] setTintColor: [[INThemeManager shared] tintColor]];
 
-    // load previous app state
-    NSArray * namespaces = [[INAPIManager shared] namespaces];
-    [self setCurrentNamespace: [namespaces firstObject]];
-    
     // tell Inbox we want to delegate all data syncing to a sync engine and not
     // have data loaded for each of the displayed by INModelProviders (which would be
     // be preferred if our app only ever loaded a specific view of attachments, or
     // something like that...)
     INDeltaSyncEngine * engine = [[INDeltaSyncEngine alloc] initWithConfiguration: @{}];
     [[INAPIManager shared] setSyncEngine: engine];
+    
+    // load previous app state
+    NSArray * namespaces = [[INAPIManager shared] namespaces];
+    [self setCurrentNamespace: [namespaces firstObject]];
     
     // initialize the sidebar controller
     _sidebarViewController = [[INSidebarViewController alloc] init];
@@ -232,7 +232,7 @@
     INThreadProvider * provider = [namespace newThreadProvider];
 	[provider setItemSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:NO]]];
 	[provider setItemFilterPredicate: [NSComparisonPredicate predicateWithFormat: @"ANY tagIDs = %@", [tag ID]]];
-	[provider setItemRange: NSMakeRange(0, 20)];
+	[provider setItemRange: NSMakeRange(0, 40)];
     
     [_mainViewController setProvider: provider andTitle:[tag name]];
     [_sidebarViewController selectItemWithName: [tag name]];

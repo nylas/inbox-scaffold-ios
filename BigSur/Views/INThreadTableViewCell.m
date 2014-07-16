@@ -82,6 +82,8 @@
 		[_threadCountLabel setText: [NSString stringWithFormat:@"%d", (int)[[_thread messageIDs] count]]];
 	else
 		[_threadCountLabel setText: @""];
+    
+    [self setNeedsLayout];
 }
 
 @end

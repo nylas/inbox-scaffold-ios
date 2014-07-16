@@ -11,6 +11,8 @@
 @interface NSString (INConvenienceCategories)
 
 + (NSString *)stringForMessageDate:(NSDate*)date;
++ (NSString *)stringForMessageDate:(NSDate*)date withStyle:(NSDateFormatterStyle)style;
+
 + (NSString *)stringByCleaningWhitespaceInString:(NSString*)snippet;
 
 - (NSArray *)arrayOfValidEmailAddresses;

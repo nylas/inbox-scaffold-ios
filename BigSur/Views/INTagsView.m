@@ -32,10 +32,18 @@
 
 - (void)setTags:(NSArray*)tags
 {
-	[_tagViews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    [self setTags:tags withOmmittedTagIDs:@[]];
+}
+
+- (void)setTags:(NSArray*)tags withOmmittedTagIDs:(NSArray*)omitted
+{
+    [_tagViews makeObjectsPerformSelector: @selector(removeFromSuperview)];
 	[_tagViews removeAllObjects];
 	
 	for (INTag * tag in tags) {
+        if ([omitted containsObject: [tag ID]])
+            continue;
+        
 		UILabel * tagLabel = [[UILabel alloc] initWithFrame: CGRectZero];
 		[tagLabel setTextColor: [UIColor whiteColor]];
 		[tagLabel setFont: [UIFont fontWithName:@"HelveticaNeue-Medium" size:9]];
