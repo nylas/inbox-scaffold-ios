@@ -198,6 +198,7 @@
         }
 		
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Syncing %@ failed with %@", NSStringFromClass(klass), [error localizedDescription]);
         [_syncOperations removeObject: operation];
         if (callback)
             callback(NO, error);
@@ -267,6 +268,7 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [_syncOperations removeObject: operation];
             error = [NSError inboxErrorWithDescription: @"Could not fetch sync events." underlyingError: error];
+            NSLog(@"Syncing events failed with error %@", error);
             callback(NO, error);
         }];
         

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="WeE-fs-8GW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="WeE-fs-8GW">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -127,11 +127,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="App Log" id="Aeu-da-pcl">
                         <barButtonItem key="backBarButtonItem" title="Back" id="Jet-Xi-2Ws"/>
-                        <barButtonItem key="rightBarButtonItem" title="Clear" id="h2R-cQ-RJ0">
-                            <connections>
-                                <action selector="clearLog:" destination="ilL-Ex-bVt" id="e2F-nE-SEw"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
@@ -204,8 +199,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fAh-p8-34i">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fAh-p8-34i">
+                                            <rect key="frame" x="0.0" y="5" width="320" height="110"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -217,10 +212,10 @@
                                         </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="fAh-p8-34i" firstAttribute="top" secondItem="hyE-I2-zDg" secondAttribute="top" id="XZG-xA-cHD"/>
+                                        <constraint firstItem="fAh-p8-34i" firstAttribute="top" secondItem="hyE-I2-zDg" secondAttribute="top" constant="5" id="XZG-xA-cHD"/>
                                         <constraint firstAttribute="trailing" secondItem="fAh-p8-34i" secondAttribute="trailing" id="Xzc-bN-vVa"/>
                                         <constraint firstItem="fAh-p8-34i" firstAttribute="leading" secondItem="hyE-I2-zDg" secondAttribute="leading" id="dsI-pN-igX"/>
-                                        <constraint firstAttribute="bottom" secondItem="fAh-p8-34i" secondAttribute="bottom" id="fDe-lZ-UMD"/>
+                                        <constraint firstAttribute="bottom" secondItem="fAh-p8-34i" secondAttribute="bottom" constant="5" id="fDe-lZ-UMD"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>

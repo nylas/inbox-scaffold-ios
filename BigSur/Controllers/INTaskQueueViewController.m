@@ -55,6 +55,14 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    INAPITask * change = [[[INAPIManager shared] taskQueue] objectAtIndex: [indexPath row]];
+    [[[UIAlertView alloc] initWithTitle:nil message:[change extendedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+}
+
 - (IBAction)taskQueueSuspendedToggled:(id)sender
 {
     [[INAPIManager shared] setTaskQueueSuspended: ![sender isOn]];

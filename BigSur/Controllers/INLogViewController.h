@@ -13,7 +13,7 @@
 @property (nonatomic, weak) IBOutlet UITextView * appLog;
 @property (nonatomic, strong) NSTimer * updateTimer;
 
-- (IBAction)emailLog:(id)sender;
+- (IBAction)shareLog:(id)sender;
 - (IBAction)clearLog:(id)sender;
 
 @end

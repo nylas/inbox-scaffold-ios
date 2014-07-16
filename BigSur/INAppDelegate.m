@@ -24,7 +24,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     _runtimeLogPath = [@"~/Documents/console.log" stringByExpandingTildeInPath];
-#if !DEBUG
+#ifndef DEBUG
     // locally save our own console output. This prevents it from appearing in the Xcode debugger console,
 	// but allows the app to display it's own log in the INLogViewController.
     [[NSFileManager defaultManager] removeItemAtPath:_runtimeLogPath error:NULL];

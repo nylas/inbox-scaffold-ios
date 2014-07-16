@@ -16,6 +16,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIBarButtonItem * share = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareLog:)];
+    UIBarButtonItem * clear = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(clearLog:)];
+    [[self navigationItem] setRightBarButtonItems:@[share, clear]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -53,8 +57,12 @@ text = [NSString stringWithContentsOfFile:[[INAppDelegate current] runtimeLogPat
     [_appLog setScrollEnabled:YES];
 }
 
-- (IBAction)emailLog:(id)sender
+- (IBAction)shareLog:(id)sender
 {
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[_appLog.text] applicationActivities:nil];
+    [self.navigationController presentViewController:activityViewController animated:YES completion:^{
+        
+    }];
 }
 
 - (IBAction)clearLog:(id)sender
