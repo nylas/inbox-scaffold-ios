@@ -84,15 +84,18 @@
 	[self presentViewController:nav animated:YES completion:NULL];
 }
 
-#pragma Refreshing & Thread Ppovider
+#pragma Refreshing & Thread Provider
 
 - (void)refresh
 {
     INDeltaSyncEngine * syncEngine = (INDeltaSyncEngine*)[[INAPIManager shared] syncEngine];
     [syncEngine syncWithCallback: ^(BOOL success, NSError *error) {
-        if (!success && [_refreshControl isRefreshing])
-            [[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-        [_refreshControl endRefreshing];
+		// in some circumnstances, i.e. when an existing sync is already in progress,
+		// this method returns (NO, nil).
+		if (error)
+			[[[UIAlertView alloc] initWithTitle:@"An Error Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+        if (success && [_refreshControl isRefreshing])
+			[_refreshControl endRefreshing];
     }];
 }
 

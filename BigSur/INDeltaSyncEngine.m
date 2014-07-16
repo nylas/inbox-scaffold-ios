@@ -154,6 +154,8 @@
         if ([_syncOperations count] == 0) {
             _syncDate = [NSDate date];
             [self refreshUnreadStateWithCallback:^{
+				[[NSNotificationCenter defaultCenter] postNotificationName:INSyncFinishedNotification object:nil];
+				NSLog(@"Sync has finished.");
                 if (callback)
                     callback(success, error);
             }];
@@ -217,7 +219,8 @@
         
         NSString * path = [NSString stringWithFormat:@"/n/%@/sync/events", [namespace ID]];
         NSDictionary * params = @{@"stamp": stamp, @"type": [types componentsJoinedByString:@","]};
-        
+        NSDate * start = [NSDate date];
+		
         AFHTTPRequestOperation * op = [[INAPIManager shared].AF GET:path parameters:params success:^(AFHTTPRequestOperation *operation, id response) {
             // Check that the response is valid
             if (![response isKindOfClass: [NSDictionary class]]) {
@@ -251,16 +254,21 @@
                     [modelsToDelete addObject: model];
                 }
             }
-
+			
             // Save / delete all of the models at the same time
             [[INDatabaseManager shared] unpersistModels: modelsToDelete];
             [[INDatabaseManager shared] persistModels: modelsToSave];
             [_syncOperations removeObject: operation];
             
-            // Update our local sync stamp
-            if (response[@"next_event"]) {
-                [self obtainedSyncStamp:response[@"next_event"] forNamespace: namespace];
-                [self syncEventsOfTypes: types inNamespace: namespace withCallback: callback];
+			NSTimeInterval seconds = [[NSDate date] timeIntervalSinceDate: start];
+			NSUInteger size = [[operation responseData] length] / 1024;
+            NSLog(@"Delta sync received %d events ending with %@. (%f sec, %dk)", [events count], response[@"events_end"], seconds, size);
+			
+			// Update our local sync stamp
+			if (response[@"events_end"] && (![response[@"events_end"] isEqualToString: response[@"events_start"]])) {
+				[self obtainedSyncStamp:response[@"events_end"] forNamespace: namespace];
+				[self syncEventsOfTypes: types inNamespace: namespace withCallback: callback];
+
             } else {
                 callback(YES, nil);
             }

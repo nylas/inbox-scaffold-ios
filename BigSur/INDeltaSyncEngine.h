@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString * INSyncFinishedNotification = @"INSyncFinishedNotification";
+
 @interface INDeltaSyncEngine : NSObject <INSyncEngine>
 
 @property (nonatomic, strong) NSMutableArray * syncOperations;
