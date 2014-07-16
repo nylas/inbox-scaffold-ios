@@ -25,6 +25,7 @@
 	self = [super init];
 	if (self) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentNamespaceChanged:) name:BigSurNamespaceChanged object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshCount) name:INSyncFinishedNotification object:nil];
 	}
 	return self;
 }
@@ -99,6 +100,14 @@
     }];
 }
 
+- (void)refreshCount
+{
+	if ([_provider isKindOfClass:[INThreadProvider class]]) {
+        [(INThreadProvider*)_provider countUnreadItemsWithCallback:^(long count) {
+            [_titleView setTitle: [self title] andUnreadCount: count];
+        }];
+    }
+}
 
 - (void)setProvider:(INModelProvider*)provider
 {
@@ -107,11 +116,7 @@
 	[_tableView reloadData];
     [_provider refresh];
     
-    if ([provider isKindOfClass:[INThreadProvider class]]) {
-        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
-            [_titleView setTitle: [self title] andUnreadCount: count];
-        }];
-    }
+	[self refreshCount];
 }
 
 - (void)setProvider:(INModelProvider *)provider andTitle:(NSString*)title
@@ -121,22 +126,13 @@
     [self setTitle: title];
     [_titleView setTitle: title andUnreadCount: 0];
     
-    if ([provider isKindOfClass:[INThreadProvider class]]) {
-        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
-            [_titleView setTitle: title andUnreadCount: count];
-        }];
-    }
+	[self refreshCount];
 }
 
 - (void)providerDataChanged:(id)provider
 {
 	[_tableView reloadData];
-
-    if ([provider isKindOfClass:[INThreadProvider class]]) {
-        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
-            [_titleView setTitle: [self title] andUnreadCount: count];
-        }];
-    }
+	[self refreshCount];
 }
 
 - (void)provider:(id)provider dataAltered:(INModelProviderChangeSet *)changeSet
@@ -147,11 +143,7 @@
 	[_tableView endUpdates];
 	[_tableView reloadRowsAtIndexPaths:[changeSet indexPathsFor: INModelProviderChangeUpdate] withRowAnimation:UITableViewRowAnimationNone];
 
-    if ([provider isKindOfClass:[INThreadProvider class]]) {
-        [(INThreadProvider*)provider countUnreadItemsWithCallback:^(long count) {
-            [_titleView setTitle: [self title] andUnreadCount: count];
-        }];
-    }
+	[self refreshCount];
 }
 
 #pragma mark Search
