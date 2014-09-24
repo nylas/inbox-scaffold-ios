@@ -34,8 +34,6 @@
 		433711B2191C0A3000E7F793 /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 433711B1191C0A3000E7F793 /* NSObject+AssociatedObjects.m */; };
 		4342322F1923F84E002AE05D /* INTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4342322E1923F84E002AE05D /* INTagsView.m */; };
 		434B896C1935090000A2AD33 /* INDeltaSyncEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 434B896B1935090000A2AD33 /* INDeltaSyncEngine.m */; };
-		435764AD192530BB00E6B340 /* INAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435764AB192530BB00E6B340 /* INAuthViewController.m */; };
-		435764AE192530BB00E6B340 /* INAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 435764AC192530BB00E6B340 /* INAuthViewController.xib */; };
 		436BB2651938FA33004BA79B /* INSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 436BB2641938FA33004BA79B /* INSplitViewController.m */; };
 		438159FB1922E6D70069116A /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159F81922E6D70069116A /* JSSlidingViewController.m */; };
 		438159FF1922E7580069116A /* INSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 438159FD1922E7580069116A /* INSidebarViewController.m */; };
@@ -120,9 +118,6 @@
 		4342BFDD19744CA20007D0C6 /* Inbox-Mk8.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Inbox-Mk8.framework"; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox-Mk8.framework"; sourceTree = "<group>"; };
 		434B896A1935090000A2AD33 /* INDeltaSyncEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INDeltaSyncEngine.h; sourceTree = "<group>"; };
 		434B896B1935090000A2AD33 /* INDeltaSyncEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INDeltaSyncEngine.m; sourceTree = "<group>"; };
-		435764AA192530BB00E6B340 /* INAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAuthViewController.h; sourceTree = "<group>"; };
-		435764AB192530BB00E6B340 /* INAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAuthViewController.m; sourceTree = "<group>"; };
-		435764AC192530BB00E6B340 /* INAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = INAuthViewController.xib; sourceTree = "<group>"; };
 		436BB2631938FA33004BA79B /* INSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSplitViewController.h; sourceTree = "<group>"; };
 		436BB2641938FA33004BA79B /* INSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSplitViewController.m; sourceTree = "<group>"; };
 		4379E0051974B10600175947 /* Inbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inbox.framework; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox.framework"; sourceTree = "<group>"; };
@@ -466,9 +461,6 @@
 				43F22ACA19071C5200A032D1 /* INMailViewController.h */,
 				43F22ACB19071C5200A032D1 /* INMailViewController.m */,
 				43F22ACC19071C5200A032D1 /* INMailViewController.xib */,
-				435764AA192530BB00E6B340 /* INAuthViewController.h */,
-				435764AB192530BB00E6B340 /* INAuthViewController.m */,
-				435764AC192530BB00E6B340 /* INAuthViewController.xib */,
 				43AE9B721918045C005D70C0 /* INContactsViewController.h */,
 				43AE9B731918045C005D70C0 /* INContactsViewController.m */,
 				43AE9B741918045C005D70C0 /* INContactsViewController.xib */,
@@ -558,7 +550,6 @@
 				43AAF54B1912D614000FA5AF /* INMessageCollectionViewCell.xib in Resources */,
 				43F22A8E19071A1100A032D1 /* Images.xcassets in Resources */,
 				43AE9B761918045C005D70C0 /* INContactsViewController.xib in Resources */,
-				435764AE192530BB00E6B340 /* INAuthViewController.xib in Resources */,
 				43105798193548DA00C5B1FC /* notif-unread-sound.aiff in Resources */,
 				43AAF5371911B8E5000FA5AF /* INThreadViewController.xib in Resources */,
 				43815A001922E7580069116A /* INSidebarViewController.xib in Resources */,
@@ -672,7 +663,6 @@
 				43A1475B192E8A1A001AF02F /* INMessageTableViewCell.m in Sources */,
 				438BEA16192AC9A700E5C67D /* INDismissSegue.m in Sources */,
 				43DB20F41921498200DCFA4A /* INRootViewController.m in Sources */,
-				435764AD192530BB00E6B340 /* INAuthViewController.m in Sources */,
 				43197931191D938300523C8B /* INAttachmentTableViewCell.m in Sources */,
 				43AE9BBF191841DE005D70C0 /* INComposeRecipientRowView.m in Sources */,
 				4319792E191D8A0100523C8B /* INComposeAttachmentsRowView.m in Sources */,

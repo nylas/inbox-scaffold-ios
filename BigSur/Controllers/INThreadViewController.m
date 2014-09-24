@@ -34,8 +34,8 @@
 {
     [super viewDidLoad];
 	
-	[_collectionView registerNib:[UINib nibWithNibName:@"INMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"message"];
-
+    [_collectionView registerClass:[INMessageCollectionViewCell class] forCellWithReuseIdentifier:@"message"];
+    
 	_messageProvider = [_thread newMessageProvider];
 	[_messageProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
 	[_messageProvider setDelegate: self];

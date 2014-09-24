@@ -26,29 +26,19 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>inbox</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>bigsur</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
 			<string>inbox-api</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>in-874wihqp9t7o29f5u2pd748hl</string>
+				<string>in-bisou7flfz2sb3vc724p5w82h</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>INAPIPath</key>
-	<string>https://gunks.inboxapp.com:2222/</string>
+	<string>https://api.inboxapp.com/</string>
 	<key>INAppID</key>
-	<string>874wihqp9t7o29f5u2pd748hl</string>
+	<string>bisou7flfz2sb3vc724p5w82h</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>

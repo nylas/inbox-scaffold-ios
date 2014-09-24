@@ -201,9 +201,9 @@
 {
     BOOL hasSubject = ([[[_subjectView subjectField] text] length] > 0);
     BOOL hasBody = ([[_bodyTextView text] length] > 0);
-    BOOL hasAttachments = ([[_draft attachments] count] > 0);
+    BOOL hasFiles = ([[_draft files] count] > 0);
     
-    if (hasSubject || hasBody || hasAttachments) {
+    if (hasSubject || hasBody || hasFiles) {
         [UIActionSheet showInView:self.view withTitle:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Draft" otherButtonTitles:@[@"Save Draft"] tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
             if (buttonIndex == [actionSheet cancelButtonIndex]) {
                 return;
@@ -271,8 +271,8 @@
 	VoidBlock ready = ^{
 		UIImage * image = [info objectForKey: UIImagePickerControllerOriginalImage];
 		[_attachmentsView animateAttachmentAdditionAtIndex:0 withBlock:^{
-			INFile * attachment = [[INFile alloc] initWithImage: image inNamespace: [_draft namespace]];
-			[_draft addAttachment: attachment atIndex: 0];
+			INFile * file = [[INFile alloc] initWithImage: image inNamespace: [_draft namespace]];
+			[_draft addFile: file atIndex: 0];
 		}];
 		
         [self arrangeContentViews];
@@ -290,13 +290,13 @@
 
 - (NSArray*)attachmentsForAttachmentsView:(INComposeAttachmentsRowView*)view
 {
-	return [_draft attachments];
+	return [_draft files];
 }
 
 - (void)attachmentsView:(INComposeAttachmentsRowView*)view confirmRemoveAttachmentAtIndex:(NSInteger)index
 {
 	[view animateAttachmentRemovalAtIndex:index withBlock:^{
-		[_draft removeAttachmentAtIndex: index];
+		[_draft removeFileAtIndex: index];
 	}];
 }
 

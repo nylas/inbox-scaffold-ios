@@ -25,7 +25,7 @@
         if (style == NSDateFormatterShortStyle) {
             return [NSString stringWithDate:date format:@"MMM d, YYYY"];
         } else if (style == NSDateFormatterLongStyle) {
-            return [NSString stringWithDate:date format:@"MMM d, YYYY at h:mm aa"];
+            return [NSString stringWithDate:date format:@"MMM d, YYYY 'at' h:mm aa"];
         }
         return @"Unknown Date Style";
     }

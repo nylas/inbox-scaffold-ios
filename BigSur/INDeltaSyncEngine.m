@@ -112,7 +112,7 @@
 
 - (BOOL)providesCompleteCacheOf:(Class)klass
 {
-    if (klass == [INMessage class])
+    if ((klass == [INMessage class]) || (klass == [INThread class]))
         return NO;
     return YES;
 }
@@ -286,10 +286,16 @@
 
 - (void)trimLocalCacheForNamespace:(INNamespace*)namespace
 {
+    NSLog(@"Trimming local cache.");
+    
     NSPredicate * timestampPredicate = nil;
+    NSPredicate * lastAccessPredicate = nil;
+    NSPredicate * tagPredicate = nil;
+    NSPredicate * predicate;
     
     NSTimeInterval maxMessageAge = [[NSDate dateWithTimeIntervalSinceNow: -60 * 60 * 24] timeIntervalSince1970];
     NSTimeInterval maxThreadAge = [[NSDate dateWithTimeIntervalSinceNow: -4 * 31 * (60 * 60 * 24)] timeIntervalSince1970];
+    NSTimeInterval lastAccessedDate = [[NSDate dateWithTimeIntervalSinceNow: -14 * (60 * 60 * 24)] timeIntervalSince1970];
     
     // Q: "Do we really have to inflate the objects just to delete them??"
     // A: Yes - it's easier this way, because some objects have more complicated deletion routines
@@ -297,15 +303,21 @@
     // willUnpersist:. The one drawback of this approach is that if someone were viewing one of these
     // messages or threads onscreen, they would see it get blown away. We may want to address that someday.
     
-    // Eliminate threads older than 4 months
+    // Eliminate threads older than 4 months that have not been viewed in the last two weeks and are not in the inbox
     timestampPredicate = [NSComparisonPredicate predicateWithFormat:@"lastMessageDate < %d", (int)maxThreadAge];
-    [[INDatabaseManager shared] selectModelsOfClass:[INThread class] matching:timestampPredicate sortedBy:nil limit:0 offset:0 withCallback:^(NSArray * threads) {
+    lastAccessPredicate = [NSComparisonPredicate predicateWithFormat: @"lastAccessedDate < %d", (int)lastAccessedDate];
+    tagPredicate = [NSComparisonPredicate predicateWithFormat: @"NONE tagIDs = %@", INTagIDInbox];
+    
+    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[timestampPredicate, tagPredicate, lastAccessPredicate]];
+    [[INDatabaseManager shared] selectModelsOfClass:[INThread class] matching:predicate sortedBy:nil limit:0 offset:0 withCallback:^(NSArray * threads) {
         [[INDatabaseManager shared] unpersistModels: threads];
     }];
     
-    // Eliminate messages older than 2 months
+    // Eliminate messages older than 2 months that have not been viewed in the last two weeks
     timestampPredicate = [NSComparisonPredicate predicateWithFormat:@"date < %d", (int)maxMessageAge];
-    [[INDatabaseManager shared] selectModelsOfClass:[INMessage class] matching:timestampPredicate sortedBy:nil limit:0 offset:0 withCallback:^(NSArray * messages) {
+    
+    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[timestampPredicate, lastAccessPredicate]];
+    [[INDatabaseManager shared] selectModelsOfClass:[INMessage class] matching:predicate sortedBy:nil limit:0 offset:0 withCallback:^(NSArray * messages) {
         [[INDatabaseManager shared] unpersistModels: messages];
     }];
 }

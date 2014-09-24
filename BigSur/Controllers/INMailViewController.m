@@ -111,8 +111,10 @@
 
 - (void)setProvider:(INModelProvider*)provider
 {
+    [_provider setDelegate: nil];
     _provider = provider;
     [_provider setDelegate: self];
+
 	[_tableView reloadData];
     [_provider refresh];
     

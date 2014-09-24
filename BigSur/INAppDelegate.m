@@ -9,7 +9,6 @@
 #import "INAppDelegate.h"
 #import "INMailViewController.h"
 #import "INThemeManager.h"
-#import "INAuthViewController.h"
 #import "INStupidFullSyncEngine.h"
 #import "INDeltaSyncEngine.h"
 #import "INThreadViewController.h"
@@ -195,8 +194,9 @@
     if ([[INAPIManager shared] isAuthenticated]) {
         // we're good.
     } else {
-        INAuthViewController * auth = [[INAuthViewController alloc] init];
-        [_slidingViewController presentViewController:auth animated:YES completion:NULL];
+        [[INAPIManager shared] authenticateWithCompletionBlock:^(BOOL success, NSError *error) {
+            // we just wait for a notification
+        }];
     }
 }
 
