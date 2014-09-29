@@ -305,7 +305,7 @@
     
     // Eliminate threads older than 4 months that have not been viewed in the last two weeks and are not in the inbox
     timestampPredicate = [NSComparisonPredicate predicateWithFormat:@"lastMessageDate < %d", (int)maxThreadAge];
-    lastAccessPredicate = [NSComparisonPredicate predicateWithFormat: @"lastAccessedDate < %d", (int)lastAccessedDate];
+    lastAccessPredicate = [NSComparisonPredicate predicateWithFormat: @"lastAccessedAt < %d", (int)lastAccessedDate];
     tagPredicate = [NSComparisonPredicate predicateWithFormat: @"NONE tagIDs = %@", INTagIDInbox];
     
     predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[timestampPredicate, tagPredicate, lastAccessPredicate]];
