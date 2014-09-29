@@ -28,25 +28,20 @@
 		_profileImage = [[UIImageView alloc] initWithFrame: CGRectZero];
 		[_insetView addSubview: _profileImage];
 
-		// [[[self contentView] layer] setShadowOffset: CGSizeMake(0, 1)];
-		// [[[self contentView] layer] setShadowOpacity: 0.2];
-		// [[[self contentView] layer] setShadowRadius: 1];
-		[[[self contentView] layer] setBorderWidth: 1.0 / [[UIScreen mainScreen] scale]];
-		[[[self contentView] layer] setBorderColor: [[UIColor colorWithWhite:215.0/255.0 alpha:1] CGColor]];
-		[[[self contentView] layer] setCornerRadius: 4];
+		[[_insetView layer] setBorderWidth: 1.0 / [[UIScreen mainScreen] scale]];
+		[[_insetView layer] setBorderColor: [[UIColor colorWithWhite:215.0/255.0 alpha:1] CGColor]];
+		[[_insetView layer] setCornerRadius: 4];
 
 		[_insetView setClipsToBounds: YES];
 		[_insetView setBackgroundColor: [UIColor colorWithWhite:244.0/255.0 alpha:1]];
-		[[_insetView layer] setCornerRadius: 4];
     }
     return self;
 }
 
 - (void)layoutSubviews
 {
-	
-	[[self contentView] setFrame: CGRectMake(0, INComposeRecipientVPadding, self.frame.size.width, self.frame.size.height - INComposeRecipientVPadding * 2)];
-	[_insetView setFrame: self.contentView.bounds];
+    CGRect f = CGRectMake(0, INComposeRecipientVPadding, self.frame.size.width, self.frame.size.height - INComposeRecipientVPadding * 2);
+	[_insetView setFrame: f];
 	
 	float imageWidth = _insetView.frame.size.height;
 	[_nameLabel setFrame: CGRectMake(imageWidth, 0, _insetView.frame.size.width - imageWidth, _insetView.frame.size.height)];
