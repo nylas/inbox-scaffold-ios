@@ -148,8 +148,6 @@
 		438C580E19538B5F0088FF9D /* libPods-BigSur-UIAlertView+Blocks.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur-UIAlertView+Blocks.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur-UIAlertView+Blocks.a"; sourceTree = "<group>"; };
 		438C580F19538B5F0088FF9D /* libPods-BigSur.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BigSur.a"; path = "Pods/build/Debug-iphoneos/libPods-BigSur.a"; sourceTree = "<group>"; };
 		438F5C0E19743F5A00F3029C /* Inbox-Mk8.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Inbox-Mk8.framework"; path = "../Inbox-iOS/InboxFramework/build/Debug-iphoneos/Inbox-Mk8.framework"; sourceTree = "<group>"; };
-		439F05FA19526855003F5A90 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		439F05FB19526855003F5A90 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		43A14759192E8A1A001AF02F /* INMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INMessageTableViewCell.h; sourceTree = "<group>"; };
 		43A1475A192E8A1A001AF02F /* INMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INMessageTableViewCell.m; sourceTree = "<group>"; };
 		43A1475C192E8A29001AF02F /* INThreadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INThreadTableViewCell.h; sourceTree = "<group>"; };
@@ -299,23 +297,6 @@
 			name = Internal;
 			sourceTree = "<group>";
 		};
-		439F05F819526855003F5A90 /* BigSurExtensions */ = {
-			isa = PBXGroup;
-			children = (
-				439F05F919526855003F5A90 /* Mail */,
-			);
-			path = BigSurExtensions;
-			sourceTree = "<group>";
-		};
-		439F05F919526855003F5A90 /* Mail */ = {
-			isa = PBXGroup;
-			children = (
-				439F05FA19526855003F5A90 /* Info.plist */,
-				439F05FB19526855003F5A90 /* MainInterface.storyboard */,
-			);
-			path = Mail;
-			sourceTree = "<group>";
-		};
 		43AAF5461912D607000FA5AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -349,7 +330,6 @@
 			isa = PBXGroup;
 			children = (
 				43F22A7B19071A1100A032D1 /* BigSur */,
-				439F05F819526855003F5A90 /* BigSurExtensions */,
 				43F22A7419071A1100A032D1 /* Frameworks */,
 				43F22A7319071A1100A032D1 /* Products */,
 				8EC1E944BF5548068564D916 /* Pods-BigSur.xcconfig */,
