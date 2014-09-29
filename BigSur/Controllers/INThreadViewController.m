@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
 	
-    [_collectionView registerClass:[INMessageCollectionViewCell class] forCellWithReuseIdentifier:@"message"];
+    [_collectionView registerNib: [UINib nibWithNibName:@"INMessageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"message"];
     
 	_messageProvider = [_thread newMessageProvider];
 	[_messageProvider setItemSortDescriptors: @[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]]];
@@ -260,15 +260,16 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     INMessage * message = [self messageForIndexPath: indexPath];
-
+    float width = _collectionView.frame.size.width - SECTION_INSET * 2;
+    
     if ([[_messagesCollapsedState objectForKey: [message ID]] boolValue] == YES)
-        return CGSizeMake(300, 66);
+        return CGSizeMake(width, 66);
     
     float height = [INMessageCollectionViewCell cachedHeightForMessage: message];
 	if (height == 0)
 		height = 100;
 		
-	return CGSizeMake(_collectionView.frame.size.width - SECTION_INSET * 2, height);
+	return CGSizeMake(width, height);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
