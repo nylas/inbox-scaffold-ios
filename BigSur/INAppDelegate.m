@@ -178,13 +178,11 @@
 {
     [_sidebarViewController refresh];
     [_slidingViewController setAllowManualSliding: YES];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)slidingViewControllerWillClose:(JSSlidingViewController *)viewController
 {
     [_slidingViewController setAllowManualSliding: NO];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 }
 
 #pragma mark Updates from Inbox Framework
