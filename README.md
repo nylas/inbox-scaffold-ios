@@ -29,9 +29,12 @@ The Inbox iOS Client Scaffold uses Cocoapods, a dependency management system for
 
 2. `cd <project directory>`
 
-3. `pod install`
+3. `pod install`. After Cocoapods has installed dependencies, open the project's .xcworkspace.
 
-After Cocoapods has installed dependencies, open the project's .xcworkspace (not the .xcproj). Have fun!
+4. Open the app's `Info.plist` file in Xcode. Before you can run the app and authenticate an account with Inbox, you need to create an App ID by signing in to your Inbox Developer Account and creating a new application.
+	- Fill in the `INAppID` with a valid App ID.
+	- Update the URL Scheme for the `inbox-api` URL Type to be `in-<your app ID>`
+
 
 ### Communication
 

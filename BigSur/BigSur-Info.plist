@@ -28,9 +28,7 @@
 			<key>CFBundleURLName</key>
 			<string>inbox-api</string>
 			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>in-bisou7flfz2sb3vc724p5w82h</string>
-			</array>
+			<array/>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
@@ -38,7 +36,7 @@
 	<key>INAPIPath</key>
 	<string>https://api.inboxapp.com/</string>
 	<key>INAppID</key>
-	<string>bisou7flfz2sb3vc724p5w82h</string>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>
