@@ -1,11 +1,11 @@
-Inbox Client Scaffold - iOS
+Inbox App Scaffold - iOS
 ======
 
-The Inbox iOS Client Scaffold is a full-featured mail client built on top of the Inbox API. It leverages the SQLite cache and model layer of the [Inbox iOS SDK](https://github.com/inboxapp/inbox-ios)'s, and adds the pre-packaged views and controllers you need to build a first-class mail experience. We've created a polished composer with tokenizing recipient fields, collection view and table view cells for displaying mail content, and more. Start your next project with the Inbox Client Scaffold and focus on creating delightful interactions!
+The Inbox iOS App Scaffold is a full-featured mail client built on top of the Inbox API. It leverages the SQLite cache and model layer of the [Inbox iOS SDK](https://github.com/inboxapp/inbox-ios)'s, and adds the pre-packaged views and controllers you need to build a first-class mail experience. We've created a polished composer with tokenizing recipient fields, collection view and table view cells for displaying mail content, and more. Start your next project with the Inbox App Scaffold and focus on creating delightful interactions!
 
-<a href="https://raw.githubusercontent.com/inboxapp/inbox-client-scaffold-ios/master/Screenshots/hand-threads.png"><img src="https://raw.githubusercontent.com/inboxapp/inbox-client-scaffold-ios/master/Screenshots/hand-threads.png" width="500" /></a>
+<a href="https://raw.githubusercontent.com/inboxapp/inbox-scaffold-ios/master/Screenshots/hand-threads.png"><img src="https://raw.githubusercontent.com/inboxapp/inbox-scaffold-ios/master/Screenshots/hand-threads.png" width="500" /></a>
 
-<a href="://raw.githubusercontent.com/inboxapp/inbox-client-scaffold-ios/master/Screenshots/overview.png"><img src="https://raw.githubusercontent.com/inboxapp/inbox-client-scaffold-ios/master/Screenshots/overview.png" /></a>
+<a href="://raw.githubusercontent.com/inboxapp/inbox-scaffold-ios/master/Screenshots/overview.png"><img src="https://raw.githubusercontent.com/inboxapp/inbox-scaffold-ios/master/Screenshots/overview.png" /></a>
 
 
 ## Features
@@ -14,16 +14,16 @@ The Inbox iOS Client Scaffold is a full-featured mail client built on top of the
 - Thread Detail: View messages in a collection view with mobile-optimized HTML message bodies, gravatar support, and draft actions.
 - Composer: Create, edit, and send drafts with a beautiful Gmail-style composer. Includes tokenizing recipient fields powered by UICollectionView, autocompletion with the Inbox Contacts API, and support for uploading attachments with progress indicators.
 - Tags: Switch tags from the sidebar. Browse your inbox or view built-in tags like Archive or Flagged and custom tags created via Inbox.
-- Offline Access: The client scaffold is backed by the iOS SDK's SQLite cache and automatically queues actions like archiving and sending for completion when internet is available, even complex chained interactions like creating a draft, adding an attachment, and then sending it.
+- Offline Access: The app scaffold is backed by the iOS SDK's SQLite cache and automatically queues actions like archiving and sending for completion when internet is available, even complex chained interactions like creating a draft, adding an attachment, and then sending it.
 
 
 ## By Developers, For Developers
 
-The Inbox Client Scaffold is intended for developers - to use it, you need an Inbox Developer Program membership or a copy of the open-source [Inbox Sync Engine](http://github.com/inboxapp/inbox). When you download or fork the Inbox Client Scaffold, you'll need to add your Inbox App ID before you can connect your account.
+The Inbox App Scaffold is intended for developers - to use it, you need an Inbox Developer Program membership or a copy of the open-source [Inbox Sync Engine](http://github.com/inboxapp/inbox). When you download or fork the Inbox App Scaffold, you'll need to add your Inbox App ID before you can connect your account.
 
 ### Environment Setup
 
-The Inbox iOS Client Scaffold uses Cocoapods, a dependency management system for iOS apps similiar to npm and rpm. To set up your local development environment, you'll need to install cocoapods and do a pod install.
+The Inbox iOS App Scaffold uses Cocoapods, a dependency management system for iOS apps similiar to npm and rpm. To set up your local development environment, you'll need to install cocoapods and do a pod install.
 
 1. `sudo gem install cocoapods`
 
@@ -46,7 +46,7 @@ The Inbox iOS Client Scaffold uses Cocoapods, a dependency management system for
 
 ### Tips
 
-1. If you're extending the functionality of the Inbox iOS SDK while developing your application, you may want to check out the Inbox-iOS repository and update the client scaffold `Podfile` to point to your local copy of the SDK. We welcome pull requests against the Inbox iOS SDK repository as well as the client scaffold!
+1. If you're extending the functionality of the Inbox iOS SDK while developing your application, you may want to check out the Inbox-iOS repository and update the app scaffold `Podfile` to point to your local copy of the SDK. We welcome pull requests against the Inbox iOS SDK repository as well as the app scaffold!
 
 ```ruby
 target "Inbox" do
