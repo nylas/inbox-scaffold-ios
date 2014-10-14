@@ -11,7 +11,7 @@
 #import "INAppDelegate.h"
 
 #define REQUEST_PAGE_SIZE 50
-#define SYNC_STAMPS_KEY @"sync-stamps"
+#define SYNC_CURSORS_KEY @"sync-cursors"
 
 @implementation INDeltaSyncEngine
 
@@ -213,18 +213,20 @@
 
 - (void)syncEventsOfTypes:(NSArray*)types inNamespace:(INNamespace*)namespace withCallback:(ErrorBlock)callback
 {
-    [self obtainSyncStampForNamespace:namespace withCallback:^(id stamp, NSError * error) {
-        if (!stamp || error)
+    // type currently unused, no longer supported by API
+    
+    [self obtainSyncCursorForNamespace:namespace withCallback:^(id cursor, NSError * error) {
+        if (!cursor || error)
             return callback(NO, error);
         
-        NSString * path = [NSString stringWithFormat:@"/n/%@/sync/events", [namespace ID]];
-        NSDictionary * params = @{@"stamp": stamp, @"type": [types componentsJoinedByString:@","]};
+        NSString * path = [NSString stringWithFormat:@"/n/%@/delta", [namespace ID]];
+        NSDictionary * params = @{@"cursor": cursor};
         NSDate * start = [NSDate date];
 		
         AFHTTPRequestOperation * op = [[INAPIManager shared].AF GET:path parameters:params success:^(AFHTTPRequestOperation *operation, id response) {
             // Check that the response is valid
             if (![response isKindOfClass: [NSDictionary class]]) {
-                NSError * error = [NSError inboxErrorWithFormat: @"The /sync/events API returned an object that was not a dictionary: %@", response];
+                NSError * error = [NSError inboxErrorWithFormat: @"The /delta API returned an object that was not a dictionary: %@", response];
                 return callback(NO, error);
             }
             
@@ -264,9 +266,9 @@
 			NSUInteger size = [[operation responseData] length] / 1024;
             NSLog(@"Delta sync received %d events ending with %@. (%f sec, %dk)", [events count], response[@"events_end"], seconds, size);
 			
-			// Update our local sync stamp
+			// Update our local sync cursor
 			if (response[@"events_end"] && (![response[@"events_end"] isEqualToString: response[@"events_start"]])) {
-				[self obtainedSyncStamp:response[@"events_end"] forNamespace: namespace];
+				[self obtainedSyncCursor:response[@"events_end"] forNamespace: namespace];
 				[self syncEventsOfTypes: types inNamespace: namespace withCallback: callback];
 
             } else {
@@ -324,41 +326,41 @@
 
 - (void)resetSyncState
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey: SYNC_STAMPS_KEY];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey: SYNC_CURSORS_KEY];
 }
 
 - (BOOL)hasSyncedNamespace:(INNamespace*)namespace
 {
-    return ([[[NSUserDefaults standardUserDefaults] objectForKey: SYNC_STAMPS_KEY] objectForKey: [namespace ID]] != nil);
+    return ([[[NSUserDefaults standardUserDefaults] objectForKey: SYNC_CURSORS_KEY] objectForKey: [namespace ID]] != nil);
 }
 
-- (void)obtainSyncStampForNamespace:(INNamespace*)namespace withCallback:(ResultBlock)callback
+- (void)obtainSyncCursorForNamespace:(INNamespace*)namespace withCallback:(ResultBlock)callback
 {
-    // Check to see if there's a stamp in our user defaults for this namespace
-    NSString * cacheStamp = [[[NSUserDefaults standardUserDefaults] objectForKey: SYNC_STAMPS_KEY] objectForKey: [namespace ID]];
-    if (cacheStamp)
-        return callback(cacheStamp, nil);
+    // Check to see if there's a cursor in our user defaults for this namespace
+    NSString * cacheCursor = [[[NSUserDefaults standardUserDefaults] objectForKey: SYNC_CURSORS_KEY] objectForKey: [namespace ID]];
+    if (cacheCursor)
+        return callback(cacheCursor, nil);
     
-    // Fetch a new stamp, assuming we want the entire transaction log for the last four months
-    NSString * stampPath = [NSString stringWithFormat: @"/n/%@/sync/generate_stamp", [namespace ID]];
+    // Fetch a new cursor, assuming we want the entire transaction log for the last four months
+    NSString * cursorPath = [NSString stringWithFormat: @"/n/%@/delta/generate_cursor", [namespace ID]];
     NSTimeInterval timestamp = [[NSDate dateWithTimeIntervalSinceNow: -4 * 31 * (60 * 60 * 24)] timeIntervalSince1970];
 
-    [[INAPIManager shared].AF POST:stampPath parameters:@{@"start":@((int)timestamp)} success:^(AFHTTPRequestOperation *operation, id response) {
-        NSString * stamp = [response objectForKey: @"stamp"];
-        [self obtainedSyncStamp: stamp forNamespace: namespace];
-        callback(stamp, nil);
+    [[INAPIManager shared].AF POST:cursorPath parameters:@{@"start":@((int)timestamp)} success:^(AFHTTPRequestOperation *operation, id response) {
+        NSString * cursor = [response objectForKey: @"cursor"];
+        [self obtainedSyncCursor: cursor forNamespace: namespace];
+        callback(cursor, nil);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        error = [NSError inboxErrorWithDescription: @"Could not generate sync stamp." underlyingError: error];
+        error = [NSError inboxErrorWithDescription: @"Could not generate sync cursor." underlyingError: error];
         callback(nil, error);
     }];
 }
 
-- (void)obtainedSyncStamp:(NSString *)stamp forNamespace:(INNamespace*)namespace
+- (void)obtainedSyncCursor:(NSString *)cursor forNamespace:(INNamespace*)namespace
 {
-    NSMutableDictionary * keys = [NSMutableDictionary dictionaryWithDictionary: [[NSUserDefaults standardUserDefaults] objectForKey:SYNC_STAMPS_KEY]];
-    [keys setObject: stamp forKey:[namespace ID]];
-    [[NSUserDefaults standardUserDefaults] setObject: keys forKey: SYNC_STAMPS_KEY];
+    NSMutableDictionary * keys = [NSMutableDictionary dictionaryWithDictionary: [[NSUserDefaults standardUserDefaults] objectForKey:SYNC_CURSORS_KEY]];
+    [keys setObject: cursor forKey:[namespace ID]];
+    [[NSUserDefaults standardUserDefaults] setObject: keys forKey: SYNC_CURSORS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
