@@ -5,7 +5,6 @@
 target "BigSur" do
 	pod 'DateTools', '1.4.3'
 	pod 'MBProgressHUD'
-	pod 'AFNetworking', '2.3.1'
 	pod 'UIActionSheet+Blocks'
 	pod 'InboxKit'
 	pod 'UIAlertView+Blocks'
