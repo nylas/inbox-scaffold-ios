@@ -264,7 +264,7 @@
             
 			NSTimeInterval seconds = [[NSDate date] timeIntervalSinceDate: start];
 			NSUInteger size = [[operation responseData] length] / 1024;
-            NSLog(@"Delta sync received %d events ending with %@. (%f sec, %dk)", [events count], response[@"events_end"], seconds, size);
+            NSLog(@"Delta sync received %d events ending with %@. (%f sec, %dk)", (int)[events count], response[@"events_end"], seconds, (int)size);
 			
 			// Update our local sync cursor
 			if (response[@"events_end"] && (![response[@"events_end"] isEqualToString: response[@"events_start"]])) {
