@@ -7,7 +7,7 @@ target "BigSur" do
 	pod 'MBProgressHUD'
 	pod 'AFNetworking', '2.3.1'
 	pod 'UIActionSheet+Blocks'
-	pod 'InboxKit', :path => "../Inbox-iOS"
+	pod 'InboxKit'
 	pod 'UIAlertView+Blocks'
 end
 
