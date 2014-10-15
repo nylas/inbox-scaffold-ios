@@ -230,7 +230,7 @@
                 return callback(NO, error);
             }
             
-            NSArray * events = response[@"events"];
+            NSArray * events = response[@"deltas"];
             NSMutableArray * modelsToSave = [NSMutableArray array];
             NSMutableArray * modelsToDelete = [NSMutableArray array];
             
@@ -240,11 +240,11 @@
                 NSString * eventType = event[@"event"];
                 
                 if ((!eventClass) || (![eventClass isSubclassOfClass: [INModelObject class]])) {
-                    NSLog(@"Event skipped. No INModelObject subclass for %@", event[@"object_type"]);
+                    //"Event skipped. No INModelObject subclass for this object type
                     continue;
                 }
                 
-                if ([eventType isEqualToString: @"create"] || [eventType isEqualToString: @"modify"]) {
+                if ([eventType isEqualToString: @"create"] || [eventType isEqualToString: @"update"]) {
                     // find or create the object in our local cache and update it
                     INModelObject * model = [eventClass instanceWithID: event[@"id"] inNamespaceID: [namespace ID]];
                     [model updateWithResourceDictionary: event[@"attributes"]];
@@ -254,6 +254,9 @@
                     // find the model and add it to our list of models to delete
                     INModelObject * model = [eventClass instanceWithID: event[@"id"] inNamespaceID: [namespace ID]];
                     [modelsToDelete addObject: model];
+
+                } else {
+                    NSLog(@"Unknown delta sync event type: %@", eventType);
                 }
             }
 			
@@ -264,11 +267,11 @@
             
 			NSTimeInterval seconds = [[NSDate date] timeIntervalSinceDate: start];
 			NSUInteger size = [[operation responseData] length] / 1024;
-            NSLog(@"Delta sync received %d events ending with %@. (%f sec, %dk)", (int)[events count], response[@"events_end"], seconds, (int)size);
+            NSLog(@"Delta sync received %d events ending with %@. (%f sec, %dk)", (int)[events count], response[@"cursor_end"], seconds, (int)size);
 			
 			// Update our local sync cursor
-			if (response[@"events_end"] && (![response[@"events_end"] isEqualToString: response[@"events_start"]])) {
-				[self obtainedSyncCursor:response[@"events_end"] forNamespace: namespace];
+			if (response[@"cursor_end"] && (![response[@"cursor_end"] isEqualToString: response[@"cursor_start"]])) {
+				[self obtainedSyncCursor:response[@"cursor_end"] forNamespace: namespace];
 				[self syncEventsOfTypes: types inNamespace: namespace withCallback: callback];
 
             } else {
@@ -278,7 +281,7 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [_syncOperations removeObject: operation];
             error = [NSError inboxErrorWithDescription: @"Could not fetch sync events." underlyingError: error];
-            NSLog(@"Syncing events failed with error %@", error);
+            NSLog(@"Syncing events failed. %@", error);
             callback(NO, error);
         }];
         
