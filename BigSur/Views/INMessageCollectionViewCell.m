@@ -103,7 +103,7 @@ static NSMutableDictionary * cachedMessageHeights;
     
     if (newMessage) {
         NSString * email = [[_message.from firstObject] objectForKey: @"email"];
-        [_fromProfileButton setImageForState:UIControlStateNormal withURLRequest:[NSURLRequest requestWithURL: [NSURL URLForGravatar: email]] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"] success:^(NSHTTPURLResponse *response, UIImage *image) {
+        [_fromProfileButton setImageForState:UIControlStateNormal withURLRequest:[NSURLRequest requestWithURL: [NSURL URLForGravatar: email]] placeholderImage:[UIImage imageNamed:@"profile_placeholder.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
             [_fromProfileButton setImage:image forState:UIControlStateNormal];
             [_fromProfileButton setNeedsDisplay];
         }failure: NULL];

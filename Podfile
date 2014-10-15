@@ -7,6 +7,7 @@ target "BigSur" do
 	pod 'MBProgressHUD'
 	pod 'UIActionSheet+Blocks'
 	pod 'InboxKit'
+	pod 'AFNetworking'
 	pod 'UIAlertView+Blocks'
 end
 
