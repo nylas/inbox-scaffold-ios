@@ -1,6 +1,8 @@
 Inbox App Scaffold - iOS
 ======
 
+## **NOTE**: This framework is currently not actively maintained. Please feel free to use it and send us a pull request if you fix anything or add a feature, though. :)
+
 The Inbox iOS App Scaffold is a full-featured mail client built on top of the Inbox API. It leverages the SQLite cache and model layer of the [Inbox iOS SDK](https://github.com/inboxapp/inbox-ios)'s, and adds the pre-packaged views and controllers you need to build a first-class mail experience. We've created a polished composer with tokenizing recipient fields, collection view and table view cells for displaying mail content, and more. Start your next project with the Inbox App Scaffold and focus on creating delightful interactions!
 
 <a href="https://raw.githubusercontent.com/inboxapp/inbox-scaffold-ios/master/Screenshots/hand-threads.png"><img src="https://raw.githubusercontent.com/inboxapp/inbox-scaffold-ios/master/Screenshots/hand-threads.png" width="500" /></a>
